@@ -34,7 +34,7 @@ jobs:
 
       # 5. Desplegar los archivos estáticos en Hostinger vía FTP
       - name: Subir a Hostinger mediante FTP
-        uses: SamKirsch/ftp-deploy-action@v4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
