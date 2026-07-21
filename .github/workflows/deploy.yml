@@ -1,42 +1,44 @@
-name: Deploy to Hostinger
+name: Despliegue a Hostinger
 
 on:
   push:
-    branches: [ main ]
-  repository_dispatch:
-    types: [ update-from-sheets ] # Permite activar el build mediante un webhook
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      # 1. Herramienta actualizada a la versión 4
+      # 1. Obtener el código fuente
       - name: Checkout del código
         uses: actions/checkout@v4
 
-      # 2. Herramienta actualizada a v4 y entorno a Node 24
+      # 2. Configurar entorno de Node.js con LTS estable
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: '22'
 
-      # 3. Instalar dependencias
+      # 3. Instalar dependencias del proyecto
       - name: Instalar dependencias
-        run: npm install
+        run: npm ci || npm install
 
-      # 4. Construir el sitio
+      # 4. Construir el sitio con Astro
       - name: Construir el sitio estático
         run: npm run build
         env:
           GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
 
-
-      - name: Sync files to Hostinger FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      # 5. Desplegar los archivos estáticos en Hostinger vía FTP
+      - name: Subir a Hostinger mediante FTP
+        uses: SamKirsch/ftp-deploy-action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
-          server-dir: /public_html/
+          server-dir: ./
+          dangerous-clean-slate: false
