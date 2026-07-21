@@ -1,0 +1,22 @@
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
+document.addEventListener("DOMContentLoaded", () => {
+  gsap.utils.toArray('.gsap-reveal').forEach((elem) => {
+    gsap.fromTo(elem, 
+      { y: 30, autoAlpha: 0 }, 
+      {
+        y: 0, 
+        autoAlpha: 1, 
+        duration: 1.2, 
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: elem,
+          start: "top 85%", // Inicia la animación cuando el elemento está al 85% de la pantalla
+        }
+      }
+    );
+  });
+});
