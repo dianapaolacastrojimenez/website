@@ -1,0 +1,31 @@
+---
+import { Image } from 'astro:assets';
+import type { Artwork } from '../lib/google';
+
+interface Props {
+  artwork: Artwork;
+}
+
+const { artwork } = Astro.props;
+---
+
+<a href={`/obra/${artwork.id}`} class="group block overflow-hidden cursor-pointer relative gsap-reveal">
+  <div class="bg-gray-100 overflow-hidden">
+    <Image 
+      src={artwork.imageUrl} 
+      alt={`Obra de arte contemporáneo: ${artwork.title} por Diana Castro`} 
+      width={800} 
+      height={800}
+      format="webp"
+      class="object-cover w-full h-full transition-transform duration-700 ease-in-out group-hover:scale-105"
+      loading="lazy"
+    />
+  </div>
+  
+  <div class="mt-4 flex justify-between items-baseline opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+    <div>
+      <h3 class="font-serif text-xl text-deep-blue">{artwork.title}</h3>
+      <p class="font-sans text-sm text-warm-gray">{artwork.year}, {artwork.technique}</p>
+    </div>
+  </div>
+</a>
