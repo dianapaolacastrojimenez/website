@@ -1,3 +1,11 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches: [ main ]
+  repository_dispatch:
+    types: [ update-from-sheets ] # Permite activar el build mediante un webhook
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -22,5 +30,13 @@ jobs:
         env:
           GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
-          
-      # (Mantenga aquí sus pasos de FTP para subir a Hostinger tal como los tenía)
+
+
+      - name: Sync files to Hostinger FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./dist/
+          server-dir: /public_html/
