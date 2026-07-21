@@ -23,7 +23,7 @@ jobs:
 
       # 3. Instalar dependencias del proyecto
       - name: Instalar dependencias
-        run: npm ci || npm install
+        run: npm install
 
       # 4. Construir el sitio con Astro
       - name: Construir el sitio estático
