@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { fetchArtworks } from '../lib/google';
+
+const artworks = await fetchArtworks();
+const featuredArtworks = artworks.slice(0, 4); // Muestra las primeras 4
+---
+
+<Layout title="Diana Castro | Artista Contemporánea" description="Explora la obra de Diana Paola Castro Jiménez. Especialista en cianotipia, memoria e identidad.">
+  <section class="h-[80vh] flex items-center justify-center text-center px-4 gsap-reveal">
+    <div class="max-w-3xl">
+      <h1 class="font-serif text-5xl md:text-7xl text-deep-blue mb-6 leading-tight">Materializando el tiempo a través de la luz</h1>
+      <p class="font-sans text-lg text-warm-gray font-light">Cianotipias e intervenciones conceptuales que desafían la inmediatez de la modernidad líquida.</p>
+    </div>
+  </section>
+
+  <section class="max-w-7xl mx-auto px-8 py-20">
+    <h2 class="font-serif text-3xl text-deep-blue mb-12 border-b border-pale-rose pb-4">Obras Destacadas</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+      {featuredArtworks.map((obra) => (
+        <a href={`/obra/${obra.id}`} class="group gsap-reveal">
+          <div class="aspect-[4/5] bg-pale-rose overflow-hidden mb-6">
+            <img src={obra.imageUrl} alt={obra.title} class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" loading="lazy" />
+          </div>
+          <h3 class="font-serif text-2xl text-deep-blue">{obra.title}</h3>
+          <p class="font-sans text-sm mt-2">{obra.technique} — {obra.year}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>
