@@ -40,5 +40,5 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
-          server-dir: ./      # <-- ¡Este es el cambio mágico!
+          server-dir: ./domains/dianacastro.art/public_html/
           state-name: .estado-nuevo-deploy.json
