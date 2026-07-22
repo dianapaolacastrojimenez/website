@@ -1,38 +1,38 @@
-name: Despliegue a Hostinger
+name: Deploy Website to Hostinger
 
 on:
   push:
     branches:
-      - main
-  workflow_dispatch:
+      - main # O la rama que estés utilizando (ej. master)
+  workflow_dispatch: # Permite ejecutar el proceso manualmente desde GitHub
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
-      # 1. Obtener el código fuente
-      - name: Checkout del código
+      # 1. Traer el código del repositorio
+      - name: Obtener el código
         uses: actions/checkout@v4
 
-      # 2. Configurar entorno de Node.js con LTS estable
-      - name: Setup Node.js
+      # 2. Preparar el entorno de Node
+      - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: 20
 
-      # 3. Instalar dependencias del proyecto
+      # 3. Instalar las herramientas (Astro, GSAP, etc.)
       - name: Instalar dependencias
         run: npm install
 
-      # 4. Construir el sitio con Astro
-      - name: Construir el sitio estático
+      # 4. Construir la versión web en la carpeta /dist (INYECTANDO GOOGLE)
+      - name: Construir el sitio web
         run: npm run build
         env:
           GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
 
-# 5. Desplegar los archivos estáticos en Hostinger vía FTP
+      # 5. Enviar los archivos finales a Hostinger
       - name: Subir a Hostinger mediante FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -40,5 +40,5 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
-          server-dir: public_html/
-          dangerous-clean-slate: false          
+          server-dir: ./
+          dangerous-clean-slate: false
