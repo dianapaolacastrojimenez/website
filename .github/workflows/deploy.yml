@@ -41,4 +41,4 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
           server-dir: ./domains/dianacastro.art/public_html/
-          state-name: .estado-nuevo-deploy.json
+          state-name: .estado-exito-deploy.json
