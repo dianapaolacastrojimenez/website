@@ -41,3 +41,4 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
           server-dir: ./      # <-- ¡Este es el cambio mágico!
+          state-name: .estado-nuevo-deploy.json
