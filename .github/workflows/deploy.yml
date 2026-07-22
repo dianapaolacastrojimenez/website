@@ -32,13 +32,12 @@ jobs:
           GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
 
-      # 5. Enviar los archivos finales a Hostinger
+      # 5. Enviar los archivos finales a Hostinger    
       - name: Sincronizar archivos por FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./dist/          # <-- Asegúrese de que termine con /
-          server-dir: ./public_html/  # <-- ¡AQUÍ ESTÁ EL ERROR! Agregue el / al final
-          
+          local-dir: ./dist/
+          server-dir: ./      # <-- ¡Este es el cambio mágico!
