@@ -32,7 +32,7 @@ jobs:
           GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
 
-      # 5. Desplegar los archivos estáticos en Hostinger vía FTP
+# 5. Desplegar los archivos estáticos en Hostinger vía FTP
       - name: Subir a Hostinger mediante FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -41,6 +41,4 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
           server-dir: public_html/
-          dangerous-clean-slate: false
-          server-dir: ./
-          dangerous-clean-slate: false
+          dangerous-clean-slate: false          
