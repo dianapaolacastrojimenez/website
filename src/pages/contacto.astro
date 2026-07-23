@@ -1,24 +1,4 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import { fetchArtworks } from '../lib/google';
-
-// Agregamos un salvavidas: si fetchArtworks falla o devuelve vacío, usamos un arreglo vacío []
-let artworks = [];
-try {
-  const result = await fetchArtworks();
-  // Verificamos que realmente sea una lista antes de asignarla
-  if (Array.isArray(result)) {
-    artworks = result;
-  }
-} catch (error) {
-  console.error("Error al descargar los datos de Google Sheets:", error);
-}
-
-// Ahora esto nunca fallará, incluso si no hay datos
-const featuredArtworks = artworks.slice(0, 22);
----
-
----
 // src/pages/contacto.astro
 // Si estás usando un Layout base, asegúrate de importarlo en la parte superior.
 // import Layout from '../layouts/Layout.astro';
