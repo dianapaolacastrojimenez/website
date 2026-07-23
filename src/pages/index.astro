@@ -34,16 +34,109 @@ const featuredArtworks = artworks.slice(0, 22);
     ) : (
       <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
         {featuredArtworks.map((obra) => (
-          <a href={`/obra/${obra.id}`} class="group gsap-reveal">
-            <div class="aspect-[4/5] bg-pale-rose overflow-hidden mb-6">
+          <!-- Cambiamos la etiqueta <a> por un <div> interactivo -->
+          <div 
+            class="group gsap-reveal cursor-pointer js-lightbox-trigger"
+            data-img={obra.imageUrl}
+            data-title={obra.title}
+            data-desc={`${obra.technique} — ${obra.year}`}
+          >
+            <div class="aspect-[4/5] bg-pale-rose overflow-hidden mb-6 relative">
+              <!-- Pequeño ícono/indicador de que se puede ampliar (opcional pero recomendado) -->
+              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 z-10 flex items-center justify-center">
+                <span class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-3xl drop-shadow-md">+</span>
+              </div>
               <img src={obra.imageUrl} alt={obra.title} class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" loading="lazy" />
             </div>
             <h3 class="font-serif text-2xl text-deep-blue">{obra.title}</h3>
             <p class="font-sans text-sm mt-2">{obra.technique} — {obra.year}</p>
-          </a>
+          </div>
         ))}
       </div>
     )}
   </section>
+
+  <!-- HTML DEL LIGHTBOX -->
+  <div id="lightbox-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/95 opacity-0 pointer-events-none transition-opacity duration-300 p-4 sm:p-8">
+    <!-- Botón de cierre -->
+    <button id="lightbox-close" class="absolute top-6 right-6 text-white text-4xl font-light hover:text-pale-rose focus:outline-none z-50 transition-colors">
+      &times;
+    </button>
+    
+    <!-- Contenedor de la imagen y texto -->
+    <div class="relative max-w-5xl w-full flex flex-col items-center">
+      <img id="lightbox-img" src="" alt="" class="max-h-[75vh] w-auto object-contain shadow-2xl rounded-sm" />
+      <div class="text-white mt-6 text-center max-w-2xl">
+        <h3 id="lightbox-title" class="font-serif text-3xl mb-2"></h3>
+        <p id="lightbox-desc" class="font-sans text-sm text-warm-gray opacity-80"></p>
+      </div>
+    </div>
+  </div>
+
 </Layout>
-<!-- Actualización forzada del FTP -->
+
+<!-- LÓGICA DEL LIGHTBOX -->
+<script>
+  // Esperamos a que el DOM cargue
+  document.addEventListener('DOMContentLoaded', () => {
+    const triggers = document.querySelectorAll('.js-lightbox-trigger');
+    const modal = document.getElementById('lightbox-modal');
+    const modalImg = document.getElementById('lightbox-img');
+    const modalTitle = document.getElementById('lightbox-title');
+    const modalDesc = document.getElementById('lightbox-desc');
+    const closeBtn = document.getElementById('lightbox-close');
+
+    // Función para abrir el modal
+    function openLightbox(imgSrc, title, desc) {
+      // Inyectar datos
+      modalImg.src = imgSrc;
+      modalImg.alt = title;
+      modalTitle.textContent = title;
+      modalDesc.textContent = desc;
+
+      // Mostrar modal
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      // Evitar que el fondo siga haciendo scroll
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Función para cerrar el modal
+    function closeLightbox() {
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      // Restaurar el scroll
+      document.body.style.overflow = '';
+      
+      // Limpiar el src después de la transición para evitar parpadeos
+      setTimeout(() => {
+        modalImg.src = '';
+      }, 300);
+    }
+
+    // Asignar eventos de clic a cada obra
+    triggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const imgSrc = trigger.getAttribute('data-img');
+        const title = trigger.getAttribute('data-title');
+        const desc = trigger.getAttribute('data-desc');
+        openLightbox(imgSrc, title, desc);
+      });
+    });
+
+    // Cerrar con el botón
+    closeBtn.addEventListener('click', closeLightbox);
+
+    // Cerrar al hacer clic fuera de la imagen (en el fondo negro)
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeLightbox();
+      }
+    });
+
+    // Cerrar al presionar la tecla Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeLightbox();
+      }
+    });
+  });
+</script>
