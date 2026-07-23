@@ -1,0 +1,172 @@
+---
+// src/pages/contacto.astro
+// Si estás usando un Layout base, asegúrate de importarlo en la parte superior.
+// import Layout from '../layouts/Layout.astro';
+---
+
+<section class="contacto-contenedor">
+  
+  <!-- 1. Sección de Instagram (El día a día de la artista) -->
+  <div class="instagram-invitation">
+    <h3>Acompaña el proceso creativo</h3>
+    <p>
+      Si deseas conocer más sobre el día a día de la artista, explorar vistazos de su estudio y seguir de cerca su proceso creativo, te invitamos a ingresar a su espacio en Instagram:
+    </p>
+    <a 
+      href="https://www.instagram.com/artdcastro/" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      class="btn-instagram"
+    >
+      Visitar @artdcastro en Instagram
+    </a>
+  </div>
+
+  <hr class="divisor" />
+
+  <!-- 2. Formulario de Contacto -->
+  <div class="formulario-wrapper">
+    <h3>Envía un mensaje a Diana</h3>
+    <p class="form-descripcion">Completa el siguiente formulario y Diana se pondrá en contacto contigo a la brevedad posible.</p>
+
+    <!-- IMPORTANTE: Reemplaza "TU_CODIGO_AQUI" con el código que te dio Formspree -->
+    <form action="https://formspree.io/f/TU_CODIGO_AQUI" method="POST" class="formulario-contacto">
+      
+      <div class="grupo-input">
+        <label for="nombre">Nombre completo:</label>
+        <input type="text" id="nombre" name="nombre" required placeholder="Ej. Juan Pérez" />
+      </div>
+
+      <div class="grupo-input">
+        <label for="email">Tu correo electrónico:</label>
+        <input type="email" id="email" name="email" required placeholder="ejemplo@correo.com" />
+      </div>
+
+      <div class="grupo-input">
+        <label for="mensaje">Mensaje:</label>
+        <textarea id="mensaje" name="mensaje" rows="5" required placeholder="Escribe tu mensaje aquí..."></textarea>
+      </div>
+
+      <!-- Este campo oculto de Formspree evita el spam automático (Honeypot) -->
+      <input type="text" name="_gotcha" style="display:none" />
+
+      <button type="submit" class="btn-enviar">Enviar Mensaje</button>
+    </form>
+  </div>
+
+</section>
+
+<!-- 3. Estilos nativos de Astro -->
+<style>
+  .contacto-contenedor {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  /* Estilos Instagram */
+  .instagram-invitation {
+    background-color: #fafafa;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .instagram-invitation h3 {
+    margin-top: 0;
+    color: #333;
+  }
+
+  .instagram-invitation p {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .btn-instagram {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: #E1306C;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-instagram:hover {
+    background-color: #c1255b;
+  }
+
+  .divisor {
+    border: 0;
+    height: 1px;
+    background-color: #eaeaea;
+    margin: 3rem 0;
+  }
+
+  /* Estilos Formulario */
+  .formulario-wrapper h3 {
+    margin-top: 0;
+    color: #333;
+  }
+
+  .form-descripcion {
+    color: #555;
+    margin-bottom: 2rem;
+  }
+
+  .formulario-contacto {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .grupo-input {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .grupo-input label {
+    font-weight: 600;
+    color: #444;
+    font-size: 0.9rem;
+  }
+
+  .grupo-input input,
+  .grupo-input textarea {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+  }
+
+  .grupo-input input:focus,
+  .grupo-input textarea:focus {
+    outline: none;
+    border-color: #333;
+  }
+
+  .btn-enviar {
+    padding: 1rem;
+    background-color: #111;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+  }
+
+  .btn-enviar:hover {
+    background-color: #333;
+  }
+</style>
