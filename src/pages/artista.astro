@@ -1,14 +1,163 @@
-<div class="instagram-invitation" style="margin: 2rem 0; padding: 1.5rem; background-color: #f9f9f9; border-radius: 8px; text-align: center;">
-  <h3 style="margin-bottom: 1rem;">Acompaña el proceso creativo</h3>
-  <p style="margin-bottom: 1.5rem; line-height: 1.6;">
-    Si deseas conocer más sobre el día a día de la artista, explorar vistazos de su estudio y seguir de cerca su proceso creativo, te invitamos a ingresar a su espacio en Instagram:
-  </p>
-  <a 
-    href="https://www.instagram.com/artdcastro/" 
-    target="_blank" 
-    rel="noopener noreferrer"
-    style="display: inline-block; padding: 10px 20px; background-color: #E1306C; color: white; text-decoration: none; font-weight: bold; border-radius: 5px;"
-  >
-    Visitar @artdcastro en Instagram
-  </a>
-</div>
+---
+// src/pages/artista.astro
+// Importa tu Layout principal si tienes uno
+// import Layout from '../layouts/Layout.astro';
+---
+
+<section class="artista-contenedor">
+  
+  <!-- 1. Biografía de la Artista -->
+  <div class="biografia-seccion">
+    <h1>Diana Castro</h1>
+    <h2 class="subtitulo">Artista Visual | Medellín, Colombia</h2>
+    
+    <div class="texto-biografia">
+      <p>
+        Diana Castro es una artista visual cuyo trabajo trasciende la técnica y el concepto, creando una obra profundamente personal, pero universalmente resonante[cite: 1]. Durante más de doce años, Castro fue ingeniera de sistemas en el sector bancario, donde perfeccionó su capacidad analítica y su habilidad para trabajar con precisión[cite: 1]. Sin embargo, algo más profundo y visceral le llamaba; un día decidió dejar atrás lo conocido, dar un salto audaz hacia lo incierto y seguir su verdadera pasión, el arte[cite: 1].
+      </p>
+      <p>
+        Desde su infancia, Diana cultivó una fascinación por las artes, pero fue en su transición hacia la creación artística profesional donde encontró su voz más auténtica[cite: 1]. Fue entonces cuando comenzó a explorar técnicas tradicionales y contemporáneas, fusionando su rigor técnico con la libertad creativa que el arte le ofrecía[cite: 1]. Esta convergencia de lógica y emoción ha dado forma a un estilo único, caracterizado por la introspección y la exploración de temas tan vastos como el tiempo, la memoria y la transitoriedad de la existencia humana[cite: 1].
+      </p>
+      <p>
+        En los últimos años, Diana se ha sumergido en una profunda investigación sobre el concepto del tiempo a través de la técnica de la cianotipia, una forma de impresión fotográfica que utiliza la luz solar para revelar imágenes[cite: 1]. A través de este proceso, ella captura momentos efímeros, creando obras que, como el tiempo mismo, son irrepetibles[cite: 1]. La cianotipia se ha convertido en una herramienta perfecta para expresar su visión sobre la fugacidad, pero también sobre la capacidad del arte para preservar lo intangible[cite: 1].
+      </p>
+      <p>
+        Hoy, la obra de Diana Castro sigue evolucionando, con una exploración cada vez más profunda del tiempo, la memoria, lo femenino y la relación entre la naturaleza y el arte[cite: 1]. Su investigación continúa ampliando los límites de la cianotipia y abriendo nuevas posibilidades de creación[cite: 1].
+      </p>
+    </div>
+  </div>
+
+  <hr class="divisor" />
+
+  <!-- 2. Descarga del Catálogo -->
+  <div class="catalogo-seccion">
+    <h3>Proyectos y Catálogo 2026</h3>
+    <p>Explora a fondo las series "Homenaje en Azul" y "Tiempo al Tiempo", incluyendo especificaciones técnicas y conceptuales de cada obra.</p>
+    <a 
+      href="/CATALOGO 2026.pdf" 
+      download="Diana_Castro_Catalogo_2026.pdf"
+      class="btn-descarga"
+    >
+      Descargar Catálogo 2026 (PDF)
+    </a>
+  </div>
+
+  <hr class="divisor" />
+
+  <!-- 3. Sección de Instagram (Texto corregido) -->
+  <div class="instagram-invitation">
+    <h3>Acompaña el proceso creativo</h3>
+    <p>
+      Si deseas conocer más sobre el día a día de la artista, explorar vistazos de su estudio y seguir de cerca su proceso creativo, te invitamos a ingresar a su espacio en Instagram:
+    </p>
+    <a 
+      href="https://www.instagram.com/artdcastro/" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      class="btn-instagram"
+    >
+      Visitar @artdcastro en Instagram
+    </a>
+  </div>
+
+</section>
+
+<!-- Estilos nativos de Astro -->
+<style>
+  .artista-contenedor {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 3rem 1rem;
+    font-family: system-ui, -apple-system, sans-serif;
+    color: #333;
+  }
+
+  .biografia-seccion h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.2rem;
+    color: #111;
+  }
+
+  .subtitulo {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #666;
+    margin-bottom: 2rem;
+  }
+
+  .texto-biografia p {
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    color: #444;
+    text-align: justify;
+  }
+
+  .divisor {
+    border: 0;
+    height: 1px;
+    background-color: #eaeaea;
+    margin: 3rem 0;
+  }
+
+  /* Estilos Catálogo */
+  .catalogo-seccion {
+    text-align: center;
+    padding: 2rem;
+    background-color: #f4f8fa; /* Un tono azul muy sutil en honor a la cianotipia */
+    border-radius: 8px;
+  }
+
+  .catalogo-seccion h3 {
+    margin-top: 0;
+  }
+
+  .catalogo-seccion p {
+    margin-bottom: 1.5rem;
+    color: #555;
+  }
+
+  .btn-descarga {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    background-color: #2c3e50; /* Azul oscuro elegante */
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-descarga:hover {
+    background-color: #1a252f;
+  }
+
+  /* Estilos Instagram */
+  .instagram-invitation {
+    text-align: center;
+  }
+
+  .instagram-invitation h3 {
+    margin-top: 0;
+  }
+
+  .instagram-invitation p {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .btn-instagram {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: #E1306C;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-instagram:hover {
+    background-color: #c1255b;
+  }
+</style>
