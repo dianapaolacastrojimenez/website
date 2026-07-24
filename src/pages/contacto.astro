@@ -30,7 +30,7 @@ import Layout from '../layouts/Layout.astro';
     <p class="form-descripcion">Completa el siguiente formulario y Diana se pondr&aacute; en contacto contigo a la brevedad posible.</p>
 
     <!-- IMPORTANTE: Reemplaza "TU_CODIGO_AQUI" con tu identificador real -->
-    <form action="https://formspree.io/f/mdaqwewd" method="POST" class="formulario-contacto">
+    <form action="https://formspree.io/f/mdaqwewd" method="POST" class="formulario-contacto" id="form-contacto">
       
       <div class="grupo-input">
         <label for="nombre">Nombre completo:</label>
@@ -40,6 +40,19 @@ import Layout from '../layouts/Layout.astro';
       <div class="grupo-input">
         <label for="email">Tu correo electr&oacute;nico:</label>
         <input type="email" id="email" name="email" required placeholder="Ej. violeta@correo.com" />
+      </div>
+
+      <!-- Nuevo Campo: Confirmación de correo -->
+      <div class="grupo-input">
+        <label for="email_confirmar">Confirma tu correo electr&oacute;nico:</label>
+        <input type="email" id="email_confirmar" name="email_confirmar" required placeholder="Vuelve a escribir tu correo" />
+        <span id="error-email" class="mensaje-error">Los correos no coinciden. Por favor, verifica.</span>
+      </div>
+
+      <!-- Nuevo Campo: Teléfono (Opcional) -->
+      <div class="grupo-input">
+        <label for="telefono">Tel&eacute;fono de contacto (Opcional):</label>
+        <input type="tel" id="telefono" name="telefono" placeholder="Ej. +57 300 000 0000" />
       </div>
 
       <div class="grupo-input">
@@ -55,6 +68,8 @@ import Layout from '../layouts/Layout.astro';
   </div>
 
 </section>
+
+</Layout>
 
 <!-- Estilos nativos de Astro -->
 <style>
@@ -153,6 +168,15 @@ import Layout from '../layouts/Layout.astro';
     border-color: #333;
   }
 
+  /* Estilo para el mensaje de error de validación */
+  .mensaje-error {
+    display: none;
+    color: #E1306C;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+    font-weight: 500;
+  }
+
   .btn-enviar {
     padding: 1rem;
     background-color: #111;
@@ -170,3 +194,36 @@ import Layout from '../layouts/Layout.astro';
     background-color: #333;
   }
 </style>
+
+<!-- Lógica de validación de correos -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('form-contacto');
+    const email = document.getElementById('email');
+    const emailConfirmar = document.getElementById('email_confirmar');
+    const errorMensaje = document.getElementById('error-email');
+
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        // Verificar si los correos son diferentes
+        if (email.value !== emailConfirmar.value) {
+          e.preventDefault(); // Detenemos el envío del formulario
+          errorMensaje.style.display = 'block'; // Mostramos la alerta
+          emailConfirmar.style.borderColor = '#E1306C'; // Resaltamos el borde en rojo
+          emailConfirmar.focus(); // Llevamos el cursor al campo con error
+        }
+      });
+
+      // Ocultar la alerta de error mientras el usuario corrige el texto
+      emailConfirmar.addEventListener('input', () => {
+        errorMensaje.style.display = 'none';
+        emailConfirmar.style.borderColor = '#ccc';
+      });
+      
+      email.addEventListener('input', () => {
+        errorMensaje.style.display = 'none';
+        emailConfirmar.style.borderColor = '#ccc';
+      });
+    }
+  });
+</script>
