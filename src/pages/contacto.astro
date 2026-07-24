@@ -29,7 +29,6 @@ import Layout from '../layouts/Layout.astro';
     <h3>Env&iacute;a un mensaje a Diana</h3>
     <p class="form-descripcion">Completa el siguiente formulario y Diana se pondr&aacute; en contacto contigo a la brevedad posible.</p>
 
-    <!-- IMPORTANTE: Reemplaza "TU_CODIGO_AQUI" con tu identificador real -->
     <form action="https://formspree.io/f/mdaqwewd" method="POST" class="formulario-contacto" id="form-contacto">
       
       <div class="grupo-input">
@@ -42,14 +41,14 @@ import Layout from '../layouts/Layout.astro';
         <input type="email" id="email" name="email" required placeholder="Ej. violeta@correo.com" />
       </div>
 
-      <!-- Nuevo Campo: Confirmación de correo -->
+      <!-- Campo: Confirmación de correo -->
       <div class="grupo-input">
         <label for="email_confirmar">Confirma tu correo electr&oacute;nico:</label>
-        <input type="email" id="email_confirmar" name="email_confirmar" required placeholder="Vuelve a escribir tu correo" />
+        <input type="email" id="email_confirmar" name="email_confirmar" required placeholder="Vuelve a escribir tu correo" autocomplete="off" />
         <span id="error-email" class="mensaje-error">Los correos no coinciden. Por favor, verifica.</span>
       </div>
 
-      <!-- Nuevo Campo: Teléfono (Opcional) -->
+      <!-- Campo: Teléfono (Opcional) -->
       <div class="grupo-input">
         <label for="telefono">Tel&eacute;fono de contacto (Opcional):</label>
         <input type="tel" id="telefono" name="telefono" placeholder="Ej. +57 300 000 0000" />
@@ -80,7 +79,6 @@ import Layout from '../layouts/Layout.astro';
     font-family: system-ui, -apple-system, sans-serif;
   }
 
-  /* Estilos Instagram */
   .instagram-invitation {
     background-color: #fafafa;
     border: 1px solid #eaeaea;
@@ -123,7 +121,6 @@ import Layout from '../layouts/Layout.astro';
     margin: 3rem 0;
   }
 
-  /* Estilos Formulario */
   .formulario-wrapper h3 {
     margin-top: 0;
     color: #333;
@@ -168,7 +165,6 @@ import Layout from '../layouts/Layout.astro';
     border-color: #333;
   }
 
-  /* Estilo para el mensaje de error de validación */
   .mensaje-error {
     display: none;
     color: #E1306C;
@@ -195,7 +191,7 @@ import Layout from '../layouts/Layout.astro';
   }
 </style>
 
-<!-- Lógica de validación de correos -->
+<!-- Lógica de validación avanzada de correos -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('form-contacto');
@@ -203,26 +199,50 @@ import Layout from '../layouts/Layout.astro';
     const emailConfirmar = document.getElementById('email_confirmar');
     const errorMensaje = document.getElementById('error-email');
 
+    // Función que compara ambos campos
+    const validarCorreos = () => {
+      // Convertimos a minúsculas y quitamos espacios accidentales
+      const correo1 = email.value.trim().toLowerCase();
+      const correo2 = emailConfirmar.value.trim().toLowerCase();
+
+      // Solo mostramos el error si el segundo campo no está vacío y no coinciden
+      if (correo1 !== correo2 && correo2 !== '') {
+        errorMensaje.style.display = 'block';
+        emailConfirmar.style.borderColor = '#E1306C';
+        return false;
+      } else {
+        errorMensaje.style.display = 'none';
+        emailConfirmar.style.borderColor = '#ccc';
+        return true;
+      }
+    };
+
     if (form) {
+      // 1. Validar justo en el momento de hacer clic en "Enviar"
       form.addEventListener('submit', (e) => {
-        // Verificar si los correos son diferentes
-        if (email.value !== emailConfirmar.value) {
-          e.preventDefault(); // Detenemos el envío del formulario
-          errorMensaje.style.display = 'block'; // Mostramos la alerta
-          emailConfirmar.style.borderColor = '#E1306C'; // Resaltamos el borde en rojo
-          emailConfirmar.focus(); // Llevamos el cursor al campo con error
+        const correo1 = email.value.trim().toLowerCase();
+        const correo2 = emailConfirmar.value.trim().toLowerCase();
+        
+        if (correo1 !== correo2) {
+          e.preventDefault(); // Bloquea el envío definitivo
+          errorMensaje.style.display = 'block';
+          emailConfirmar.style.borderColor = '#E1306C';
+          emailConfirmar.focus(); // Lleva el cursor al error
         }
       });
 
-      // Ocultar la alerta de error mientras el usuario corrige el texto
-      emailConfirmar.addEventListener('input', () => {
-        errorMensaje.style.display = 'none';
-        emailConfirmar.style.borderColor = '#ccc';
-      });
-      
+      // 2. Validar en tiempo real mientras el usuario escribe
+      emailConfirmar.addEventListener('input', validarCorreos);
       email.addEventListener('input', () => {
-        errorMensaje.style.display = 'none';
-        emailConfirmar.style.borderColor = '#ccc';
+        if (emailConfirmar.value !== '') {
+          validarCorreos();
+        }
+      });
+
+      // 3. Bloquear la función de "Pegar" en el campo de confirmación
+      emailConfirmar.addEventListener('paste', (e) => {
+        e.preventDefault();
+        alert('Para mayor seguridad, por favor teclea tu correo manualmente.');
       });
     }
   });
