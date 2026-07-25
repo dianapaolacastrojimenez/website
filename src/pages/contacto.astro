@@ -6,23 +6,23 @@ import Layout from '../layouts/Layout.astro';
 
 <div class="contacto-editorial-wrapper">
   
-  <!-- Panel Izquierdo: Visual y Trascendente -->
+  <!-- Panel Izquierdo: Exhibición de la Obra (Muro de Galería) -->
   <aside class="panel-arte">
-    <div class="imagen-fondo">
-      <img src="/artista2.JPG" alt="Diana Castro - Retrato Artístico" loading="lazy" />
-      <div class="overlay-gradiente"></div>
-    </div>
-    
-    <div class="mensaje-trascendente">
-      <h2>El arte es un puente</h2>
-      <p>Cada obra es el inicio de un diálogo sobre el tiempo, la luz y la memoria. Escríbeme para consultas sobre adquisiciones, exposiciones o colaboraciones.</p>
+    <div class="exhibicion-obra">
+      <img src="/horizontal1.jpg" alt="Composición artística en cianotipia por Diana Castro" loading="lazy" />
     </div>
   </aside>
 
-  <!-- Panel Derecho: Formulario e Interacción -->
+  <!-- Panel Derecho: Interacción y Diálogo -->
   <main class="panel-formulario">
     <div class="contenido-derecho">
       
+      <!-- Mensaje Trascendente (Movido arriba del formulario) -->
+      <div class="mensaje-intro">
+        <h2>El arte es un puente</h2>
+        <p>Cada obra es el inicio de un diálogo sobre el tiempo, la luz y la memoria. Escríbeme para consultas sobre adquisiciones, exposiciones o colaboraciones.</p>
+      </div>
+
       <!-- 1. Sección de Instagram -->
       <div class="instagram-invitation">
         <h3>Acompa&ntilde;a el proceso creativo</h3>
@@ -104,16 +104,15 @@ import Layout from '../layouts/Layout.astro';
     }
   }
 
-  /* --- Panel de Arte (Imagen) --- */
+  /* --- Panel de Arte (Muro de Galería) --- */
   .panel-arte {
-    position: relative;
     width: 100%;
-    min-height: 400px;
+    min-height: 500px;
+    background-color: #f7f7f7; /* Un gris muy suave, clásico de museos */
     display: flex;
-    align-items: flex-end;
+    align-items: center;
+    justify-content: center;
     padding: 3rem 2rem;
-    color: white;
-    overflow: hidden;
   }
 
   @media (min-width: 900px) {
@@ -126,53 +125,26 @@ import Layout from '../layouts/Layout.astro';
     }
   }
 
-  .imagen-fondo {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -2;
+  .exhibicion-obra {
+    position: relative;
+    max-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  .imagen-fondo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    filter: contrast(1.1) brightness(0.9);
+  .exhibicion-obra img {
+    max-width: 100%;
+    max-height: 85vh; /* Evita que la obra se corte verticalmente en pantallas estándar */
+    object-fit: contain;
+    /* Añadimos un efecto de enmarcado sutil */
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 10px rgba(0,0,0,0.05);
+    background-color: #fff;
+    transition: transform 0.5s ease;
   }
 
-  /* Gradiente para que el texto sea legible y elegante */
-  .overlay-gradiente {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0) 100%);
-    z-index: -1;
-  }
-
-  .mensaje-trascendente {
-    max-width: 400px;
-    z-index: 1;
-  }
-
-  .mensaje-trascendente h2 {
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    font-weight: 400;
-    letter-spacing: 1px;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-  }
-
-  .mensaje-trascendente p {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    font-weight: 300;
-    opacity: 0.9;
+  .exhibicion-obra img:hover {
+    transform: scale(1.02);
   }
 
   /* --- Panel del Formulario --- */
@@ -188,12 +160,35 @@ import Layout from '../layouts/Layout.astro';
     .panel-formulario {
       width: 55%;
       padding: 5rem 4rem;
+      /* Permite scroll independiente si el formulario es muy largo */
+      overflow-y: auto;
     }
   }
 
   .contenido-derecho {
     width: 100%;
     max-width: 600px;
+  }
+
+  /* --- Nuevo Mensaje Introductorio --- */
+  .mensaje-intro {
+    margin-bottom: 3.5rem;
+  }
+
+  .mensaje-intro h2 {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 400;
+    color: #111;
+    letter-spacing: 0.5px;
+  }
+
+  .mensaje-intro p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    font-weight: 300;
+    color: #555;
   }
 
   /* Estilos Instagram */
