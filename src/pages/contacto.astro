@@ -6,7 +6,7 @@ import Layout from '../layouts/Layout.astro';
 
 <div class="contacto-editorial-wrapper">
   
-  <!-- Panel Izquierdo: Exhibición de la Obra (Muro de Galería) -->
+  <!-- Panel Izquierdo: Exhibición de la Obra -->
   <aside class="panel-arte">
     <div class="exhibicion-obra">
       <img src="/horizontal1.jpg" alt="Composición artística en cianotipia por Diana Castro" loading="lazy" />
@@ -17,7 +17,7 @@ import Layout from '../layouts/Layout.astro';
   <main class="panel-formulario">
     <div class="contenido-derecho">
       
-      <!-- Mensaje Trascendente (Movido arriba del formulario) -->
+      <!-- Mensaje Trascendente -->
       <div class="mensaje-intro">
         <h2>El arte es un puente</h2>
         <p>Cada obra es el inicio de un diálogo sobre el tiempo, la luz y la memoria. Escríbeme para consultas sobre adquisiciones, exposiciones o colaboraciones.</p>
@@ -90,12 +90,14 @@ import Layout from '../layouts/Layout.astro';
 
 <!-- Estilos nativos de Astro -->
 <style>
-  /* --- Diseño Editorial Split-Screen --- */
+  /* --- Diseño Editorial Optimizado --- */
   .contacto-editorial-wrapper {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     font-family: system-ui, -apple-system, sans-serif;
+    max-width: 1440px; /* Evita que se separen demasiado en pantallas Ultra-Wide */
+    margin: 0 auto;
   }
 
   @media (min-width: 900px) {
@@ -104,15 +106,14 @@ import Layout from '../layouts/Layout.astro';
     }
   }
 
-  /* --- Panel de Arte (Muro de Galería) --- */
+  /* --- Panel de Arte --- */
   .panel-arte {
     width: 100%;
-    min-height: 500px;
-    background-color: #f7f7f7; /* Un gris muy suave, clásico de museos */
+    background-color: #f7f7f7;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 3rem 2rem;
+    padding: 2rem 1.5rem; /* Menos espacio inútil en móviles */
   }
 
   @media (min-width: 900px) {
@@ -121,26 +122,31 @@ import Layout from '../layouts/Layout.astro';
       position: sticky;
       top: 0;
       height: 100vh;
-      padding: 4rem;
+      padding: 3rem;
     }
   }
 
   .exhibicion-obra {
     position: relative;
-    max-height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
   }
 
   .exhibicion-obra img {
     max-width: 100%;
-    max-height: 85vh; /* Evita que la obra se corte verticalmente en pantallas estándar */
+    max-height: 45vh; /* En móvil, la imagen no empuja tanto el contenido hacia abajo */
     object-fit: contain;
-    /* Añadimos un efecto de enmarcado sutil */
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 10px rgba(0,0,0,0.05);
+    box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.2);
     background-color: #fff;
     transition: transform 0.5s ease;
+  }
+
+  @media (min-width: 900px) {
+    .exhibicion-obra img {
+      max-height: 85vh; /* Retoma su tamaño grande en escritorio */
+    }
   }
 
   .exhibicion-obra img:hover {
@@ -152,51 +158,55 @@ import Layout from '../layouts/Layout.astro';
     width: 100%;
     background-color: #ffffff;
     display: flex;
-    justify-content: center;
-    padding: 4rem 1rem;
+    justify-content: center; /* Centrado en móviles */
+    padding: 3rem 1.5rem;
   }
 
   @media (min-width: 900px) {
     .panel-formulario {
       width: 55%;
-      padding: 5rem 4rem;
-      /* Permite scroll independiente si el formulario es muy largo */
+      /* Alineamos hacia la izquierda (hacia la imagen) para cerrar el hueco */
+      justify-content: flex-start; 
+      padding: 4rem 4rem 4rem 3rem;
       overflow-y: auto;
     }
   }
 
   .contenido-derecho {
     width: 100%;
-    max-width: 600px;
+    max-width: 550px; /* Limita el ancho del texto para mejor lectura */
   }
 
-  /* --- Nuevo Mensaje Introductorio --- */
+  /* --- Mensaje Introductorio --- */
   .mensaje-intro {
-    margin-bottom: 3.5rem;
+    margin-bottom: 3rem;
   }
 
   .mensaje-intro h2 {
     font-family: 'Times New Roman', Times, serif;
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     margin-bottom: 1rem;
     font-weight: 400;
     color: #111;
-    letter-spacing: 0.5px;
   }
 
   .mensaje-intro p {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    font-weight: 300;
+    font-size: 1.05rem;
+    line-height: 1.6;
     color: #555;
   }
 
-  /* Estilos Instagram */
+  @media (min-width: 900px) {
+    .mensaje-intro h2 { font-size: 2.5rem; }
+    .mensaje-intro p { font-size: 1.1rem; }
+  }
+
+  /* --- Estilos Instagram --- */
   .instagram-invitation {
     background-color: #fcfcfc;
     border: 1px solid #eaeaea;
-    border-radius: 2px;
-    padding: 2.5rem;
+    border-radius: 4px;
+    padding: 2rem;
     text-align: center;
     margin-bottom: 1rem;
   }
@@ -205,18 +215,19 @@ import Layout from '../layouts/Layout.astro';
     margin-top: 0;
     color: #111;
     font-family: 'Times New Roman', Times, serif;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
 
   .instagram-invitation p {
     color: #666;
-    line-height: 1.6;
-    margin-bottom: 2rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
   }
 
   .btn-instagram {
     display: inline-block;
-    padding: 0.8rem 2rem;
+    padding: 0.75rem 1.8rem;
     background-color: transparent;
     color: #E1306C;
     border: 1px solid #E1306C;
@@ -226,7 +237,7 @@ import Layout from '../layouts/Layout.astro';
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 1px;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 
   .btn-instagram:hover {
@@ -238,27 +249,27 @@ import Layout from '../layouts/Layout.astro';
     border: 0;
     height: 1px;
     background-color: #eaeaea;
-    margin: 3rem 0;
+    margin: 2.5rem 0;
   }
 
-  /* Estilos Formulario */
+  /* --- Estilos Formulario --- */
   .formulario-wrapper h3 {
     margin-top: 0;
     color: #111;
     font-family: 'Times New Roman', Times, serif;
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 
   .form-descripcion {
     color: #666;
-    margin-bottom: 2.5rem;
-    font-size: 1rem;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
   }
 
   .formulario-contacto {
     display: flex;
     flex-direction: column;
-    gap: 1.8rem;
+    gap: 1.5rem;
   }
 
   .grupo-input {
@@ -270,16 +281,16 @@ import Layout from '../layouts/Layout.astro';
   .grupo-input label {
     font-weight: 500;
     color: #333;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
 
   .grupo-input input,
   .grupo-input textarea {
-    padding: 1rem;
+    padding: 0.9rem;
     border: 1px solid #ddd;
-    border-radius: 2px;
+    border-radius: 4px;
     font-size: 1rem;
     font-family: inherit;
     transition: all 0.3s ease;
@@ -307,14 +318,14 @@ import Layout from '../layouts/Layout.astro';
     background-color: #111;
     color: white;
     border: none;
-    border-radius: 2px;
-    font-size: 1rem;
+    border-radius: 4px;
+    font-size: 0.95rem;
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
+    letter-spacing: 1px;
   }
 
   .btn-enviar:hover {
@@ -322,7 +333,7 @@ import Layout from '../layouts/Layout.astro';
   }
 </style>
 
-<!-- Lógica de validación avanzada de correos (Intacta) -->
+<!-- Lógica de validación avanzada de correos -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('form-contacto');
