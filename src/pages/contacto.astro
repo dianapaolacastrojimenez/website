@@ -2,116 +2,241 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Diana Castro | Artista Contemporánea" description="Explora la obra de Diana Paola Castro Jiménez. Especialista en cianotipia, memoria e identidad.">
+<Layout title="Diana Castro | Contacto y Estudio" description="Conecta con la artista visual Diana Paola Castro. Adquisición de obras, comisiones y diálogo sobre arte.">
 
-<section class="contacto-contenedor">
+<div class="contacto-editorial-wrapper">
   
-  <!-- 1. Sección de Instagram -->
-  <div class="instagram-invitation">
-    <h3>Acompa&ntilde;a el proceso creativo</h3>
-    <p>
-      Si deseas conocer m&aacute;s sobre el d&iacute;a a d&iacute;a de la artista, explorar vistazos de su estudio y seguir de cerca su proceso creativo, te invitamos a ingresar a su espacio en Instagram:
-    </p>
-    <a 
-      href="https://www.instagram.com/artdcastro/" 
-      target="_blank" 
-      rel="noopener noreferrer"
-      class="btn-instagram"
-    >
-      Visitar @artdcastro en Instagram
-    </a>
-  </div>
+  <!-- Panel Izquierdo: Visual y Trascendente -->
+  <aside class="panel-arte">
+    <div class="imagen-fondo">
+      <img src="/artista2.JPG" alt="Diana Castro - Retrato Artístico" loading="lazy" />
+      <div class="overlay-gradiente"></div>
+    </div>
+    
+    <div class="mensaje-trascendente">
+      <h2>El arte es un puente</h2>
+      <p>Cada obra es el inicio de un diálogo sobre el tiempo, la luz y la memoria. Escríbeme para consultas sobre adquisiciones, exposiciones o colaboraciones.</p>
+    </div>
+  </aside>
 
-  <hr class="divisor" />
-
-  <!-- 2. Formulario de Contacto -->
-  <div class="formulario-wrapper">
-    <h3>Env&iacute;a un mensaje a Diana</h3>
-    <p class="form-descripcion">Completa el siguiente formulario y Diana se pondr&aacute; en contacto contigo a la brevedad posible.</p>
-
-    <form action="https://formspree.io/f/mdaqwewd" method="POST" class="formulario-contacto" id="form-contacto">
+  <!-- Panel Derecho: Formulario e Interacción -->
+  <main class="panel-formulario">
+    <div class="contenido-derecho">
       
-      <div class="grupo-input">
-        <label for="nombre">Nombre completo:</label>
-        <input type="text" id="nombre" name="nombre" required placeholder="Ej. Emilio Andres" />
+      <!-- 1. Sección de Instagram -->
+      <div class="instagram-invitation">
+        <h3>Acompa&ntilde;a el proceso creativo</h3>
+        <p>Explora vistazos exclusivos de mi estudio y sigue la evolución de mis series en tiempo real:</p>
+        <a 
+          href="https://www.instagram.com/artdcastro/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="btn-instagram"
+        >
+          Visitar @artdcastro
+        </a>
       </div>
 
-      <div class="grupo-input">
-        <label for="email">Tu correo electr&oacute;nico:</label>
-        <input type="email" id="email" name="email" required placeholder="Ej. violeta@correo.com" />
+      <hr class="divisor" />
+
+      <!-- 2. Formulario de Contacto -->
+      <div class="formulario-wrapper">
+        <h3>Iniciemos una conversaci&oacute;n</h3>
+        <p class="form-descripcion">Completa los detalles a continuaci&oacute;n y me pondr&eacute; en contacto contigo a la brevedad posible.</p>
+
+        <form action="https://formspree.io/f/mdaqwewd" method="POST" class="formulario-contacto" id="form-contacto">
+          
+          <div class="grupo-input">
+            <label for="nombre">Nombre completo:</label>
+            <input type="text" id="nombre" name="nombre" required placeholder="Ej. Emilio Andres" />
+          </div>
+
+          <div class="grupo-input">
+            <label for="email">Tu correo electr&oacute;nico:</label>
+            <input type="email" id="email" name="email" required placeholder="Ej. violeta@correo.com" />
+          </div>
+
+          <!-- Campo: Confirmación de correo -->
+          <div class="grupo-input">
+            <label for="email_confirmar">Confirma tu correo electr&oacute;nico:</label>
+            <input type="email" id="email_confirmar" name="email_confirmar" required placeholder="Vuelve a escribir tu correo" autocomplete="off" />
+            <span id="error-email" class="mensaje-error">Los correos no coinciden. Por favor, verifica.</span>
+          </div>
+
+          <!-- Campo: Teléfono (Opcional) -->
+          <div class="grupo-input">
+            <label for="telefono">Tel&eacute;fono de contacto (Opcional):</label>
+            <input type="tel" id="telefono" name="telefono" placeholder="Ej. +57 300 000 0000" />
+          </div>
+
+          <div class="grupo-input">
+            <label for="mensaje">Mensaje:</label>
+            <textarea id="mensaje" name="mensaje" rows="5" required placeholder="Escribe tu mensaje aqu&iacute;..."></textarea>
+          </div>
+
+          <!-- Campo oculto para evitar spam -->
+          <input type="text" name="_gotcha" style="display:none" />
+
+          <button type="submit" class="btn-enviar">Enviar Mensaje</button>
+        </form>
       </div>
 
-      <!-- Campo: Confirmación de correo -->
-      <div class="grupo-input">
-        <label for="email_confirmar">Confirma tu correo electr&oacute;nico:</label>
-        <input type="email" id="email_confirmar" name="email_confirmar" required placeholder="Vuelve a escribir tu correo" autocomplete="off" />
-        <span id="error-email" class="mensaje-error">Los correos no coinciden. Por favor, verifica.</span>
-      </div>
+    </div>
+  </main>
 
-      <!-- Campo: Teléfono (Opcional) -->
-      <div class="grupo-input">
-        <label for="telefono">Tel&eacute;fono de contacto (Opcional):</label>
-        <input type="tel" id="telefono" name="telefono" placeholder="Ej. +57 300 000 0000" />
-      </div>
-
-      <div class="grupo-input">
-        <label for="mensaje">Mensaje:</label>
-        <textarea id="mensaje" name="mensaje" rows="5" required placeholder="Escribe tu mensaje aqu&iacute;..."></textarea>
-      </div>
-
-      <!-- Campo oculto para evitar spam -->
-      <input type="text" name="_gotcha" style="display:none" />
-
-      <button type="submit" class="btn-enviar">Enviar Mensaje</button>
-    </form>
-  </div>
-
-</section>
+</div>
 
 </Layout>
 
 <!-- Estilos nativos de Astro -->
 <style>
-  .contacto-contenedor {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
+  /* --- Diseño Editorial Split-Screen --- */
+  .contacto-editorial-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     font-family: system-ui, -apple-system, sans-serif;
   }
 
+  @media (min-width: 900px) {
+    .contacto-editorial-wrapper {
+      flex-direction: row;
+    }
+  }
+
+  /* --- Panel de Arte (Imagen) --- */
+  .panel-arte {
+    position: relative;
+    width: 100%;
+    min-height: 400px;
+    display: flex;
+    align-items: flex-end;
+    padding: 3rem 2rem;
+    color: white;
+    overflow: hidden;
+  }
+
+  @media (min-width: 900px) {
+    .panel-arte {
+      width: 45%;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 4rem;
+    }
+  }
+
+  .imagen-fondo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+  }
+
+  .imagen-fondo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: contrast(1.1) brightness(0.9);
+  }
+
+  /* Gradiente para que el texto sea legible y elegante */
+  .overlay-gradiente {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0) 100%);
+    z-index: -1;
+  }
+
+  .mensaje-trascendente {
+    max-width: 400px;
+    z-index: 1;
+  }
+
+  .mensaje-trascendente h2 {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+
+  .mensaje-trascendente p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    font-weight: 300;
+    opacity: 0.9;
+  }
+
+  /* --- Panel del Formulario --- */
+  .panel-formulario {
+    width: 100%;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    padding: 4rem 1rem;
+  }
+
+  @media (min-width: 900px) {
+    .panel-formulario {
+      width: 55%;
+      padding: 5rem 4rem;
+    }
+  }
+
+  .contenido-derecho {
+    width: 100%;
+    max-width: 600px;
+  }
+
+  /* Estilos Instagram */
   .instagram-invitation {
-    background-color: #fafafa;
+    background-color: #fcfcfc;
     border: 1px solid #eaeaea;
-    border-radius: 8px;
-    padding: 2rem;
+    border-radius: 2px;
+    padding: 2.5rem;
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
 
   .instagram-invitation h3 {
     margin-top: 0;
-    color: #333;
+    color: #111;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1.8rem;
   }
 
   .instagram-invitation p {
-    color: #555;
+    color: #666;
     line-height: 1.6;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
   }
 
   .btn-instagram {
     display: inline-block;
-    padding: 0.75rem 1.5rem;
-    background-color: #E1306C;
-    color: white;
+    padding: 0.8rem 2rem;
+    background-color: transparent;
+    color: #E1306C;
+    border: 1px solid #E1306C;
     text-decoration: none;
     font-weight: 600;
-    border-radius: 6px;
-    transition: background-color 0.3s ease;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.85rem;
   }
 
   .btn-instagram:hover {
-    background-color: #c1255b;
+    background-color: #E1306C;
+    color: white;
   }
 
   .divisor {
@@ -121,20 +246,24 @@ import Layout from '../layouts/Layout.astro';
     margin: 3rem 0;
   }
 
+  /* Estilos Formulario */
   .formulario-wrapper h3 {
     margin-top: 0;
-    color: #333;
+    color: #111;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 2rem;
   }
 
   .form-descripcion {
-    color: #555;
-    margin-bottom: 2rem;
+    color: #666;
+    margin-bottom: 2.5rem;
+    font-size: 1rem;
   }
 
   .formulario-contacto {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.8rem;
   }
 
   .grupo-input {
@@ -144,25 +273,30 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .grupo-input label {
-    font-weight: 600;
-    color: #444;
+    font-weight: 500;
+    color: #333;
     font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   .grupo-input input,
   .grupo-input textarea {
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 2px;
     font-size: 1rem;
     font-family: inherit;
-    transition: border-color 0.3s ease;
+    transition: all 0.3s ease;
+    background-color: #fafafa;
   }
 
   .grupo-input input:focus,
   .grupo-input textarea:focus {
     outline: none;
-    border-color: #333;
+    border-color: #111;
+    background-color: #fff;
+    box-shadow: 0 0 0 1px #111;
   }
 
   .mensaje-error {
@@ -174,16 +308,18 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .btn-enviar {
-    padding: 1rem;
+    padding: 1.2rem;
     background-color: #111;
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 2px;
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease;
     margin-top: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
   }
 
   .btn-enviar:hover {
@@ -191,7 +327,7 @@ import Layout from '../layouts/Layout.astro';
   }
 </style>
 
-<!-- Lógica de validación avanzada de correos -->
+<!-- Lógica de validación avanzada de correos (Intacta) -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('form-contacto');
@@ -199,39 +335,34 @@ import Layout from '../layouts/Layout.astro';
     const emailConfirmar = document.getElementById('email_confirmar');
     const errorMensaje = document.getElementById('error-email');
 
-    // Función que compara ambos campos
     const validarCorreos = () => {
-      // Convertimos a minúsculas y quitamos espacios accidentales
       const correo1 = email.value.trim().toLowerCase();
       const correo2 = emailConfirmar.value.trim().toLowerCase();
 
-      // Solo mostramos el error si el segundo campo no está vacío y no coinciden
       if (correo1 !== correo2 && correo2 !== '') {
         errorMensaje.style.display = 'block';
         emailConfirmar.style.borderColor = '#E1306C';
         return false;
       } else {
         errorMensaje.style.display = 'none';
-        emailConfirmar.style.borderColor = '#ccc';
+        emailConfirmar.style.borderColor = '#111';
         return true;
       }
     };
 
     if (form) {
-      // 1. Validar justo en el momento de hacer clic en "Enviar"
       form.addEventListener('submit', (e) => {
         const correo1 = email.value.trim().toLowerCase();
         const correo2 = emailConfirmar.value.trim().toLowerCase();
         
         if (correo1 !== correo2) {
-          e.preventDefault(); // Bloquea el envío definitivo
+          e.preventDefault();
           errorMensaje.style.display = 'block';
           emailConfirmar.style.borderColor = '#E1306C';
-          emailConfirmar.focus(); // Lleva el cursor al error
+          emailConfirmar.focus();
         }
       });
 
-      // 2. Validar en tiempo real mientras el usuario escribe
       emailConfirmar.addEventListener('input', validarCorreos);
       email.addEventListener('input', () => {
         if (emailConfirmar.value !== '') {
@@ -239,7 +370,6 @@ import Layout from '../layouts/Layout.astro';
         }
       });
 
-      // 3. Bloquear la función de "Pegar" en el campo de confirmación
       emailConfirmar.addEventListener('paste', (e) => {
         e.preventDefault();
         alert('Para mayor seguridad, por favor teclea tu correo manualmente.');
