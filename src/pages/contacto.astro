@@ -1,205 +1,242 @@
 ---
 import Layout from '../layouts/Layout.astro';
-// Descomenta la siguiente línea si usas tu componente de navegación
-// import Header from '../components/Header.astro';
 ---
 
-<Layout title="Diana Castro | Inicio" description="Portafolio oficial de Diana Paola Castro Jiménez. Especialista en cianotipia, memoria e identidad.">
+<Layout title="Diana Castro | Contacto y Estudio" description="Conecta con la artista visual Diana Paola Castro. Adquisición de obras, comisiones y diálogo sobre arte.">
 
-  <!-- <Header /> -->
-
-  <main class="inicio-contenedor">
-    
-    <!-- Encabezado de la Galería -->
-    <header class="hero-seccion">
-      <h1>Obra Reciente</h1>
-      <p>Una exploraci&oacute;n de la memoria, el tiempo y la luz a trav&eacute;s de la cianotipia.</p>
-    </header>
-
-    <hr class="divisor" />
-
-    <!-- Galería Principal -->
-    <section class="galeria-grid">
+<div class="contacto-editorial-wrapper">
+  
+  <!-- Panel Izquierdo: Exhibición de la Obra Interactiva -->
+  <aside class="panel-arte">
+    <div class="exhibicion-obra" id="trigger-lightbox" title="Haz clic para ampliar la obra">
+      <img src="/horizontal1.jpg" alt="Composición artística en cianotipia por Diana Castro" loading="lazy" />
       
-      <!-- Obra 1 (Puedes duplicar este bloque para agregar más obras) -->
-      <article class="item-galeria trigger-lightbox">
-        <div class="imagen-wrapper">
-          <!-- Reemplaza con el nombre de tus archivos reales en /public/ -->
-          <img src="/horizontal1.jpg" alt="Serie Tiempo al Tiempo - Composición 1" loading="lazy" />
-          <div class="overlay-hover">
-            <span>+ Ampliar</span>
-          </div>
-        </div>
-      </article>
-
-      <!-- Obra 2 -->
-      <article class="item-galeria trigger-lightbox">
-        <div class="imagen-wrapper">
-          <img src="/artista2.JPG" alt="Autorretrato y exploración etérea" loading="lazy" />
-          <div class="overlay-hover">
-            <span>+ Ampliar</span>
-          </div>
-        </div>
-      </article>
-
-      <!-- Obra 3 (Ejemplo de relleno, reemplaza la ruta) -->
-      <article class="item-galeria trigger-lightbox">
-        <div class="imagen-wrapper">
-          <img src="/artista1.JPG" alt="Diana Castro en el estudio" loading="lazy" />
-          <div class="overlay-hover">
-            <span>+ Ampliar</span>
-          </div>
-        </div>
-      </article>
-
-      <!-- Puedes seguir añadiendo más <article> aquí -->
-
-    </section>
-
-  </main>
-
-  <!-- Modal Nativo Universal para la Galería -->
-  <dialog id="modal-lightbox" class="lightbox-modal">
-    <div class="lightbox-contenido">
-      <button id="cerrar-modal" class="btn-cerrar-modal" aria-label="Cerrar obra">&times;</button>
-      
-      <!-- La imagen en blanco que se llenará dinámicamente con JS -->
-      <img id="img-modal" src="" alt="" />
-      
-      <!-- Opcional: Un pie de foto elegante -->
-      <p id="caption-modal" class="caption-modal"></p>
+      <!-- Indicador de Zoom (Aparece al pasar el cursor) -->
+      <div class="indicador-zoom">
+        <span>+ Ampliar obra</span>
+      </div>
     </div>
-  </dialog>
+  </aside>
+
+  <!-- Panel Derecho: Interacción y Diálogo -->
+  <main class="panel-formulario">
+    <div class="contenido-derecho">
+      
+      <div class="mensaje-intro">
+        <h2>El arte es un puente</h2>
+        <p>Cada obra es el inicio de un diálogo sobre el tiempo, la luz y la memoria. Escríbeme para consultas sobre adquisiciones, exposiciones o colaboraciones.</p>
+      </div>
+
+      <div class="instagram-invitation">
+        <h3>Acompa&ntilde;a el proceso creativo</h3>
+        <p>Explora vistazos exclusivos de mi estudio y sigue la evolución de mis series en tiempo real:</p>
+        <a 
+          href="https://www.instagram.com/artdcastro/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="btn-instagram"
+        >
+          Visitar @artdcastro
+        </a>
+      </div>
+
+      <hr class="divisor" />
+
+      <div class="formulario-wrapper">
+        <h3>Iniciemos una conversaci&oacute;n</h3>
+        <p class="form-descripcion">Completa los detalles a continuaci&oacute;n y me pondr&eacute; en contacto contigo a la brevedad posible.</p>
+
+        <form action="https://formspree.io/f/mdaqwewd" method="POST" class="formulario-contacto" id="form-contacto">
+          
+          <div class="grupo-input">
+            <label for="nombre">Nombre completo:</label>
+            <input type="text" id="nombre" name="nombre" required placeholder="Ej. Emilio Andres" />
+          </div>
+
+          <div class="grupo-input">
+            <label for="email">Tu correo electr&oacute;nico:</label>
+            <input type="email" id="email" name="email" required placeholder="Ej. violeta@correo.com" />
+          </div>
+
+          <div class="grupo-input">
+            <label for="email_confirmar">Confirma tu correo electr&oacute;nico:</label>
+            <input type="email" id="email_confirmar" name="email_confirmar" required placeholder="Vuelve a escribir tu correo" autocomplete="off" />
+            <span id="error-email" class="mensaje-error">Los correos no coinciden. Por favor, verifica.</span>
+          </div>
+
+          <div class="grupo-input">
+            <label for="telefono">Tel&eacute;fono de contacto (Opcional):</label>
+            <input type="tel" id="telefono" name="telefono" placeholder="Ej. +57 300 000 0000" />
+          </div>
+
+          <div class="grupo-input">
+            <label for="mensaje">Mensaje:</label>
+            <textarea id="mensaje" name="mensaje" rows="5" required placeholder="Escribe tu mensaje aqu&iacute;..."></textarea>
+          </div>
+
+          <input type="text" name="_gotcha" style="display:none" />
+
+          <button type="submit" class="btn-enviar">Enviar Mensaje</button>
+        </form>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Modal Nativo para Ampliar la Obra -->
+<dialog id="modal-lightbox" class="lightbox-modal">
+  <div class="lightbox-contenido">
+    <button id="cerrar-modal" class="btn-cerrar-modal" aria-label="Cerrar obra">&times;</button>
+    <img src="/horizontal1.jpg" alt="Detalle ampliado de la obra de Diana Castro" />
+  </div>
+</dialog>
 
 </Layout>
 
-<!-- Estilos Nativos de Astro -->
+<!-- Estilos -->
 <style>
-  .inicio-contenedor {
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 4rem 1.5rem;
+  .contacto-editorial-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     font-family: system-ui, -apple-system, sans-serif;
+    max-width: 1600px;
+    margin: 0 auto;
   }
 
   @media (min-width: 900px) {
-    .inicio-contenedor {
-      padding: 5rem 4rem;
+    .contacto-editorial-wrapper {
+      flex-direction: row;
     }
   }
 
-  /* --- Hero / Encabezado --- */
-  .hero-seccion {
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto 3rem auto;
-  }
-
-  .hero-seccion h1 {
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 2.8rem;
-    color: #111;
-    margin-bottom: 1rem;
-    letter-spacing: 0.5px;
-  }
-
-  .hero-seccion p {
-    font-size: 1.1rem;
-    color: #666;
-    line-height: 1.6;
-  }
-
-  .divisor {
-    border: 0;
-    height: 1px;
-    background-color: #eaeaea;
-    margin: 0 auto 4rem auto;
-    max-width: 100px; /* Un divisor corto y elegante */
-  }
-
-  /* --- Grid de la Galería --- */
-  .galeria-grid {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: 2rem;
-  }
-
-  /* Diseño adaptable: 2 columnas en tablets, 3 en escritorio */
-  @media (min-width: 600px) {
-    .galeria-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .galeria-grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 3rem;
-    }
-  }
-
-  .item-galeria {
-    cursor: zoom-in;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .imagen-wrapper {
-    position: relative;
-    overflow: hidden;
+  /* --- Panel de Arte --- */
+  .panel-arte {
+    width: 100%;
     background-color: #f7f7f7;
-    border-radius: 2px;
-    aspect-ratio: 3 / 4; /* Proporción estándar de arte para mantener uniformidad */
-  }
-
-  .imagen-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Asegura que la imagen llene el recuadro de forma elegante */
-    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.6s ease;
-  }
-
-  .overlay-hover {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(17, 17, 17, 0.4);
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;
-    transition: opacity 0.4s ease;
+    padding: 2rem 1.5rem;
   }
 
-  .overlay-hover span {
+  @media (min-width: 900px) {
+    .panel-arte {
+      width: 50%;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 3rem;
+    }
+  }
+
+  .exhibicion-obra {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    cursor: zoom-in;
+  }
+
+  .exhibicion-obra img {
+    max-width: 100%;
+    max-height: 55vh;
+    object-fit: contain;
+    box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    transition: transform 0.4s ease, filter 0.4s ease;
+  }
+
+  @media (min-width: 900px) {
+    .exhibicion-obra img {
+      max-height: 88vh;
+    }
+  }
+
+  .exhibicion-obra:hover img {
+    transform: scale(1.02);
+    filter: brightness(0.95);
+  }
+
+  .indicador-zoom {
+    position: absolute;
+    bottom: 20px;
+    background-color: rgba(17, 17, 17, 0.85);
     color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 30px;
+    font-size: 0.85rem;
     font-weight: 600;
+    letter-spacing: 1px;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 0.9rem;
-    border: 1px solid white;
-    padding: 0.8rem 1.5rem;
-    transform: translateY(15px);
-    transition: transform 0.4s ease;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s ease;
+    pointer-events: none;
   }
 
-  /* Efectos Hover */
-  .item-galeria:hover .imagen-wrapper img {
-    transform: scale(1.05);
-    filter: grayscale(20%); /* Dañado artístico leve al hacer hover */
-  }
-
-  .item-galeria:hover .overlay-hover {
+  .exhibicion-obra:hover .indicador-zoom {
     opacity: 1;
-  }
-
-  .item-galeria:hover .overlay-hover span {
     transform: translateY(0);
   }
 
-  /* --- Estilos del Lightbox Nativo --- */
+  @media (max-width: 899px) {
+    .indicador-zoom {
+      opacity: 1;
+      transform: translateY(0);
+      background-color: rgba(17, 17, 17, 0.6);
+    }
+  }
+
+  /* --- Panel del Formulario --- */
+  .panel-formulario {
+    width: 100%;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+  }
+
+  @media (min-width: 900px) {
+    .panel-formulario {
+      width: 50%;
+      justify-content: center; 
+      padding: 4rem;
+      overflow-y: auto;
+    }
+  }
+
+  .contenido-derecho {
+    width: 100%;
+    max-width: 550px;
+  }
+
+  .mensaje-intro { margin-bottom: 3rem; }
+  .mensaje-intro h2 { font-family: 'Times New Roman', Times, serif; font-size: 2.2rem; margin-bottom: 1rem; font-weight: 400; color: #111; }
+  .mensaje-intro p { font-size: 1.05rem; line-height: 1.6; color: #555; }
+  @media (min-width: 900px) { .mensaje-intro h2 { font-size: 2.5rem; } .mensaje-intro p { font-size: 1.1rem; } }
+  
+  .instagram-invitation { background-color: #fcfcfc; border: 1px solid #eaeaea; border-radius: 4px; padding: 2rem; text-align: center; margin-bottom: 1rem; }
+  .instagram-invitation h3 { margin-top: 0; color: #111; font-family: 'Times New Roman', Times, serif; font-size: 1.6rem; }
+  .instagram-invitation p { color: #666; line-height: 1.5; margin-bottom: 1.5rem; font-size: 0.95rem; }
+  .btn-instagram { display: inline-block; padding: 0.75rem 1.8rem; background-color: transparent; color: #E1306C; border: 1px solid #E1306C; text-decoration: none; font-weight: 600; border-radius: 4px; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; }
+  .btn-instagram:hover { background-color: #E1306C; color: white; }
+  .divisor { border: 0; height: 1px; background-color: #eaeaea; margin: 2.5rem 0; }
+  
+  .formulario-wrapper h3 { margin-top: 0; color: #111; font-family: 'Times New Roman', Times, serif; font-size: 1.8rem; }
+  .form-descripcion { color: #666; margin-bottom: 2rem; font-size: 0.95rem; }
+  .formulario-contacto { display: flex; flex-direction: column; gap: 1.5rem; }
+  .grupo-input { display: flex; flex-direction: column; gap: 0.5rem; }
+  .grupo-input label { font-weight: 500; color: #333; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  .grupo-input input, .grupo-input textarea { padding: 0.9rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; font-family: inherit; transition: all 0.3s ease; background-color: #fafafa; }
+  .grupo-input input:focus, .grupo-input textarea:focus { outline: none; border-color: #111; background-color: #fff; box-shadow: 0 0 0 1px #111; }
+  .mensaje-error { display: none; color: #E1306C; font-size: 0.85rem; margin-top: 0.25rem; font-weight: 500; }
+  .btn-enviar { padding: 1.2rem; background-color: #111; color: white; border: none; border-radius: 4px; font-size: 0.95rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease; margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 1px; }
+  .btn-enviar:hover { background-color: #333; }
+
+  /* --- Mejoras Premium del Lightbox Nativo --- */
   .lightbox-modal {
     border: none;
     background: transparent;
@@ -208,18 +245,25 @@ import Layout from '../layouts/Layout.astro';
     max-height: 100vh;
     width: 100vw;
     height: 100vh;
+    overflow: hidden; /* Evita scrolls dobles */
   }
 
+  /* Animación de entrada suave para el modal */
+  .lightbox-modal[open] {
+    animation: zoomIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Animación de entrada suave para el fondo oscuro */
   .lightbox-modal::backdrop {
-    background: rgba(10, 10, 10, 0.95);
-    backdrop-filter: blur(5px);
+    background: rgba(8, 8, 8, 0.95);
+    backdrop-filter: blur(8px); /* Difumina el sitio web de fondo */
+    animation: fadeIn 0.4s ease forwards;
   }
 
   .lightbox-contenido {
     width: 100%;
     height: 100%;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     position: relative;
@@ -227,92 +271,127 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .lightbox-contenido img {
-    max-width: 100%;
-    max-height: 85vh; /* Deja espacio para el pie de foto */
+    /* La imagen ocupa el máximo espacio posible sin deformarse */
+    max-width: 95vw;
+    max-height: 95vh;
     object-fit: contain;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-  }
-
-  .caption-modal {
-    color: #ccc;
-    margin-top: 1.5rem;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 1.2rem;
-    letter-spacing: 1px;
-    text-align: center;
+    border-radius: 2px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   }
 
   .btn-cerrar-modal {
     position: absolute;
-    top: 20px;
-    right: 30px;
-    background: none;
-    border: none;
+    top: 25px;
+    right: 35px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
     color: white;
-    font-size: 3rem;
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
-    line-height: 1;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
     z-index: 10;
   }
 
   .btn-cerrar-modal:hover {
-    color: #E1306C;
+    background: #E1306C;
+    border-color: #E1306C;
+    transform: scale(1.1);
+  }
+
+  /* Keyframes de animación */
+  @keyframes zoomIn {
+    0% { opacity: 0; transform: scale(0.95); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
   }
 </style>
 
-<!-- Lógica dinámica del Lightbox para Galerías -->
+<!-- Lógica combinada (Correos + Lightbox) -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    // 1. Lógica del Lightbox
     const modal = document.getElementById('modal-lightbox');
-    const imgModal = document.getElementById('img-modal') as HTMLImageElement;
-    const captionModal = document.getElementById('caption-modal');
+    const trigger = document.getElementById('trigger-lightbox');
     const btnCerrar = document.getElementById('cerrar-modal');
-    
-    // Seleccionamos TODAS las imágenes de la galería
-    const itemsGaleria = document.querySelectorAll('.trigger-lightbox');
 
-    if (modal && imgModal && btnCerrar) {
+    if (modal && trigger && btnCerrar) {
       
-      // Asignar el evento a cada obra
-      itemsGaleria.forEach(item => {
-        item.addEventListener('click', () => {
-          // Buscamos la imagen dentro del artículo clicado
-          const imgElement = item.querySelector('img');
-          
-          if (imgElement) {
-            // Transferimos los datos al modal
-            imgModal.src = imgElement.src;
-            imgModal.alt = imgElement.alt;
-            
-            // Usamos el 'alt' de la imagen como título/pie de foto
-            if (captionModal) {
-              captionModal.textContent = imgElement.alt;
-            }
-
-            // Mostramos el modal
-            (modal as HTMLDialogElement).showModal();
-            document.body.style.overflow = 'hidden'; // Bloquea el scroll de la página de fondo
-          }
-        });
+      // Función para abrir
+      trigger.addEventListener('click', () => {
+        // En navegadores modernos con <dialog>, showModal() hace la magia
+        if (typeof modal.showModal === 'function') {
+          modal.showModal();
+          document.body.style.overflow = 'hidden'; // Evita que la web se mueva atrás
+        }
       });
 
-      // Lógica para cerrar el modal
-      const cerrarModal = () => {
-        (modal as HTMLDialogElement).close();
+      // Función para cerrar (clic en el botón X)
+      btnCerrar.addEventListener('click', () => {
+        modal.close();
         document.body.style.overflow = '';
-        
-        // Limpiamos el src al cerrar por seguridad/rendimiento
-        setTimeout(() => { imgModal.src = ''; }, 300);
-      };
+      });
 
-      btnCerrar.addEventListener('click', cerrarModal);
-
-      // Cerrar al hacer clic fuera de la imagen (en el fondo negro)
+      // Función para cerrar (clic en cualquier parte del fondo oscuro)
       modal.addEventListener('click', (e) => {
-        if (e.target === modal || (e.target as HTMLElement).classList.contains('lightbox-contenido')) {
-          cerrarModal();
+        if (e.target === modal || e.target.classList.contains('lightbox-contenido')) {
+          modal.close();
+          document.body.style.overflow = '';
         }
+      });
+    }
+
+    // 2. Lógica de validación de correos
+    const form = document.getElementById('form-contacto');
+    const email = document.getElementById('email');
+    const emailConfirmar = document.getElementById('email_confirmar');
+    const errorMensaje = document.getElementById('error-email');
+
+    const validarCorreos = () => {
+      const correo1 = email.value.trim().toLowerCase();
+      const correo2 = emailConfirmar.value.trim().toLowerCase();
+
+      if (correo1 !== correo2 && correo2 !== '') {
+        errorMensaje.style.display = 'block';
+        emailConfirmar.style.borderColor = '#E1306C';
+        return false;
+      } else {
+        errorMensaje.style.display = 'none';
+        emailConfirmar.style.borderColor = '#111';
+        return true;
+      }
+    };
+
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        const correo1 = email.value.trim().toLowerCase();
+        const correo2 = emailConfirmar.value.trim().toLowerCase();
+        
+        if (correo1 !== correo2) {
+          e.preventDefault();
+          errorMensaje.style.display = 'block';
+          emailConfirmar.style.borderColor = '#E1306C';
+          emailConfirmar.focus();
+        }
+      });
+
+      emailConfirmar.addEventListener('input', validarCorreos);
+      email.addEventListener('input', () => {
+        if (emailConfirmar.value !== '') validarCorreos();
+      });
+
+      emailConfirmar.addEventListener('paste', (e) => {
+        e.preventDefault();
+        alert('Para mayor seguridad, por favor teclea tu correo manualmente.');
       });
     }
   });
