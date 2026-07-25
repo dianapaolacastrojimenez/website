@@ -1,29 +1,52 @@
 ---
 import Layout from '../layouts/Layout.astro';
+// Descomenta la siguiente línea si estás usando tu componente de navegación unificado
+// import Header from '../components/Header.astro';
 ---
 
 <Layout title="Diana Castro | Artista Contemporánea" description="Explora la obra de Diana Paola Castro Jiménez. Especialista en cianotipia, memoria e identidad.">
 
+<!-- <Header /> -->
+
 <section class="artista-contenedor">
   
-  <!-- 1. Biografía de la Artista -->
+  <!-- 1. Biografía de la Artista (Layout Editorial) -->
   <div class="biografia-seccion">
-    <h1>Diana Castro</h1>
-    <h2 class="subtitulo">Artista Visual | Medell&iacute;n, Colombia</h2>
     
-    <div class="texto-biografia">
-      <p>
-        Diana Castro es una artista visual cuyo trabajo trasciende la t&eacute;cnica y el concepto, creando una obra profundamente personal, pero universalmente resonante. Durante m&aacute;s de doce a&ntilde;os, Castro fue ingeniera de sistemas en el sector bancario, donde perfeccion&oacute; su capacidad anal&iacute;tica y su habilidad para trabajar con precisi&oacute;n. Sin embargo, algo m&aacute;s profundo y visceral le llamaba; un d&iacute;a decidi&oacute; dejar atr&aacute;s lo conocido, dar un salto audaz hacia lo incierto y seguir su verdadera pasi&oacute;n, el arte.
-      </p>
-      <p>
-        Desde su infancia, Diana cultiv&oacute; una fascinaci&oacute;n por las artes, pero fue en su transici&oacute;n hacia la creaci&oacute;n art&iacute;stica profesional donde encontr&oacute; su voz m&aacute;s aut&eacute;ntica. Fue entonces cuando comenz&oacute; a explorar t&eacute;cnicas tradicionales y contempor&aacute;neas, fusionando su rigor t&eacute;cnico con la libertad creativa que el arte le ofrec&iacute;a. Esta convergencia de l&oacute;gica y emoci&oacute;n ha dado forma a un estilo &uacute;nico, caracterizado por la introspecci&oacute;n y la exploraci&oacute;n de temas tan vastos como el tiempo, la memoria y la transitoriedad de la existencia humana.
-      </p>
-      <p>
-        En los &uacute;ltimos a&ntilde;os, Diana se ha sumergido en una profunda investigaci&oacute;n sobre el concepto del tiempo a trav&eacute;s de la t&eacute;cnica de la cianotipia, una forma de impresi&oacute;n fotogr&aacute;fica que utiliza la luz solar para revelar im&aacute;genes. A trav&eacute;s de este proceso, ella captura momentos ef&iacute;meros, creando obras que, como el tiempo mismo, son irrepetibles. La cianotipia se ha convertido en una herramienta perfecta para expresar su visi&oacute;n sobre la fugacidad, pero tambi&eacute;n sobre la capacidad del arte para preservar lo intangible.
-      </p>
-      <p>
-        Hoy, la obra de Diana Castro sigue evolucionando, con una exploraci&oacute;n cada vez m&aacute;s profunda del tiempo, la memoria, lo femenino y la relaci&oacute;n entre la naturaleza y el arte. Su investigaci&oacute;n contin&uacute;a ampliando los l&iacute;mites de la cianotipia y abriendo nuevas posibilidades de creaci&oacute;n.
-      </p>
+    <div class="layout-editorial">
+      
+      <!-- Columna de la Fotografía -->
+      <div class="columna-imagen">
+        <div class="marco-fotografia">
+          <img 
+            src="/artista1.JPG" 
+            alt="Retrato de la artista visual Diana Castro" 
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <!-- Columna de Texto -->
+      <div class="columna-texto">
+        <h1>Diana Castro</h1>
+        <h2 class="subtitulo">Artista Visual | Medell&iacute;n, Colombia</h2>
+        
+        <div class="texto-biografia">
+          <p>
+            Diana Castro es una artista visual cuyo trabajo trasciende la t&eacute;cnica y el concepto, creando una obra profundamente personal, pero universalmente resonante. Durante m&aacute;s de doce a&ntilde;os, Castro fue ingeniera de sistemas en el sector bancario, donde perfeccion&oacute; su capacidad anal&iacute;tica y su habilidad para trabajar con precisi&oacute;n. Sin embargo, algo m&aacute;s profundo y visceral le llamaba; un d&iacute;a decidi&oacute; dejar atr&aacute;s lo conocido, dar un salto audaz hacia lo incierto y seguir su verdadera pasi&oacute;n, el arte.
+          </p>
+          <p>
+            Desde su infancia, Diana cultiv&oacute; una fascinaci&oacute;n por las artes, pero fue en su transici&oacute;n hacia la creaci&oacute;n art&iacute;stica profesional donde encontr&oacute; su voz m&aacute;s aut&eacute;ntica. Fue entonces cuando comenz&oacute; a explorar t&eacute;cnicas tradicionales y contempor&aacute;neas, fusionando su rigor t&eacute;cnico con la libertad creativa que el arte le ofrec&iacute;a. Esta convergencia de l&oacute;gica y emoci&oacute;n ha dado forma a un estilo &uacute;nico, caracterizado por la introspecci&oacute;n y la exploraci&oacute;n de temas tan vastos como el tiempo, la memoria y la transitoriedad de la existencia humana.
+          </p>
+          <p>
+            En los &uacute;ltimos a&ntilde;os, Diana se ha sumergido en una profunda investigaci&oacute;n sobre el concepto del tiempo a trav&eacute;s de la t&eacute;cnica de la cianotipia, una forma de impresi&oacute;n fotogr&aacute;fica que utiliza la luz solar para revelar im&aacute;genes. A trav&eacute;s de este proceso, ella captura momentos ef&iacute;meros, creando obras que, como el tiempo mismo, son irrepetibles. La cianotipia se ha convertido en una herramienta perfecta para expresar su visi&oacute;n sobre la fugacidad, pero tambi&eacute;n sobre la capacidad del arte para preservar lo intangible.
+          </p>
+          <p>
+            Hoy, la obra de Diana Castro sigue evolucionando, con una exploraci&oacute;n cada vez m&aacute;s profunda del tiempo, la memoria, lo femenino y la relaci&oacute;n entre la naturaleza y el arte. Su investigaci&oacute;n contin&uacute;a ampliando los l&iacute;mites de la cianotipia y abriendo nuevas posibilidades de creaci&oacute;n.
+          </p>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -62,72 +85,128 @@ import Layout from '../layouts/Layout.astro';
 
 </section>
 
+</Layout>
+
 <!-- Estilos nativos de Astro -->
 <style>
   .artista-contenedor {
-    max-width: 800px;
+    max-width: 1000px; /* Ampliamos un poco el ancho para el nuevo layout */
     margin: 0 auto;
-    padding: 3rem 1rem;
+    padding: 3rem 2rem;
     font-family: system-ui, -apple-system, sans-serif;
     color: #333;
   }
 
-  .biografia-seccion h1 {
-    font-size: 2.5rem;
+  /* --- INICIO NUEVO LAYOUT EDITORIAL --- */
+  .layout-editorial {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .layout-editorial {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 4rem;
+    }
+    .columna-imagen {
+      flex: 0 0 35%; /* La imagen ocupa el 35% del ancho */
+      position: sticky;
+      top: 2rem; /* Efecto elegante al hacer scroll */
+    }
+    .columna-texto {
+      flex: 1; /* El texto ocupa el resto */
+    }
+  }
+
+  .marco-fotografia {
+    background-color: #ffffff;
+    padding: 12px;
+    border-radius: 4px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  .marco-fotografia:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.12);
+  }
+
+  .marco-fotografia img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 2px;
+    filter: contrast(1.02) saturate(1.05); /* Ligero realce de color */
+  }
+  /* --- FIN NUEVO LAYOUT EDITORIAL --- */
+
+  h1 {
+    font-size: 3rem;
     margin-bottom: 0.2rem;
     color: #111;
+    font-family: 'Times New Roman', Times, serif; /* Toque más clásico y artístico */
+    letter-spacing: -0.5px;
   }
 
   .subtitulo {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 400;
-    color: #666;
-    margin-bottom: 2rem;
+    color: #888;
+    margin-bottom: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
   }
 
   .texto-biografia p {
-    line-height: 1.8;
+    line-height: 1.85;
     margin-bottom: 1.5rem;
-    color: #444;
+    color: #4a4a4a;
     text-align: justify;
+    font-size: 1.05rem;
   }
 
   .divisor {
     border: 0;
     height: 1px;
     background-color: #eaeaea;
-    margin: 3rem 0;
+    margin: 4rem 0;
   }
 
   .catalogo-seccion {
     text-align: center;
-    padding: 2rem;
-    background-color: #f4f8fa; 
-    border-radius: 8px;
+    padding: 3rem 2rem;
+    background-color: #f8f9fa; 
+    border-radius: 12px;
   }
 
   .catalogo-seccion h3 {
     margin-top: 0;
+    font-size: 1.8rem;
+    color: #222;
   }
 
   .catalogo-seccion p {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
     color: #555;
+    font-size: 1.1rem;
   }
 
   .btn-descarga {
     display: inline-block;
-    padding: 0.8rem 1.5rem;
-    background-color: #2c3e50; 
+    padding: 1rem 2rem;
+    background-color: #1a252f; 
     color: white;
     text-decoration: none;
     font-weight: 600;
-    border-radius: 6px;
-    transition: background-color 0.3s ease;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
   }
 
   .btn-descarga:hover {
-    background-color: #1a252f;
+    background-color: #2c3e50;
+    transform: translateY(-2px);
   }
 
   .instagram-invitation {
@@ -136,26 +215,31 @@ import Layout from '../layouts/Layout.astro';
 
   .instagram-invitation h3 {
     margin-top: 0;
+    font-size: 1.8rem;
   }
 
   .instagram-invitation p {
     color: #555;
     line-height: 1.6;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .btn-instagram {
     display: inline-block;
-    padding: 0.75rem 1.5rem;
+    padding: 1rem 2rem;
     background-color: #E1306C;
     color: white;
     text-decoration: none;
     font-weight: 600;
-    border-radius: 6px;
-    transition: background-color 0.3s ease;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
   }
 
   .btn-instagram:hover {
     background-color: #c1255b;
+    transform: translateY(-2px);
   }
 </style>
