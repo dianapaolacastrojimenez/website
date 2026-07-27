@@ -20,33 +20,34 @@ const featuredArtworks = artworks.slice(0, 2);
 
 <Layout title="Diana Castro | Artista Contemporánea" description="Explora la obra de Diana Paola Castro Jiménez. Especialista en cianotipia, memoria e identidad.">
   
-  <!-- HERO SECTION CON IMAGEN PRINCIPAL -->
-  <section class="min-h-[85vh] max-w-7xl mx-auto px-6 py-12 md:py-20 flex flex-col md:flex-row items-center justify-center gap-12 md:gap-16 gsap-reveal">
-    <!-- Texto principal -->
-    <div class="w-full md:w-1/2 text-left">
-      <h1 class="font-serif text-5xl md:text-6xl lg:text-7xl text-deep-blue mb-6 leading-tight">
+  <!-- HERO SECTION RENOVADO (Texto Centrado + Imagen Debajo) -->
+  <section class="relative min-h-[90vh] flex flex-col items-center justify-center pt-24 pb-16 overflow-hidden gsap-reveal">
+    <!-- Brillo sutil de fondo para integrar los colores de la obra con la página -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] md:w-3/4 h-3/4 bg-gradient-to-b from-pale-rose/20 via-deep-blue/5 to-transparent rounded-[100%] blur-[120px] -z-10 pointer-events-none"></div>
+    
+    <!-- Contenedor del Título -->
+    <div class="max-w-4xl mx-auto px-6 text-center z-10 mb-10 md:mb-16">
+      <h1 class="font-serif text-5xl md:text-7xl lg:text-[5rem] text-deep-blue mb-6 leading-[1.1] tracking-tight drop-shadow-sm">
         Materializando el tiempo a través de la luz
       </h1>
-      <p class="font-sans text-lg md:text-xl text-warm-gray font-light mb-8 leading-relaxed">
+      <p class="font-sans text-lg md:text-xl text-gray-700 font-light max-w-2xl mx-auto leading-relaxed">
         Cianotipias e intervenciones conceptuales que desafían la inmediatez de la modernidad líquida. Obras de alta exclusividad donde la memoria se imprime en azul de Prusia.
       </p>
     </div>
     
-    <!-- Imagen principal (Collage Homenaje en Azul) -->
-    <div class="w-full md:w-1/2 relative group">
-      <!-- Brillo sutil de fondo para resaltar el recorte de la imagen -->
-      <div class="absolute -inset-4 bg-gradient-to-tr from-pale-rose/30 to-deep-blue/5 rounded-full blur-2xl opacity-60 group-hover:opacity-100 transition duration-1000 -z-10"></div>
+    <!-- Imagen Principal (Collage Homenaje en Azul) -->
+    <div class="w-full max-w-6xl mx-auto px-4 relative z-10">
       <img 
-        src="/cyanotype_homenaje_en_azul.jpg" 
+        src="/cyanotype_homenaje_en_azul_2.jpg" 
         alt="Diana Castro, artista contemporánea internacional. Retrato y obras exclusivas en cianotipia, fusionando botánica, memoria y técnica analógica en azul de Prusia."
-        class="w-full h-auto object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-700"
+        class="w-full h-auto max-h-[60vh] object-contain drop-shadow-2xl hover:scale-[1.01] transition-transform duration-1000"
         fetchpriority="high"
       />
     </div>
   </section>
 
   <!-- OBRAS DESTACADAS -->
-  <section class="max-w-7xl mx-auto px-8 py-20">
+  <section class="max-w-7xl mx-auto px-8 py-20 relative z-20 bg-white/80 backdrop-blur-sm">
     <h2 class="font-serif text-3xl text-deep-blue mb-12 border-b border-pale-rose pb-4">Obras Destacadas</h2>
     
     {featuredArtworks.length === 0 ? (
