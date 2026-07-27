@@ -19,6 +19,7 @@ const featuredArtworks = artworks.slice(0, 2);
 ---
 
 <Layout title="Diana Castro | Artista Contemporánea" description="Explora la obra de Diana Paola Castro Jiménez. Especialista en cianotipia, memoria e identidad.">
+  
   <section class="h-[80vh] flex items-center justify-center text-center px-4 gsap-reveal">
     <div class="max-w-3xl">
       <h1 class="font-serif text-5xl md:text-7xl text-deep-blue mb-6 leading-tight">Materializando el tiempo a través de la luz</h1>
@@ -54,6 +55,41 @@ const featuredArtworks = artworks.slice(0, 2);
         ))}
       </div>
     )}
+  </section>
+
+  <!-- NUEVA SECCIÓN: LA ALQUIMIA DEL PROCESO / HOMENAJE EN AZUL -->
+  <section class="max-w-7xl mx-auto px-8 py-24 flex flex-col md:flex-row-reverse gap-16 items-center border-t border-pale-rose/30">
+    
+    <!-- 1. IMAGEN CON ALT OPTIMIZADO PARA SEO -->
+    <div class="w-full md:w-1/2 relative group">
+      <div class="absolute -inset-2 bg-gradient-to-r from-deep-blue/10 to-pale-rose/20 rounded-lg blur-lg opacity-50 group-hover:opacity-100 transition duration-700"></div>
+      <img 
+        src="/cyanotype_homenaje_en_azul.jpg" 
+        alt="El proceso creativo de la artista contemporánea Diana Castro. Collage de obras exclusivas en cianotipia, técnica fotográfica analógica, texturas botánicas sobre papel de algodón y el característico azul de Prusia. Inversión en arte contemporáneo."
+        class="relative w-full h-auto shadow-xl transition-transform duration-700 group-hover:scale-[1.01] rounded-sm"
+        loading="lazy"
+      />
+    </div>
+
+    <!-- 2. TEXTO CONCEPTUAL (Copywriting de alto valor) -->
+    <div class="w-full md:w-1/2 descripcion-obra conceptual-copy">
+      <h3 class="font-serif text-3xl text-deep-blue mb-4">La alquimia de la memoria</h3>
+      <h4 class="font-sans text-sm text-warm-gray uppercase tracking-widest mb-6">Homenaje en Azul | El Taller</h4>
+      
+      <div class="texto-reflexivo text-gray-800 leading-relaxed space-y-4">
+        <p>
+          Más allá de la imagen final, el verdadero valor de la obra de Diana Castro reside en la visceralidad de su creación. <strong>"Homenaje en Azul"</strong> es una ventana abierta a su santuario creativo, donde la luz solar, el rigor del tiempo y la emulsión química convergen en un acto de pura alquimia visual.
+        </p>
+        
+        <p>
+          Cada pieza fotográfica nace de un diálogo íntimo con el papel de algodón. Las texturas orgánicas, las siluetas melancólicas y la profunda inmersión en el azul de Prusia garantizan la imposibilidad de la réplica. En una era de sobreproducción digital masiva, esta técnica analógica se erige como un acto de rebeldía estética: la materialización de lo efímero.
+        </p>
+
+        <p class="font-semibold text-deep-blue mt-6 border-l-2 border-pale-rose pl-4">
+          Adquirir una de estas obras es asegurar un fragmento tangible del tiempo. Un testimonio irrefutable de maestría técnica destinado a elevar el prestigio de cualquier colección privada, galería o bóveda museográfica.
+        </p>
+      </div>
+    </div>
   </section>
 
   <!-- HTML DEL LIGHTBOX -->
