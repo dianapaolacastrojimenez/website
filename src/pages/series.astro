@@ -4,3 +4,334 @@ import Layout from '../layouts/Layout.astro';
 
 <Layout title="Diana Castro | Contacto y Estudio" description="Conecta con la artista visual Diana Paola Castro. Adquisición de obras, comisiones y diálogo sobre arte.">
 
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Series y Colecciones | Diana Castro - Artista Contemporánea Colombiana" 
+  description="Explora las aclamadas obras de Diana Castro, artista femenina latinoamericana. Colecciones exclusivas para quienes buscan comprar arte contemporáneo Colombia."
+>
+
+<div class="series-editorial-wrapper">
+
+  <!-- 1. Encabezado Curatorial (Optimizado para SEO) -->
+  <header class="curaduria-intro">
+    <h1>Obras y Series Aclamadas</h1>
+    
+    <div class="texto-seo-curatorial">
+      <p>
+        Diana Castro se ha consolidado como una de las voces más poéticas y rigurosas del panorama actual. Como <strong>artista contemporánea colombiana</strong> y destacada <strong>fotógrafa femenina latinoamericana</strong>, su investigación visual trasciende la materia para adentrarse en la memoria, el tiempo y la identidad.
+      </p>
+      <p>
+        Su obra, que dialoga fluidamente entre la cianotipia y el <strong>arte figurativo contemporáneo</strong>, ha captado la atención de galeristas y críticos a nivel internacional. Desde su estudio, y reconocida como <strong>artista plástica, visual Medellín</strong>, Castro proyecta un lenguaje estético universal. 
+      </p>
+      <p>
+        Para coleccionistas e instituciones que buscan <strong>comprar arte contemporáneo Colombia</strong> con alto potencial de revalorización, las siguientes series representan una inversión invaluable y un testimonio del poder de la <strong>artista femenina latinoamericana</strong> en el mercado global.
+      </p>
+    </div>
+  </header>
+
+  <hr class="divisor-elegante" />
+
+  <!-- 2. Catálogo de Series (Estilo Galería) -->
+  <main class="colecciones-grid">
+
+    <!-- SERIE 1: Diosas Invisibles -->
+    <article class="serie-item">
+      <div class="imagen-serie">
+        <!-- RECUERDA: Sube la imagen 'serie-diosas.jpg' a tu carpeta /public/ -->
+        <img src="/serie-diosas.jpg" alt="Diosas Invisibles - Arte figurativo contemporáneo por Diana Castro" loading="lazy" />
+        <span class="etiqueta-exclusividad">Colección Internacional</span>
+      </div>
+      <div class="info-serie">
+        <h2>Diosas Invisibles</h2>
+        <p class="descripcion-obra">
+          Una serie que rinde homenaje a la fuerza latente, la feminidad y el misticismo cotidiano. A través de composiciones etéreas, esta colección rescata la figura de la mujer como pilar de la historia no contada, fusionando la técnica clásica con una narrativa profundamente actual. Una de sus obras más demandadas en el circuito de galerías.
+        </p>
+        <a href="/contacto" class="btn-adquisicion">Consultar disponibilidad</a>
+      </div>
+    </article>
+
+    <!-- SERIE 2: Tiempo al Tiempo (Trilogía) -->
+    <article class="serie-item serie-destacada">
+      <div class="imagen-serie">
+        <!-- RECUERDA: Sube la imagen 'serie-tiempo.jpg' a tu carpeta /public/ -->
+        <img src="/serie-tiempo.jpg" alt="Serie Tiempo al Tiempo - Cianotipia y tiempo suspendido" loading="lazy" />
+        <span class="etiqueta-exclusividad">Trilogía Aclamada</span>
+      </div>
+      <div class="info-serie">
+        <h2>Tiempo al Tiempo</h2>
+        <p class="descripcion-obra">
+          Su obra magna en torno a la fugacidad y la permanencia. Esta monumental serie fotográfica e investigativa se divide conceptualmente en tres actos magistrales, creados para dialogar en conjunto dentro de grandes colecciones privadas:
+        </p>
+        <ul class="sub-series-lista">
+          <li><strong>I. Tiempo detenido:</strong> La captura del instante efímero y la quietud absoluta.</li>
+          <li><strong>II. El tiempo es oro:</strong> Una reflexión sobre el valor, el desgaste y la alquimia de la memoria.</li>
+          <li><strong>III. Tiempo suspendido:</strong> El clímax visual donde la obra parece flotar entre el pasado y la eternidad.</li>
+        </ul>
+        <a href="/contacto" class="btn-adquisicion">Dossier para Coleccionistas</a>
+      </div>
+    </article>
+
+    <!-- SERIE 3: Óleo sobre lienzo -->
+    <article class="serie-item">
+      <div class="imagen-serie">
+        <!-- RECUERDA: Sube la imagen 'serie-oleo.jpg' a tu carpeta /public/ -->
+        <img src="/serie-oleo.jpg" alt="Óleo sobre lienzo por la artista plástica Diana Castro" loading="lazy" />
+        <span class="etiqueta-exclusividad">Piezas Únicas</span>
+      </div>
+      <div class="info-serie">
+        <h2>&Oacute;leo sobre lienzo</h2>
+        <p class="descripcion-obra">
+          Un retorno a la pureza del pigmento y la textura. En estas piezas únicas, la artista despliega su maestría técnica en el medio tradicional por excelencia, logrando atmósferas que envuelven al espectador. Obras de gran formato, concebidas como piezas centrales para espacios de alto nivel arquitectónico y curatorial.
+        </p>
+        <a href="/contacto" class="btn-adquisicion">Solicitar catálogo privado</a>
+      </div>
+    </article>
+
+  </main>
+
+  <!-- 3. Llamado a la Acción Final -->
+  <section class="cta-inversion">
+    <h3>Adquisición y Comisiones</h3>
+    <p>Para información sobre precios, disponibilidad de las series o solicitudes de exhibición internacional, le invitamos a contactar directamente con el estudio.</p>
+    <a href="/contacto" class="btn-contacto-vip">Iniciar Diálogo Curatorial</a>
+  </section>
+
+</div>
+
+</Layout>
+
+<!-- Estilos Nativos de Astro (SEO & UI/UX Premium) -->
+<style>
+  .series-editorial-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+    font-family: system-ui, -apple-system, sans-serif;
+    color: #222;
+  }
+
+  @media (min-width: 900px) {
+    .series-editorial-wrapper {
+      padding: 6rem 3rem;
+    }
+  }
+
+  /* --- 1. Encabezado Curatorial --- */
+  .curaduria-intro {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .curaduria-intro h1 {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 2.8rem;
+    color: #111;
+    margin-bottom: 2rem;
+    letter-spacing: 0.5px;
+  }
+
+  @media (min-width: 900px) {
+    .curaduria-intro h1 {
+      font-size: 3.5rem;
+    }
+  }
+
+  .texto-seo-curatorial p {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 1.5rem;
+    text-align: justify;
+  }
+
+  /* Estilizado sutil para las palabras clave SEO */
+  .texto-seo-curatorial strong {
+    font-weight: 500;
+    color: #111;
+  }
+
+  .divisor-elegante {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #ccc, transparent);
+    margin: 4rem 0;
+  }
+
+  /* --- 2. Grid de Series --- */
+  .colecciones-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+  }
+
+  .serie-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  /* Alternar dirección en pantallas grandes para diseño de revista */
+  @media (min-width: 900px) {
+    .serie-item {
+      flex-direction: row;
+      gap: 4rem;
+    }
+    .serie-item:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+    .imagen-serie, .info-serie {
+      flex: 1;
+    }
+  }
+
+  .imagen-serie {
+    position: relative;
+    width: 100%;
+    background-color: #f4f4f4; /* Placeholder visual elegante */
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  }
+
+  /* Para obras verticales o destacadas */
+  .serie-destacada .imagen-serie {
+    aspect-ratio: 3 / 4;
+  }
+
+  .imagen-serie img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease, filter 0.6s ease;
+  }
+
+  .imagen-serie:hover img {
+    transform: scale(1.03);
+    filter: contrast(1.05);
+  }
+
+  .etiqueta-exclusividad {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: rgba(17, 17, 17, 0.9);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+  }
+
+  .info-serie h2 {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 2.2rem;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #111;
+  }
+
+  .descripcion-obra {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 2rem;
+  }
+
+  .sub-series-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2.5rem 0;
+  }
+
+  .sub-series-lista li {
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
+    color: #444;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  .sub-series-lista li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 6px;
+    height: 6px;
+    background-color: #111;
+    border-radius: 50%;
+  }
+
+  .sub-series-lista strong {
+    color: #111;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1.15rem;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-adquisicion {
+    display: inline-block;
+    padding: 0.9rem 2rem;
+    background-color: transparent;
+    color: #111;
+    border: 1px solid #111;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-adquisicion:hover {
+    background-color: #111;
+    color: #fff;
+  }
+
+  /* --- 3. CTA Inversión --- */
+  .cta-inversion {
+    margin-top: 6rem;
+    text-align: center;
+    background-color: #fafafa;
+    padding: 4rem 2rem;
+    border: 1px solid #eaeaea;
+  }
+
+  .cta-inversion h3 {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 2rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  .cta-inversion p {
+    color: #555;
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto 2.5rem auto;
+    line-height: 1.6;
+  }
+
+  .btn-contacto-vip {
+    display: inline-block;
+    padding: 1.2rem 3rem;
+    background-color: #111;
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-contacto-vip:hover {
+    background-color: #333;
+  }
+</style>
