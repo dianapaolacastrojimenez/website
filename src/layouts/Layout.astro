@@ -1,5 +1,5 @@
 ---
-interface Props {
+export interface Props {
   title: string;
   description: string;
 }
@@ -15,11 +15,26 @@ const { title, description } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    
+    <!-- Fuentes de Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+    
+    <!-- Google tag (gtag.js) - Analítica -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1H5ZRFJ9QD" is:inline></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-1H5ZRFJ9QD');
+    </script>
+    <!-- Fin Google tag -->
   </head>
+  
   <body class="bg-ivory-white text-warm-gray antialiased selection:bg-pale-rose selection:text-deep-blue">
+    <!-- Menú de Navegación Global -->
     <nav class="fixed w-full z-50 py-6 px-8 flex justify-between items-center bg-ivory-white/90 backdrop-blur-sm">
       <a href="/" class="font-serif text-2xl text-deep-blue uppercase tracking-widest">Diana Castro</a>
       <div class="space-x-8 font-sans text-sm tracking-wide">
@@ -29,10 +44,12 @@ const { title, description } = Astro.props;
       </div>
     </nav>
     
+    <!-- Contenedor Principal (Aquí se inyectan las páginas como index.astro) -->
     <main class="pt-24 min-h-screen">
       <slot />
     </main>
 
+    <!-- Lógica de Animaciones GSAP -->
     <script>
       import { gsap } from "gsap";
       import { ScrollTrigger } from "gsap/ScrollTrigger";
