@@ -2,19 +2,28 @@
 export interface Props {
   title: string;
   description: string;
+  lang?: 'es' | 'en'; // Añadimos la propiedad de idioma (por defecto 'es')
 }
 
-const { title, description } = Astro.props;
+const { title, description, lang = 'es' } = Astro.props;
+
+// URL base para las etiquetas SEO internacionales
+const siteUrl = "https://dianacastroart.com";
 ---
 
 <!doctype html>
-<html lang="es" class="scroll-smooth">
+<html lang={lang} class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    
+    <!-- SEO Internacional (Hreflang) -->
+    <link rel="alternate" hreflang="es" href={`${siteUrl}/`} />
+    <link rel="alternate" hreflang="en" href={`${siteUrl}/en/`} />
+    <link rel="alternate" hreflang="x-default" href={`${siteUrl}/`} />
     
     <!-- Fuentes de Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,25 +36,44 @@ const { title, description } = Astro.props;
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-1H5ZRFJ9QD');
     </script>
     <!-- Fin Google tag -->
   </head>
   
   <body class="bg-ivory-white text-warm-gray antialiased selection:bg-pale-rose selection:text-deep-blue">
-    <!-- Menú de Navegación Global -->
-    <nav class="fixed w-full z-50 py-6 px-8 flex justify-between items-center bg-ivory-white/90 backdrop-blur-sm">
-      <a href="/" class="font-serif text-2xl text-deep-blue uppercase tracking-widest">Diana Castro</a>
-      <div class="space-x-8 font-sans text-sm tracking-wide">
-        <a href="/artista" class="hover:text-deep-blue transition-colors">La Artista</a>
-        <a href="/series" class="hover:text-deep-blue transition-colors">Series</a>
-        <a href="/contacto" class="hover:text-deep-blue transition-colors">Contacto</a>
+    <!-- Menú de Navegación Global (Adaptativo ES/EN) -->
+    <nav class="fixed w-full z-50 py-6 px-8 flex flex-col md:flex-row justify-between items-center bg-ivory-white/90 backdrop-blur-sm gap-4 md:gap-0">
+      <a href={lang === 'es' ? '/' : '/en/'} class="font-serif text-2xl text-deep-blue uppercase tracking-widest">
+        Diana Castro
+      </a>
+      <div class="flex items-center space-x-6 md:space-x-8 font-sans text-sm tracking-wide">
+        <!-- Enlaces Traducidos -->
+        <a href={lang === 'es' ? '/artista' : '/en/artista'} class="hover:text-deep-blue transition-colors">
+          {lang === 'es' ? 'La Artista' : 'The Artist'}
+        </a>
+        <a href={lang === 'es' ? '/series' : '/en/series'} class="hover:text-deep-blue transition-colors">
+          {lang === 'es' ? 'Series' : 'Series'}
+        </a>
+        <a href={lang === 'es' ? '/contacto' : '/en/contacto'} class="hover:text-deep-blue transition-colors">
+          {lang === 'es' ? 'Contacto' : 'Contact'}
+        </a>
+        
+        <!-- Selector de Idiomas -->
+        <div class="flex items-center space-x-2 border-l border-warm-gray/30 pl-6 md:pl-8 ml-2 md:ml-4">
+          <a href="/" class={`hover:text-deep-blue transition-colors ${lang === 'es' ? 'font-semibold text-deep-blue' : 'text-warm-gray/70'}`}>
+            ES
+          </a>
+          <span class="text-warm-gray/50 text-xs">/</span>
+          <a href="/en/" class={`hover:text-deep-blue transition-colors ${lang === 'en' ? 'font-semibold text-deep-blue' : 'text-warm-gray/70'}`}>
+            EN
+          </a>
+        </div>
       </div>
     </nav>
     
-    <!-- Contenedor Principal (Aquí se inyectan las páginas como index.astro) -->
-    <main class="pt-24 min-h-screen">
+    <!-- Contenedor Principal -->
+    <main class="pt-32 md:pt-24 min-h-screen">
       <slot />
     </main>
 
