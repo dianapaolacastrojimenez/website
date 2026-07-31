@@ -1,1 +1,200 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { fetchArtworks, fetchCarousel } from '../../lib/google';
 
+let artworks = [];
+let carouselImages = [];
+
+try {
+  const result = await fetchArtworks();
+  if (Array.isArray(result)) {
+    artworks = result;
+  }
+  
+  const carouselResult = await fetchCarousel();
+  if (Array.isArray(carouselResult)) {
+    carouselImages = carouselResult;
+  }
+} catch (error) {
+  console.error("Error downloading data from Google Sheets:", error);
+}
+
+if (carouselImages.length === 0) {
+  carouselImages = [
+    {
+      imageUrl: "/cyanotype_homenaje_en_azul_2.jpg",
+      altText: "Diana Castro, contemporary international artist. Portrait and exclusive works.",
+      altTextEn: "Diana Castro, contemporary international artist. Portrait and exclusive works."
+    }
+  ];
+}
+
+const featuredArtworks = artworks.slice(0, 2);
+---
+
+<Layout title="Diana Castro | Contemporary Artist" description="Explore the work of Diana Paola Castro Jiménez. Specialist in cyanotype, memory, and identity." lang="en">
+  
+  <!-- HERO SECTION CON CARRUSEL NATIVO -->
+  <section class="relative min-h-[90vh] flex flex-col items-center justify-center pt-24 pb-16 overflow-hidden gsap-reveal">
+    
+    <div id="hero-carousel" class="absolute inset-0 w-full h-full -z-20 bg-gray-50">
+      {carouselImages.map((img, index) => (
+        <img 
+          src={img.imageUrl} 
+          alt={img.altTextEn} 
+          class={`carousel-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-[2000ms] ease-in-out ${index === 0 ? 'opacity-100' : 'opacity-0'}`}
+          fetchpriority={index === 0 ? "high" : "auto"}
+          loading={index === 0 ? "eager" : "lazy"}
+        />
+      ))}
+    </div>
+
+    <div class="absolute inset-0 bg-white/60 backdrop-blur-[4px] -z-10"></div>
+    
+    <div class="max-w-4xl mx-auto px-6 text-center z-10 mb-10 md:mb-16">
+      <h1 class="font-serif text-5xl md:text-7xl lg:text-[5rem] text-deep-blue mb-6 leading-[1.1] tracking-tight drop-shadow-sm">
+        Materializing time through light
+      </h1>
+      <p class="font-sans text-lg md:text-xl text-gray-800 font-medium max-w-2xl mx-auto leading-relaxed drop-shadow-sm">
+        Cyanotypes and conceptual interventions that challenge the immediacy of liquid modernity. Highly exclusive works where memory is printed in Prussian blue.
+      </p>
+    </div>
+  </section>
+
+  <!-- OBRAS DESTACADAS -->
+  <section class="max-w-7xl mx-auto px-8 py-20 relative z-20 bg-white">
+    <h2 class="font-serif text-3xl text-deep-blue mb-12 border-b border-pale-rose pb-4">Selected Artworks</h2>
+    
+    {featuredArtworks.length === 0 ? (
+      <p class="text-center text-warm-gray py-10">Artworks are loading or could not connect to the database.</p>
+    ) : (
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+        {featuredArtworks.map((obra) => (
+          <div 
+            class="group gsap-reveal cursor-pointer js-lightbox-trigger"
+            data-img={obra.imageUrl}
+            data-title={obra.titleEn}
+            data-desc={`${obra.techniqueEn} — ${obra.year}`}
+          >
+            <div class="aspect-[4/5] bg-pale-rose overflow-hidden mb-6 relative shadow-sm">
+              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 z-10 flex items-center justify-center">
+                <span class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-3xl drop-shadow-md">+</span>
+              </div>
+              <img src={obra.imageUrl} alt={obra.titleEn} class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" loading="lazy" />
+            </div>
+            <h3 class="font-serif text-2xl text-deep-blue">{obra.titleEn}</h3>
+            <p class="font-sans text-sm mt-2">{obra.techniqueEn} — {obra.year}</p>
+          </div>
+        ))}
+      </div>
+    )}
+  </section>
+
+  <!-- MANIFIESTO Y CONTACTO -->
+  <section class="max-w-4xl mx-auto px-8 py-24 text-center border-t border-pale-rose/30 relative z-20 bg-white gsap-reveal">
+    <h2 class="font-serif text-3xl text-deep-blue mb-8">The Creative Sanctuary</h2>
+    
+    <div class="font-sans text-gray-700 leading-relaxed space-y-6 mb-12 text-left md:text-center">
+      <p>
+        This is an open window into Diana Castro's creative sanctuary, where sunlight, the rigor of time, and chemical emulsion converge in an act of pure visual alchemy. Each photographic piece is born from an intimate dialogue with cotton paper. The organic textures, melancholic silhouettes, and deep immersion in Prussian blue guarantee the impossibility of replication. In an era of massive digital overproduction, this analog technique stands as an act of aesthetic rebellion: the materialization of the ephemeral.
+      </p>
+      <p>
+        Acquiring one of these works means securing a tangible fragment of time. An irrefutable testimony of technical mastery destined to elevate the prestige of any private collection, gallery, or museum vault.
+      </p>
+    </div>
+
+    <div class="bg-gray-50 border border-gray-200 p-8 mb-12 shadow-sm text-left md:text-center">
+      <h3 class="font-serif text-xl text-deep-blue mb-3">Exclusivity and Authenticity</h3>
+      <p class="font-sans text-sm text-gray-600 leading-relaxed">
+        All pieces are <strong>original and exclusive works</strong>, invariably delivered with their respective <strong>certificate of authenticity</strong>. The artist also undertakes <strong>commissioned works</strong> and develops <strong>collaborations</strong> for high-level museum and curatorial projects.
+      </p>
+    </div>
+
+    <div class="flex flex-col sm:flex-row justify-center items-center gap-6">
+      <a href="/en/contacto" class="w-full sm:w-auto px-10 py-4 bg-deep-blue text-white font-sans text-xs uppercase tracking-[0.2em] hover:bg-gray-800 transition-colors duration-300 shadow-md text-center">
+        Acquire Artwork / Contact
+      </a>
+      <a href="https://instagram.com/dianacastro.art" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-10 py-4 border border-deep-blue text-deep-blue font-sans text-xs uppercase tracking-[0.2em] hover:bg-deep-blue hover:text-white transition-colors duration-300 text-center">
+        Follow on Instagram
+      </a>
+    </div>
+  </section>
+
+  <!-- HTML DEL LIGHTBOX -->
+  <div id="lightbox-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/95 opacity-0 pointer-events-none transition-opacity duration-300 p-4 sm:p-8">
+    <button id="lightbox-close" class="absolute top-6 right-6 text-white text-4xl font-light hover:text-pale-rose focus:outline-none z-50 transition-colors">
+      &times;
+    </button>
+    <div class="relative max-w-5xl w-full flex flex-col items-center">
+      <img id="lightbox-img" src="" alt="" class="max-h-[75vh] w-auto object-contain shadow-2xl rounded-sm" />
+      <div class="text-white mt-6 text-center max-w-2xl">
+        <h3 id="lightbox-title" class="font-serif text-3xl mb-2"></h3>
+        <p id="lightbox-desc" class="font-sans text-sm text-warm-gray opacity-80"></p>
+      </div>
+    </div>
+  </div>
+
+</Layout>
+
+<!-- LÓGICA DEL LIGHTBOX Y DEL CARRUSEL -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const slides = document.querySelectorAll('.carousel-slide');
+    if (slides.length > 1) {
+      let currentSlide = 0;
+      setInterval(() => {
+        slides[currentSlide].classList.remove('opacity-100');
+        slides[currentSlide].classList.add('opacity-0');
+        
+        currentSlide = (currentSlide + 1) % slides.length;
+        
+        slides[currentSlide].classList.remove('opacity-0');
+        slides[currentSlide].classList.add('opacity-100');
+      }, 6000);
+    }
+
+    const triggers = document.querySelectorAll('.js-lightbox-trigger');
+    const modal = document.getElementById('lightbox-modal');
+    const modalImg = document.getElementById('lightbox-img') as HTMLImageElement;
+    const modalTitle = document.getElementById('lightbox-title');
+    const modalDesc = document.getElementById('lightbox-desc');
+    const closeBtn = document.getElementById('lightbox-close');
+
+    function openLightbox(imgSrc: string, title: string, desc: string) {
+      if(modalImg && modalTitle && modalDesc && modal) {
+        modalImg.src = imgSrc;
+        modalImg.alt = title;
+        modalTitle.textContent = title;
+        modalDesc.textContent = desc;
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeLightbox() {
+      if(modal) {
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        document.body.style.overflow = '';
+        setTimeout(() => { if(modalImg) modalImg.src = ''; }, 300);
+      }
+    }
+
+    triggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        openLightbox(
+          trigger.getAttribute('data-img') || '', 
+          trigger.getAttribute('data-title') || '', 
+          trigger.getAttribute('data-desc') || ''
+        );
+      });
+    });
+
+    if(closeBtn) closeBtn.addEventListener('click', closeLightbox);
+    if(modal) modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  });
+</script>
