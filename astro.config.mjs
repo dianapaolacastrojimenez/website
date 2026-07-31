@@ -15,5 +15,13 @@ export default defineConfig({
   },
   build: {
     format: 'directory', // Ideal para URLs limpias (/obras/ en lugar de /obras.html)
+  },
+  // Motor Bilingüe: Configuración Nativa de Idiomas (ES/EN)
+  i18n: {
+    defaultLocale: 'es',
+    locales: ['es', 'en'],
+    routing: {
+      prefixDefaultLocale: false, // Mantiene la URL raíz limpia para español (dianacastroart.com)
+    }
   }
 });
