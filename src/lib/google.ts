@@ -12,12 +12,16 @@ export interface Artwork {
   order: number;
 }
 
+// 1. NUEVA INTERFAZ PARA EL CARRUSEL
+export interface CarouselImage {
+  imageUrl: string;
+  altText: string;
+}
+
 export async function fetchArtworks(): Promise<Artwork[]> {
-  // 1. ASTRO FIX: Usar import.meta.env en lugar de process.env
   const SHEET_ID = import.meta.env.GOOGLE_SHEET_ID;
   const API_KEY = import.meta.env.GOOGLE_API_KEY;
 
-  // Si GitHub no inyectó las claves, avisamos en la consola de Actions
   if (!SHEET_ID || !API_KEY) {
     console.error("Faltan las credenciales de Google Sheets (SHEET_ID o API_KEY).");
     return [];
@@ -29,13 +33,11 @@ export async function fetchArtworks(): Promise<Artwork[]> {
     const response = await fetch(url);
     const data = await response.json();
 
-    // 2. FIX DEL .map(): Si Google devuelve un error en lugar de valores
     if (!data.values) {
       console.error("Google Sheets no devolvió datos. Respuesta de Google:", data);
       return [];
     }
 
-    // 3. Mapeo seguro: Si una celda está vacía, no rompe el código
     return data.values.map((row: any[]) => ({
       id: row[0] || "",
       title: row[1] || "",
@@ -52,6 +54,37 @@ export async function fetchArtworks(): Promise<Artwork[]> {
     
   } catch (error) {
     console.error("Error crítico al intentar conectar con Google:", error);
+    return [];
+  }
+}
+
+// 2. NUEVA FUNCIÓN PARA DESCARGAR EL CARRUSEL
+export async function fetchCarousel(): Promise<CarouselImage[]> {
+  const SHEET_ID = import.meta.env.GOOGLE_SHEET_ID;
+  const API_KEY = import.meta.env.GOOGLE_API_KEY;
+
+  if (!SHEET_ID || !API_KEY) {
+    return [];
+  }
+
+  // Apuntamos a la nueva pestaña llamada "Carrusel" leyendo las columnas A y B
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/Carrusel!A2:B?key=${API_KEY}`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (!data.values) {
+      return [];
+    }
+
+    return data.values.map((row: any[]) => ({
+      // Mantenemos tu lógica de reemplazo para que los links de Google Drive funcionen igual
+      imageUrl: row[0] ? row[0].replace('open?id=', 'uc?id=') : "",
+      altText: row[1] || "Diana Castro - Colección exclusiva de arte contemporáneo",
+    }));
+  } catch (error) {
+    console.error("Error al descargar datos del Carrusel:", error);
     return [];
   }
 }
