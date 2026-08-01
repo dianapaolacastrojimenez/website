@@ -1,0 +1,332 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Series and Collections | Diana Castro - Colombian Contemporary Artist" 
+  description="Explore the acclaimed works of Diana Castro, a Latin American female artist. Exclusive collections for those looking to buy contemporary art in Colombia."
+  lang="en"
+>
+
+<div class="series-editorial-wrapper">
+
+  <!-- 1. Encabezado Curatorial (Optimizado para SEO en Inglés) -->
+  <header class="curaduria-intro">
+    <h1>Artworks, Series, and Projects</h1>
+    
+    <div class="texto-seo-curatorial">
+      <p>
+        Diana Castro has established herself as one of the most poetic and rigorous voices in the current panorama. As a <strong>Colombian contemporary artist</strong> and a prominent <strong>Latin American female photographer</strong>, her visual research transcends matter to delve into memory, time, and identity.
+      </p>
+      <p>
+        Her work, which fluidly dialogues between cyanotype and <strong>contemporary figurative art</strong>, has captured the attention of gallerists and critics internationally. From her studio, and recognized as a <strong>visual artist in Medellín</strong>, Castro projects a universal aesthetic language. 
+      </p>
+      <p>
+        For collectors and institutions looking to <strong>buy contemporary art from Colombia</strong> with high appreciation potential, the following series represent an invaluable investment and a testament to the power of the <strong>Latin American female artist</strong> in the global market.
+      </p>
+    </div>
+  </header>
+
+  <hr class="divisor-elegante" />
+
+  <!-- 2. Catálogo de Series (Estilo Galería) -->
+  <main class="colecciones-grid">
+
+    <!-- SERIE 1: Diosas Invisibles -->
+    <article class="serie-item">
+      <div class="imagen-serie">
+        <!-- RECUERDA: Sube la imagen 'serie-diosas.jpg' a tu carpeta /public/ -->
+        <img src="/serie-diosas.jpg" alt="Invisible Goddesses - Contemporary figurative art by Diana Castro" loading="lazy" />
+        <span class="etiqueta-exclusividad">International Collection</span>
+      </div>
+      <div class="info-serie">
+        <h2>Invisible Goddesses</h2>
+        <p class="descripcion-obra">
+          A series that pays homage to latent strength, femininity, and everyday mysticism. Through ethereal compositions, this collection rescues the figure of the woman as a pillar of untold history, merging classical technique with a deeply contemporary narrative. One of her most sought-after works in the gallery circuit.
+        </p>
+        <a href="/en/contacto" class="btn-adquisicion">Check availability</a>
+      </div>
+    </article>
+
+    <!-- SERIE 2: Tiempo al Tiempo (Trilogía) -->
+    <article class="serie-item serie-destacada">
+      <div class="imagen-serie">
+        <!-- RECUERDA: Sube la imagen 'serie-tiempo1.jpg' a tu carpeta /public/ -->
+        <img src="/serie-tiempo1.jpg" alt="Tiempo al Tiempo Series - Cyanotype and suspended time" loading="lazy" />
+        <span class="etiqueta-exclusividad">Acclaimed Trilogy</span>
+      </div>
+      <div class="info-serie">
+        <h2>Tiempo al Tiempo</h2>
+        <p class="descripcion-obra">
+          Her magnum opus regarding transience and permanence. This monumental photographic and investigative series is conceptually divided into three masterful acts, created to dialogue together within major private collections:
+        </p>
+        <ul class="sub-series-lista">
+          <li><strong>I. Stopped Time:</strong> The capture of the ephemeral instant and absolute stillness.</li>
+          <li><strong>II. Time is Gold:</strong> A reflection on value, wear, and the alchemy of memory.</li>
+          <li><strong>III. Suspended Time:</strong> The visual climax where the artwork seems to float between the past and eternity.</li>
+        </ul>
+        <a href="/en/contacto" class="btn-adquisicion">Dossier for Collectors</a>
+      </div>
+    </article>
+
+    <!-- SERIE 3: Óleo sobre lienzo -->
+    <article class="serie-item">
+      <div class="imagen-serie">
+        <!-- RECUERDA: Sube la imagen 'serie-oleo.jpg' a tu carpeta /public/ -->
+        <img src="/serie-oleo.jpg" alt="Oil on canvas by visual artist Diana Castro" loading="lazy" />
+        <span class="etiqueta-exclusividad">Unique Pieces</span>
+      </div>
+      <div class="info-serie">
+        <h2>Oil on Canvas</h2>
+        <p class="descripcion-obra">
+          A return to the purity of pigment and texture. In these unique pieces, the artist displays her technical mastery in the traditional medium par excellence, achieving atmospheres that envelop the viewer. Large-format works, conceived as centerpieces for high-level architectural and curatorial spaces.
+        </p>
+        <a href="/en/contacto" class="btn-adquisicion">Request private catalog</a>
+      </div>
+    </article>
+
+  </main>
+
+  <!-- 3. Llamado a la Acción Final -->
+  <section class="cta-inversion">
+    <h3>Acquisition and Commissions</h3>
+    <p>For information on pricing, availability of the series, or international exhibition requests, we invite you to contact the studio directly.</p>
+    <a href="/en/contacto" class="btn-contacto-vip">Start Curatorial Dialogue</a>
+  </section>
+
+</div>
+
+</Layout>
+
+<!-- Estilos Nativos de Astro (SEO & UI/UX Premium) -->
+<style>
+  .series-editorial-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+    font-family: system-ui, -apple-system, sans-serif;
+    color: #222;
+  }
+
+  @media (min-width: 900px) {
+    .series-editorial-wrapper {
+      padding: 6rem 3rem;
+    }
+  }
+
+  /* --- 1. Encabezado Curatorial --- */
+  .curaduria-intro {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .curaduria-intro h1 {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 2.8rem;
+    color: #111;
+    margin-bottom: 2rem;
+    letter-spacing: 0.5px;
+  }
+
+  @media (min-width: 900px) {
+    .curaduria-intro h1 {
+      font-size: 3.5rem;
+    }
+  }
+
+  .texto-seo-curatorial p {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 1.5rem;
+    text-align: justify;
+  }
+
+  /* Estilizado sutil para las palabras clave SEO */
+  .texto-seo-curatorial strong {
+    font-weight: 500;
+    color: #111;
+  }
+
+  .divisor-elegante {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #ccc, transparent);
+    margin: 4rem 0;
+  }
+
+  /* --- 2. Grid de Series --- */
+  .colecciones-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+  }
+
+  .serie-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  /* Alternar dirección en pantallas grandes para diseño de revista */
+  @media (min-width: 900px) {
+    .serie-item {
+      flex-direction: row;
+      gap: 4rem;
+    }
+    .serie-item:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+    .imagen-serie, .info-serie {
+      flex: 1;
+    }
+  }
+
+  .imagen-serie {
+    position: relative;
+    width: 100%;
+    background-color: #f4f4f4; /* Placeholder visual elegante */
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  }
+
+  /* Para obras verticales o destacadas */
+  .serie-destacada .imagen-serie {
+    aspect-ratio: 3 / 4;
+  }
+
+  .imagen-serie img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease, filter 0.6s ease;
+  }
+
+  .imagen-serie:hover img {
+    transform: scale(1.03);
+    filter: contrast(1.05);
+  }
+
+  .etiqueta-exclusividad {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: rgba(17, 17, 17, 0.9);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+  }
+
+  .info-serie h2 {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 2.2rem;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #111;
+  }
+
+  .descripcion-obra {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 2rem;
+  }
+
+  .sub-series-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2.5rem 0;
+  }
+
+  .sub-series-lista li {
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
+    color: #444;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  .sub-series-lista li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 6px;
+    height: 6px;
+    background-color: #111;
+    border-radius: 50%;
+  }
+
+  .sub-series-lista strong {
+    color: #111;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1.15rem;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-adquisicion {
+    display: inline-block;
+    padding: 0.9rem 2rem;
+    background-color: transparent;
+    color: #111;
+    border: 1px solid #111;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-adquisicion:hover {
+    background-color: #111;
+    color: #fff;
+  }
+
+  /* --- 3. CTA Inversión --- */
+  .cta-inversion {
+    margin-top: 6rem;
+    text-align: center;
+    background-color: #fafafa;
+    padding: 4rem 2rem;
+    border: 1px solid #eaeaea;
+  }
+
+  .cta-inversion h3 {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 2rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  .cta-inversion p {
+    color: #555;
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto 2.5rem auto;
+    line-height: 1.6;
+  }
+
+  .btn-contacto-vip {
+    display: inline-block;
+    padding: 1.2rem 3rem;
+    background-color: #111;
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-contacto-vip:hover {
+    background-color: #333;
+  }
+</style>
