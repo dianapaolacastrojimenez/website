@@ -1,0 +1,245 @@
+---
+import Layout from '../../layouts/Layout.astro';
+// Descomenta la siguiente línea si estás usando tu componente de navegación unificado
+// import Header from '../../components/Header.astro';
+---
+
+<Layout title="Diana Castro | Contemporary Artist" description="Explore the work of Diana Paola Castro Jiménez. Specialist in cyanotype, memory, and identity." lang="en">
+
+<!-- <Header /> -->
+
+<section class="artista-contenedor">
+  
+  <!-- 1. Biografía de la Artista (Layout Editorial) -->
+  <div class="biografia-seccion">
+    
+    <div class="layout-editorial">
+      
+      <!-- Columna de la Fotografía -->
+      <div class="columna-imagen">
+        <div class="marco-fotografia">
+          <img 
+            src="/artista1.JPG" 
+            alt="Portrait of visual artist Diana Castro" 
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <!-- Columna de Texto -->
+      <div class="columna-texto">
+        <h1>Diana Castro</h1>
+        <h2 class="subtitulo">Visual Artist | Medellín, Colombia</h2>
+        
+        <div class="texto-biografia">
+          <p>
+            Diana Castro is a visual artist whose work transcends technique and concept, creating deeply personal yet universally resonant art. For over twelve years, Castro worked as a systems engineer in the banking sector, where she honed her analytical skills and precision. However, something deeper and more visceral called to her; one day, she decided to leave the known behind, take a bold leap into the unknown, and pursue her true passion: art.
+          </p>
+          <p>
+            Since childhood, Diana cultivated a fascination for the arts, but it was during her transition into professional artistic creation that she found her most authentic voice. She began exploring both traditional and contemporary techniques, merging her technical rigor with the creative freedom that art offered. This convergence of logic and emotion has shaped a unique style, characterized by introspection and the exploration of vast themes such as time, memory, and the transience of human existence.
+          </p>
+          <p>
+            In recent years, Diana has immersed herself in a deep investigation of the concept of time through cyanotype, a photographic printing technique that uses sunlight to reveal images. Through this process, she captures ephemeral moments, creating works that, like time itself, are unrepeatable. Cyanotype has become the perfect tool to express her vision of fleetingness, but also of art's capacity to preserve the intangible.
+          </p>
+          <p>
+            Today, Diana Castro's work continues to evolve, with an increasingly profound exploration of time, memory, the feminine, and the relationship between nature and art. Her research continues to push the boundaries of cyanotype and open new possibilities for creation.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="divisor" />
+
+  <!-- 2. Descarga del Catálogo -->
+  <div class="catalogo-seccion">
+    <h3>Projects and 2026 Catalog</h3>
+    <p>Explore the "Homenaje en Azul" and "Tiempo al Tiempo" series in depth, including technical and conceptual specifications for each artwork.</p>
+    <a 
+      href="/CATALOGO 2026.pdf" 
+      download="Diana_Castro_Catalog_2026.pdf"
+      class="btn-descarga"
+    >
+      Download 2026 Catalog (PDF)
+    </a>
+  </div>
+
+  <hr class="divisor" />
+
+  <!-- 3. Sección de Instagram -->
+  <div class="instagram-invitation">
+    <h3>Follow the creative process</h3>
+    <p>
+      If you want to know more about the artist's day-to-day, explore glimpses of her studio, and closely follow her creative process, we invite you to visit her Instagram space:
+    </p>
+    <a 
+      href="https://www.instagram.com/artdcastro/" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      class="btn-instagram"
+    >
+      Visit @artdcastro on Instagram
+    </a>
+  </div>
+
+</section>
+
+</Layout>
+
+<!-- Estilos nativos de Astro -->
+<style>
+  .artista-contenedor {
+    max-width: 1000px; /* Ampliamos un poco el ancho para el nuevo layout */
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    font-family: system-ui, -apple-system, sans-serif;
+    color: #333;
+  }
+
+  /* --- INICIO NUEVO LAYOUT EDITORIAL --- */
+  .layout-editorial {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .layout-editorial {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 4rem;
+    }
+    .columna-imagen {
+      flex: 0 0 35%; /* La imagen ocupa el 35% del ancho */
+      position: sticky;
+      top: 2rem; /* Efecto elegante al hacer scroll */
+    }
+    .columna-texto {
+      flex: 1; /* El texto ocupa el resto */
+    }
+  }
+
+  .marco-fotografia {
+    background-color: #ffffff;
+    padding: 12px;
+    border-radius: 4px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  .marco-fotografia:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.12);
+  }
+
+  .marco-fotografia img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 2px;
+    filter: contrast(1.02) saturate(1.05); /* Ligero realce de color */
+  }
+  /* --- FIN NUEVO LAYOUT EDITORIAL --- */
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 0.2rem;
+    color: #111;
+    font-family: 'Times New Roman', Times, serif; /* Toque más clásico y artístico */
+    letter-spacing: -0.5px;
+  }
+
+  .subtitulo {
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: #888;
+    margin-bottom: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  .texto-biografia p {
+    line-height: 1.85;
+    margin-bottom: 1.5rem;
+    color: #4a4a4a;
+    text-align: justify;
+    font-size: 1.05rem;
+  }
+
+  .divisor {
+    border: 0;
+    height: 1px;
+    background-color: #eaeaea;
+    margin: 4rem 0;
+  }
+
+  .catalogo-seccion {
+    text-align: center;
+    padding: 3rem 2rem;
+    background-color: #f8f9fa; 
+    border-radius: 12px;
+  }
+
+  .catalogo-seccion h3 {
+    margin-top: 0;
+    font-size: 1.8rem;
+    color: #222;
+  }
+
+  .catalogo-seccion p {
+    margin-bottom: 2rem;
+    color: #555;
+    font-size: 1.1rem;
+  }
+
+  .btn-descarga {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background-color: #1a252f; 
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  .btn-descarga:hover {
+    background-color: #2c3e50;
+    transform: translateY(-2px);
+  }
+
+  .instagram-invitation {
+    text-align: center;
+  }
+
+  .instagram-invitation h3 {
+    margin-top: 0;
+    font-size: 1.8rem;
+  }
+
+  .instagram-invitation p {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .btn-instagram {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background-color: #E1306C;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  .btn-instagram:hover {
+    background-color: #c1255b;
+    transform: translateY(-2px);
+  }
+</style>
