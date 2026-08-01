@@ -1,0 +1,398 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Diana Castro | Contact and Studio" description="Connect with visual artist Diana Paola Castro. Artwork acquisition, commissions, and dialogue about art." lang="en">
+
+<div class="contacto-editorial-wrapper">
+  
+  <!-- Panel Izquierdo: Exhibición de la Obra Interactiva -->
+  <aside class="panel-arte">
+    <div class="exhibicion-obra" id="trigger-lightbox" title="Click to enlarge artwork">
+      <img src="/horizontal1.jpg" alt="Cyanotype artistic composition by Diana Castro" loading="lazy" />
+      
+      <!-- Indicador de Zoom (Aparece al pasar el cursor) -->
+      <div class="indicador-zoom">
+        <span>+ Enlarge artwork</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Panel Derecho: Interacción y Diálogo -->
+  <main class="panel-formulario">
+    <div class="contenido-derecho">
+      
+      <div class="mensaje-intro">
+        <h2>Art is a bridge</h2>
+        <p>Each artwork is the beginning of a dialogue about time, light, and memory. Contact me for inquiries regarding acquisitions, exhibitions, or collaborations.</p>
+      </div>
+
+      <div class="instagram-invitation">
+        <h3>Follow the creative process</h3>
+        <p>Explore exclusive glimpses of my studio and follow the evolution of my series in real-time:</p>
+        <a 
+          href="https://www.instagram.com/artdcastro/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="btn-instagram"
+        >
+          Visit @artdcastro
+        </a>
+      </div>
+
+      <hr class="divisor" />
+
+      <div class="formulario-wrapper">
+        <h3>Let's start a conversation</h3>
+        <p class="form-descripcion">Fill out the details below, and I will get back to you as soon as possible.</p>
+
+        <form action="https://formspree.io/f/mdaqwewd" method="POST" class="formulario-contacto" id="form-contacto">
+          
+          <div class="grupo-input">
+            <label for="nombre">Full name:</label>
+            <input type="text" id="nombre" name="nombre" required placeholder="e.g., Emilio Andres" />
+          </div>
+
+          <div class="grupo-input">
+            <label for="email">Your email address:</label>
+            <input type="email" id="email" name="email" required placeholder="e.g., violeta@email.com" />
+          </div>
+
+          <div class="grupo-input">
+            <label for="email_confirmar">Confirm your email address:</label>
+            <input type="email" id="email_confirmar" name="email_confirmar" required placeholder="Type your email again" autocomplete="off" />
+            <span id="error-email" class="mensaje-error">Emails do not match. Please verify.</span>
+          </div>
+
+          <div class="grupo-input">
+            <label for="telefono">Contact phone (Optional):</label>
+            <input type="tel" id="telefono" name="telefono" placeholder="e.g., +1 234 567 8900" />
+          </div>
+
+          <div class="grupo-input">
+            <label for="mensaje">Message:</label>
+            <textarea id="mensaje" name="mensaje" rows="5" required placeholder="Write your message here..."></textarea>
+          </div>
+
+          <input type="text" name="_gotcha" style="display:none" />
+
+          <button type="submit" class="btn-enviar">Send Message</button>
+        </form>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Modal Nativo para Ampliar la Obra -->
+<dialog id="modal-lightbox" class="lightbox-modal">
+  <div class="lightbox-contenido">
+    <button id="cerrar-modal" class="btn-cerrar-modal" aria-label="Close artwork">&times;</button>
+    <img src="/horizontal1.jpg" alt="Enlarged detail of Diana Castro's artwork" />
+  </div>
+</dialog>
+
+</Layout>
+
+<!-- Estilos -->
+<style>
+  .contacto-editorial-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: system-ui, -apple-system, sans-serif;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 900px) {
+    .contacto-editorial-wrapper {
+      flex-direction: row;
+    }
+  }
+
+  /* --- Panel de Arte --- */
+  .panel-arte {
+    width: 100%;
+    background-color: #f7f7f7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+  }
+
+  @media (min-width: 900px) {
+    .panel-arte {
+      width: 50%;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 3rem;
+    }
+  }
+
+  .exhibicion-obra {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    cursor: zoom-in;
+  }
+
+  .exhibicion-obra img {
+    max-width: 100%;
+    max-height: 55vh;
+    object-fit: contain;
+    box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    transition: transform 0.4s ease, filter 0.4s ease;
+  }
+
+  @media (min-width: 900px) {
+    .exhibicion-obra img {
+      max-height: 88vh;
+    }
+  }
+
+  .exhibicion-obra:hover img {
+    transform: scale(1.02);
+    filter: brightness(0.95);
+  }
+
+  .indicador-zoom {
+    position: absolute;
+    bottom: 20px;
+    background-color: rgba(17, 17, 17, 0.85);
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s ease;
+    pointer-events: none;
+  }
+
+  .exhibicion-obra:hover .indicador-zoom {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 899px) {
+    .indicador-zoom {
+      opacity: 1;
+      transform: translateY(0);
+      background-color: rgba(17, 17, 17, 0.6);
+    }
+  }
+
+  /* --- Panel del Formulario --- */
+  .panel-formulario {
+    width: 100%;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+  }
+
+  @media (min-width: 900px) {
+    .panel-formulario {
+      width: 50%;
+      justify-content: center; 
+      padding: 4rem;
+      overflow-y: auto;
+    }
+  }
+
+  .contenido-derecho {
+    width: 100%;
+    max-width: 550px;
+  }
+
+  .mensaje-intro { margin-bottom: 3rem; }
+  .mensaje-intro h2 { font-family: 'Times New Roman', Times, serif; font-size: 2.2rem; margin-bottom: 1rem; font-weight: 400; color: #111; }
+  .mensaje-intro p { font-size: 1.05rem; line-height: 1.6; color: #555; }
+  @media (min-width: 900px) { .mensaje-intro h2 { font-size: 2.5rem; } .mensaje-intro p { font-size: 1.1rem; } }
+  
+  .instagram-invitation { background-color: #fcfcfc; border: 1px solid #eaeaea; border-radius: 4px; padding: 2rem; text-align: center; margin-bottom: 1rem; }
+  .instagram-invitation h3 { margin-top: 0; color: #111; font-family: 'Times New Roman', Times, serif; font-size: 1.6rem; }
+  .instagram-invitation p { color: #666; line-height: 1.5; margin-bottom: 1.5rem; font-size: 0.95rem; }
+  .btn-instagram { display: inline-block; padding: 0.75rem 1.8rem; background-color: transparent; color: #E1306C; border: 1px solid #E1306C; text-decoration: none; font-weight: 600; border-radius: 4px; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; }
+  .btn-instagram:hover { background-color: #E1306C; color: white; }
+  .divisor { border: 0; height: 1px; background-color: #eaeaea; margin: 2.5rem 0; }
+  
+  .formulario-wrapper h3 { margin-top: 0; color: #111; font-family: 'Times New Roman', Times, serif; font-size: 1.8rem; }
+  .form-descripcion { color: #666; margin-bottom: 2rem; font-size: 0.95rem; }
+  .formulario-contacto { display: flex; flex-direction: column; gap: 1.5rem; }
+  .grupo-input { display: flex; flex-direction: column; gap: 0.5rem; }
+  .grupo-input label { font-weight: 500; color: #333; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  .grupo-input input, .grupo-input textarea { padding: 0.9rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; font-family: inherit; transition: all 0.3s ease; background-color: #fafafa; }
+  .grupo-input input:focus, .grupo-input textarea:focus { outline: none; border-color: #111; background-color: #fff; box-shadow: 0 0 0 1px #111; }
+  .mensaje-error { display: none; color: #E1306C; font-size: 0.85rem; margin-top: 0.25rem; font-weight: 500; }
+  .btn-enviar { padding: 1.2rem; background-color: #111; color: white; border: none; border-radius: 4px; font-size: 0.95rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease; margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 1px; }
+  .btn-enviar:hover { background-color: #333; }
+
+  /* --- Mejoras Premium del Lightbox Nativo --- */
+  .lightbox-modal {
+    border: none;
+    background: transparent;
+    padding: 0;
+    max-width: 100vw;
+    max-height: 100vh;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden; /* Evita scrolls dobles */
+  }
+
+  /* Animación de entrada suave para el modal */
+  .lightbox-modal[open] {
+    animation: zoomIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Animación de entrada suave para el fondo oscuro */
+  .lightbox-modal::backdrop {
+    background: rgba(8, 8, 8, 0.95);
+    backdrop-filter: blur(8px); /* Difumina el sitio web de fondo */
+    animation: fadeIn 0.4s ease forwards;
+  }
+
+  .lightbox-contenido {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 2rem;
+  }
+
+  .lightbox-contenido img {
+    /* La imagen ocupa el máximo espacio posible sin deformarse */
+    max-width: 95vw;
+    max-height: 95vh;
+    object-fit: contain;
+    border-radius: 2px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+
+  .btn-cerrar-modal {
+    position: absolute;
+    top: 25px;
+    right: 35px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    color: white;
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+  }
+
+  .btn-cerrar-modal:hover {
+    background: #E1306C;
+    border-color: #E1306C;
+    transform: scale(1.1);
+  }
+
+  /* Keyframes de animación */
+  @keyframes zoomIn {
+    0% { opacity: 0; transform: scale(0.95); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+</style>
+
+<!-- Lógica combinada (Correos + Lightbox) -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Lógica del Lightbox
+    const modal = document.getElementById('modal-lightbox');
+    const trigger = document.getElementById('trigger-lightbox');
+    const btnCerrar = document.getElementById('cerrar-modal');
+
+    if (modal && trigger && btnCerrar) {
+      
+      // Función para abrir
+      trigger.addEventListener('click', () => {
+        // En navegadores modernos con <dialog>, showModal() hace la magia
+        if (typeof modal.showModal === 'function') {
+          modal.showModal();
+          document.body.style.overflow = 'hidden'; // Evita que la web se mueva atrás
+        }
+      });
+
+      // Función para cerrar (clic en el botón X)
+      btnCerrar.addEventListener('click', () => {
+        modal.close();
+        document.body.style.overflow = '';
+      });
+
+      // Función para cerrar (clic en cualquier parte del fondo oscuro)
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal || e.target.classList.contains('lightbox-contenido')) {
+          modal.close();
+          document.body.style.overflow = '';
+        }
+      });
+    }
+
+    // 2. Lógica de validación de correos
+    const form = document.getElementById('form-contacto');
+    const email = document.getElementById('email');
+    const emailConfirmar = document.getElementById('email_confirmar');
+    const errorMensaje = document.getElementById('error-email');
+
+    const validarCorreos = () => {
+      const correo1 = email.value.trim().toLowerCase();
+      const correo2 = emailConfirmar.value.trim().toLowerCase();
+
+      if (correo1 !== correo2 && correo2 !== '') {
+        errorMensaje.style.display = 'block';
+        emailConfirmar.style.borderColor = '#E1306C';
+        return false;
+      } else {
+        errorMensaje.style.display = 'none';
+        emailConfirmar.style.borderColor = '#111';
+        return true;
+      }
+    };
+
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        const correo1 = email.value.trim().toLowerCase();
+        const correo2 = emailConfirmar.value.trim().toLowerCase();
+        
+        if (correo1 !== correo2) {
+          e.preventDefault();
+          errorMensaje.style.display = 'block';
+          emailConfirmar.style.borderColor = '#E1306C';
+          emailConfirmar.focus();
+        }
+      });
+
+      emailConfirmar.addEventListener('input', validarCorreos);
+      email.addEventListener('input', () => {
+        if (emailConfirmar.value !== '') validarCorreos();
+      });
+
+      emailConfirmar.addEventListener('paste', (e) => {
+        e.preventDefault();
+        alert('For security purposes, please type your email manually.');
+      });
+    }
+  });
+</script>
