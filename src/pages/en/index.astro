@@ -74,7 +74,7 @@ const featuredArtworks = artworks.slice(0, 2);
             class="group gsap-reveal cursor-pointer js-lightbox-trigger"
             data-img={obra.imageUrl}
             data-title={obra.titleEn}
-            data-desc={`${obra.techniqueEn} — ${obra.year}`}
+            data-desc={`${obra.techniqueEn} — ${obra.descriptionEn}`}
           >
             <div class="aspect-[4/5] bg-pale-rose overflow-hidden mb-6 relative shadow-sm">
               <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 z-10 flex items-center justify-center">
@@ -83,9 +83,8 @@ const featuredArtworks = artworks.slice(0, 2);
               <img src={obra.imageUrl} alt={obra.titleEn} class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" loading="lazy" />
             </div>
             <h3 class="font-serif text-2xl text-deep-blue">{obra.titleEn}</h3>
-            <p class="font-sans text-sm mt-2">{obra.techniqueEn} — {obra.year}</p>
-          </div>
-        ))}
+            <p class="font-sans text-sm mt-2 leading-relaxed">{obra.techniqueEn} — {obra.descriptionEn}</p>
+          </div>        ))}
       </div>
     )}
   </section>
