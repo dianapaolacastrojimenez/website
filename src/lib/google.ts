@@ -1,39 +1,20 @@
-// ============================================================
-// src/lib/google.ts
-// ============================================================
-
 export interface Artwork {
   id: string;
   title: string;
   titleEn: string;
-
   series: string;
-
   year: string;
-
   technique: string;
   techniqueEn: string;
-
   dimensions: string;
-
   availability: string;
-
   price?: string;
-
   description: string;
   descriptionEn: string;
-
   imageUrl: string;
-
   order: number;
-
-  /*
-   * Columna O de Google Sheets:
-   * "Mostrar botón serie"
-   */
   showSeriesButton: boolean;
 }
-
 
 export interface CarouselImage {
   imageUrl: string;
@@ -43,38 +24,42 @@ export interface CarouselImage {
 
 
 /**
- * Convierte diferentes formatos de rutas de imágenes
- * provenientes de Google Sheets en rutas utilizables
- * por Astro.
+ * Convierte diferentes formatos de imagen
+ * en una ruta válida para Astro.
+ *
+ * Ejemplos:
+ *
+ * /obra.jpg
+ * public/obra.jpg
+ * /public/obra.jpg
+ * obras/obra.jpg
+ *
+ * terminan funcionando como:
+ *
+ * /obra.jpg
+ * /obras/obra.jpg
  */
 function processImageString(rawString: string): string {
-
-  if (!rawString) {
-    return "";
-  }
+  if (!rawString) return "";
 
   let value = String(rawString).trim();
 
-  /*
-   * Google Drive antiguo:
-   *
-   * https://drive.google.com/open?id=XXXXX
-   *
-   * se convierte en:
-   *
-   * https://drive.google.com/uc?id=XXXXX
-   */
+  if (!value) return "";
+
+  // Google Drive antiguo
   if (value.includes("open?id=")) {
-    return value.replace(
-      "open?id=",
-      "uc?id="
-    );
+    return value.replace("open?id=", "uc?id=");
   }
 
+  // Google Drive file URL
+  if (
+    value.includes("drive.google.com") ||
+    value.includes("googleusercontent.com")
+  ) {
+    return value;
+  }
 
-  /*
-   * Si es una URL completa, la dejamos intacta.
-   */
+  // URL absoluta
   if (
     value.startsWith("http://") ||
     value.startsWith("https://")
@@ -82,105 +67,65 @@ function processImageString(rawString: string): string {
     return value;
   }
 
+  // Astro sirve directamente la carpeta /public
+  // Por eso eliminamos "public/" si el usuario lo escribió.
+  value = value.replace(/^public[\\/]/i, "");
 
-  /*
-   * IMPORTANTE:
-   *
-   * Los archivos que están dentro de:
-   *
-   * public/obras/...
-   *
-   * NO se llaman desde el navegador como:
-   *
-   * /public/obras/...
-   *
-   * sino como:
-   *
-   * /obras/...
-   *
-   * Por eso eliminamos "public/".
-   */
-  value = value.replace(
-    /^public\//i,
-    ""
-  );
+  // Normalizamos barras
+  value = value.replace(/\\/g, "/");
 
-
-  /*
-   * Si ya empieza con "/", está listo.
-   */
-  if (value.startsWith("/")) {
-    return value;
+  // Aseguramos que empiece por /
+  if (!value.startsWith("/")) {
+    value = `/${value}`;
   }
 
-
-  /*
-   * Para cualquier otra ruta local,
-   * añadimos "/".
-   */
-  return `/${value}`;
+  return value;
 }
 
 
 /**
- * Convierte el valor de la columna
- * "Mostrar botón serie" a boolean.
+ * Convierte el contenido de la columna
+ * "Mostrar botón serie" en verdadero/falso.
  *
- * Admite:
- *
+ * Acepta:
  * SI
- * Sí
+ * SÍ
  * si
- * YES
- * yes
+ * sí
  * TRUE
  * true
  * 1
- * X
+ * YES
+ * ON
  */
-function parseShowSeriesButton(
-  value: unknown
-): boolean {
-
-  if (value === true) {
-    return true;
-  }
-
-  if (value === false) {
+function parseBoolean(value: unknown): boolean {
+  if (value === undefined || value === null) {
     return false;
   }
 
-  if (
-    value === undefined ||
-    value === null
-  ) {
-    return false;
-  }
+  const normalized = String(value)
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
 
-  const normalized =
-    String(value)
-      .trim()
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(
-        /[\u0300-\u036f]/g,
-        ""
-      );
-
-  return (
-    normalized === "si" ||
-    normalized === "yes" ||
-    normalized === "true" ||
-    normalized === "1" ||
-    normalized === "x"
-  );
+  return [
+    "si",
+    "true",
+    "1",
+    "yes",
+    "on",
+    "mostrar",
+    "mostrar boton",
+    "mostrar boton serie",
+  ].includes(normalized);
 }
 
 
 /**
- * Obtiene las obras desde Google Sheets.
+ * Descarga las obras desde Google Sheets.
  *
- * Estructura actual de la hoja "Obras":
+ * Hoja: Obras
  *
  * A = ID
  * B = title
@@ -199,19 +144,10 @@ function parseShowSeriesButton(
  * O = Mostrar botón serie
  */
 export async function fetchArtworks(): Promise<Artwork[]> {
+  const SHEET_ID = import.meta.env.GOOGLE_SHEET_ID;
+  const API_KEY = import.meta.env.GOOGLE_API_KEY;
 
-  const SHEET_ID =
-    import.meta.env.GOOGLE_SHEET_ID;
-
-  const API_KEY =
-    import.meta.env.GOOGLE_API_KEY;
-
-
-  if (
-    !SHEET_ID ||
-    !API_KEY
-  ) {
-
+  if (!SHEET_ID || !API_KEY) {
     console.error(
       "Faltan GOOGLE_SHEET_ID o GOOGLE_API_KEY."
     );
@@ -219,306 +155,173 @@ export async function fetchArtworks(): Promise<Artwork[]> {
     return [];
   }
 
-
   const url =
     `https://sheets.googleapis.com/v4/spreadsheets/` +
     `${SHEET_ID}/values/Obras!A2:O?key=${API_KEY}`;
 
-
   try {
-
-    const response =
-      await fetch(url);
-
+    const response = await fetch(url);
 
     if (!response.ok) {
-
-      throw new Error(
-        `Google Sheets respondió con HTTP ${response.status}`
-      );
-
-    }
-
-
-    const data =
-      await response.json();
-
-
-    if (
-      !data ||
-      !Array.isArray(data.values)
-    ) {
-
-      console.warn(
-        "Google Sheets no devolvió filas para la pestaña Obras."
+      console.error(
+        "Google Sheets respondió con error:",
+        response.status,
+        response.statusText
       );
 
       return [];
-
     }
 
+    const data = await response.json();
 
-    const artworks: Artwork[] =
-      data.values
-        .map(
-          (
-            row: any[],
-            index: number
-          ) => {
+    if (!data.values || !Array.isArray(data.values)) {
+      return [];
+    }
 
-            /*
-             * Columna O
-             *
-             * Índice 14 porque:
-             *
-             * A = 0
-             * B = 1
-             * ...
-             * O = 14
-             */
-            const rawShowButton =
-              row[14] !== undefined &&
-              row[14] !== null
-                ? String(row[14]).trim()
-                : "";
+    return data.values
+      .map((row: any[]) => {
+        return {
+          id: String(row[0] ?? "").trim(),
 
+          title: String(row[1] ?? "").trim(),
 
-            const showSeriesButton =
-              parseShowSeriesButton(
-                rawShowButton
-              );
+          series: String(row[2] ?? "").trim(),
 
+          year: String(row[3] ?? "").trim(),
 
-            /*
-             * Información útil durante el build.
-             * Aparecerá en los logs de GitHub Actions.
-             */
-            console.log(
-              `[Google Sheets] Fila ${index + 2}`,
-              `| Obra: ${row[1] || ""}`,
-              `| Serie: ${row[2] || ""}`,
-              `| Mostrar botón: ${rawShowButton}`,
-              `| Resultado: ${showSeriesButton}`
-            );
+          technique: String(row[4] ?? "").trim(),
 
+          dimensions: String(row[5] ?? "").trim(),
 
-            return {
+          availability: String(row[6] ?? "").trim(),
 
-              id:
-                row[0] ||
-                "",
+          price:
+            row[7] !== undefined &&
+            row[7] !== null &&
+            String(row[7]).trim() !== ""
+              ? String(row[7]).trim()
+              : undefined,
 
+          description: String(row[8] ?? "").trim(),
 
-              title:
-                row[1] ||
-                "",
+          imageUrl: processImageString(
+            String(row[9] ?? "")
+          ),
 
+          order: Number.parseInt(
+            String(row[10] ?? "0"),
+            10
+          ) || 0,
 
-              series:
-                row[2] ||
-                "",
+          titleEn:
+            String(row[11] ?? "").trim() ||
+            String(row[1] ?? "").trim(),
 
+          techniqueEn:
+            String(row[12] ?? "").trim() ||
+            String(row[4] ?? "").trim(),
 
-              year:
-                row[3] ||
-                "",
+          descriptionEn:
+            String(row[13] ?? "").trim() ||
+            String(row[8] ?? "").trim(),
 
-
-              technique:
-                row[4] ||
-                "",
-
-
-              dimensions:
-                row[5] ||
-                "",
-
-
-              availability:
-                row[6] ||
-                "",
-
-
-              price:
-                row[7] ||
-                undefined,
-
-
-              description:
-                row[8] ||
-                "",
-
-
-              imageUrl:
-                processImageString(
-                  row[9] ||
-                  ""
-                ),
-
-
-              order:
-                parseInt(
-                  row[10] ||
-                  "0",
-                  10
-                ),
-
-
-              titleEn:
-                row[11] ||
-                row[1] ||
-                "",
-
-
-              techniqueEn:
-                row[12] ||
-                row[4] ||
-                "",
-
-
-              descriptionEn:
-                row[13] ||
-                row[8] ||
-                "",
-
-
-              /*
-               * NUEVO:
-               * columna O
-               */
-              showSeriesButton,
-
-            };
-
-          }
-        )
-        .sort(
-          (
-            a: Artwork,
-            b: Artwork
-          ) =>
-            a.order -
-            b.order
+          showSeriesButton: parseBoolean(row[14]),
+        };
+      })
+      .filter((obra: Artwork) => {
+        // No mostramos filas completamente vacías.
+        return (
+          obra.id ||
+          obra.title ||
+          obra.imageUrl
         );
-
-
-    return artworks;
-
+      })
+      .sort(
+        (a: Artwork, b: Artwork) =>
+          a.order - b.order
+      );
 
   } catch (error) {
-
     console.error(
       "Error conectando con Google Obras:",
       error
     );
 
     return [];
-
   }
 }
 
 
 /**
- * Obtiene las imágenes del carrusel
- * desde la pestaña "Carrusel".
+ * Descarga las imágenes del carrusel principal.
+ *
+ * Hoja: Carrusel
  *
  * A = imagen
  * B = altText
  * C = altTextEn
  */
 export async function fetchCarousel(): Promise<CarouselImage[]> {
+  const SHEET_ID = import.meta.env.GOOGLE_SHEET_ID;
+  const API_KEY = import.meta.env.GOOGLE_API_KEY;
 
-  const SHEET_ID =
-    import.meta.env.GOOGLE_SHEET_ID;
-
-  const API_KEY =
-    import.meta.env.GOOGLE_API_KEY;
-
-
-  if (
-    !SHEET_ID ||
-    !API_KEY
-  ) {
-
+  if (!SHEET_ID || !API_KEY) {
     console.error(
       "Faltan GOOGLE_SHEET_ID o GOOGLE_API_KEY."
     );
 
     return [];
-
   }
-
 
   const url =
     `https://sheets.googleapis.com/v4/spreadsheets/` +
     `${SHEET_ID}/values/Carrusel!A2:C?key=${API_KEY}`;
 
-
   try {
-
-    const response =
-      await fetch(url);
-
+    const response = await fetch(url);
 
     if (!response.ok) {
-
-      throw new Error(
-        `Google Sheets respondió con HTTP ${response.status}`
-      );
-
-    }
-
-
-    const data =
-      await response.json();
-
-
-    if (
-      !data ||
-      !Array.isArray(data.values)
-    ) {
-
-      console.warn(
-        "Google Sheets no devolvió filas para la pestaña Carrusel."
+      console.error(
+        "Google Sheets Carrusel respondió con error:",
+        response.status,
+        response.statusText
       );
 
       return [];
-
     }
 
+    const data = await response.json();
 
-    return data.values.map(
-      (row: any[]) => ({
+    if (!data.values || !Array.isArray(data.values)) {
+      return [];
+    }
 
-        imageUrl:
-          processImageString(
-            row[0] ||
-            ""
-          ),
-
+    return data.values
+      .map((row: any[]) => ({
+        imageUrl: processImageString(
+          String(row[0] ?? "")
+        ),
 
         altText:
-          row[1] ||
+          String(row[1] ?? "").trim() ||
           "Diana Castro - Colección exclusiva",
 
-
         altTextEn:
-          row[2] ||
-          row[1] ||
+          String(row[2] ?? "").trim() ||
+          String(row[1] ?? "").trim() ||
           "Diana Castro - Exclusive collection",
-
-      })
-    );
-
+      }))
+      .filter(
+        (image: CarouselImage) =>
+          image.imageUrl !== ""
+      );
 
   } catch (error) {
-
     console.error(
       "Error conectando con Carrusel:",
       error
     );
 
     return [];
-
   }
 }
