@@ -1,5 +1,7 @@
+```astro
 ---
 import Layout from '../layouts/Layout.astro';
+import SeriesGallery from '../components/SeriesGallery.astro';
 import { fetchArtworks, fetchCarousel } from '../lib/google';
 
 let artworks = [];
@@ -7,201 +9,431 @@ let carouselImages = [];
 
 try {
   const result = await fetchArtworks();
+
   if (Array.isArray(result)) {
     artworks = result;
   }
-  
+
   const carouselResult = await fetchCarousel();
+
   if (Array.isArray(carouselResult)) {
     carouselImages = carouselResult;
   }
 } catch (error) {
-  console.error("Error al descargar los datos de Google Sheets:", error);
+  console.error(
+    "Error al descargar los datos de Google Sheets:",
+    error
+  );
 }
 
-// Salvavidas: Si la hoja "Carrusel" de Google Sheets está vacía o falla, mostramos una imagen estelar por defecto
+/*
+ * Salvavidas:
+ * Si la hoja "Carrusel" está vacía o falla,
+ * utilizamos una imagen local por defecto.
+ */
 if (carouselImages.length === 0) {
   carouselImages = [
     {
       imageUrl: "/cyanotype_homenaje_en_azul_2.jpg",
-      altText: "Diana Castro, artista contemporánea internacional. Retrato y obras exclusivas en cianotipia."
+      altText:
+        "Diana Castro, artista contemporánea internacional. Retrato y obras exclusivas en cianotipia.",
+      altTextEn:
+        "Diana Castro, international contemporary artist. Portrait and exclusive cyanotype artworks."
     }
   ];
 }
 
+/*
+ * Las primeras dos obras ordenadas desde Google Sheets
+ * se consideran las obras destacadas de la portada.
+ */
 const featuredArtworks = artworks.slice(0, 2);
 ---
 
-<Layout title="Diana Castro | Artista Contemporánea" description="Explora la obra de Diana Paola Castro Jiménez. Especialista en cianotipia, memoria e identidad.">
-  
-  <!-- HERO SECTION CON CARRUSEL NATIVO -->
-  <section class="relative min-h-[90vh] flex flex-col items-center justify-center pt-24 pb-16 overflow-hidden gsap-reveal">
-    
+<Layout>
+
+  <!-- ========================================================= -->
+  <!-- HERO / CARRUSEL PRINCIPAL                                 -->
+  <!-- ========================================================= -->
+
+  <section
+    class="relative min-h-[85vh] md:min-h-[90vh] flex items-center justify-center overflow-hidden"
+  >
+
     <!-- Contenedor del Carrusel de Fondo -->
-    <div id="hero-carousel" class="absolute inset-0 w-full h-full -z-20 bg-gray-50">
+    <div
+      id="hero-carousel"
+      class="absolute inset-0 w-full h-full -z-20 bg-gray-50"
+    >
       {carouselImages.map((img, index) => (
-        <img 
-          src={img.imageUrl} 
-          alt={img.altText} 
-          class={`carousel-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-[2000ms] ease-in-out ${index === 0 ? 'opacity-100' : 'opacity-0'}`}
-          fetchpriority={index === 0 ? "high" : "auto"}
-          loading={index === 0 ? "eager" : "lazy"}
+        <img
+          src={img.imageUrl}
+          alt={img.altText}
+          class={`carousel-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-[2000ms] ease-in-out ${
+            index === 0
+              ? 'opacity-100'
+              : 'opacity-0'
+          }`}
+          fetchpriority={
+            index === 0
+              ? "high"
+              : "auto"
+          }
+          loading={
+            index === 0
+              ? "eager"
+              : "lazy"
+          }
         />
       ))}
     </div>
 
     <!-- Capa de contraste elegante -->
-    <div class="absolute inset-0 bg-white/60 backdrop-blur-[4px] -z-10"></div>
-    
+    <div
+      class="absolute inset-0 bg-white/60 backdrop-blur-[4px] -z-10"
+    ></div>
+
     <!-- Contenedor del Título -->
-    <div class="max-w-4xl mx-auto px-6 text-center z-10 mb-10 md:mb-16">
-      <h1 class="font-serif text-5xl md:text-7xl lg:text-[5rem] text-deep-blue mb-6 leading-[1.1] tracking-tight drop-shadow-sm">
+    <div
+      class="max-w-4xl mx-auto px-6 text-center z-10 mb-10 md:mb-16"
+    >
+
+      <h1
+        class="font-serif text-5xl md:text-7xl lg:text-[5rem] text-deep-blue mb-6 leading-[1.1] tracking-tight drop-shadow-sm"
+      >
         Materializando el tiempo a través de la luz
       </h1>
-      <p class="font-sans text-lg md:text-xl text-gray-800 font-medium max-w-2xl mx-auto leading-relaxed drop-shadow-sm">
-        Cianotipias e intervenciones conceptuales que desafían la inmediatez de la modernidad líquida. Obras de alta exclusividad donde la memoria se imprime en azul de Prusia.
+
+      <p
+        class="font-sans text-lg md:text-xl text-gray-800 font-medium max-w-2xl mx-auto leading-relaxed drop-shadow-sm"
+      >
+        Cianotipias e intervenciones conceptuales que desafían
+        la inmediatez de la modernidad líquida. Obras de alta
+        exclusividad donde la memoria se imprime en azul de Prusia.
       </p>
+
     </div>
+
   </section>
 
-  <!-- OBRAS DESTACADAS -->
-  <section class="max-w-7xl mx-auto px-8 py-20 relative z-20 bg-white">
-    <h2 class="font-serif text-3xl text-deep-blue mb-12 border-b border-pale-rose pb-4">Obras Destacadas</h2>
-    
-    {featuredArtworks.length === 0 ? (
-      <p class="text-center text-warm-gray py-10">Las obras se están cargando o no se pudieron conectar con la base de datos.</p>
-    ) : (
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
-        {featuredArtworks.map((obra) => (
-          <div 
-            class="group gsap-reveal cursor-pointer js-lightbox-trigger"
-            data-img={obra.imageUrl}
-            data-title={obra.title}
-            data-desc={`${obra.technique} — ${obra.year}`}
-          >
-            <div class="aspect-[4/5] bg-pale-rose overflow-hidden mb-6 relative shadow-sm">
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 z-10 flex items-center justify-center">
-                <span class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-3xl drop-shadow-md">+</span>
+
+  <!-- ========================================================= -->
+  <!-- OBRAS DESTACADAS                                           -->
+  <!-- ========================================================= -->
+
+  <section
+    id="obras-destacadas"
+    class="py-24 md:py-32"
+  >
+
+    <div class="max-w-7xl mx-auto px-6">
+
+      <!-- Encabezado -->
+      <div
+        class="max-w-3xl mx-auto text-center mb-16 md:mb-20"
+      >
+
+        <p
+          class="font-sans text-xs uppercase tracking-[0.25em] text-gray-500 mb-4"
+        >
+          Selección de obra
+        </p>
+
+        <h2
+          class="font-serif text-4xl md:text-5xl lg:text-6xl text-deep-blue mb-6"
+        >
+          Obras destacadas
+        </h2>
+
+        <p
+          class="font-sans text-gray-600 leading-relaxed max-w-2xl mx-auto"
+        >
+          Una selección de obras de Diana Castro en las que
+          la fotografía, la luz y la materialidad del proceso
+          convergen para construir una memoria visual.
+        </p>
+
+      </div>
+
+
+      <!-- Obras -->
+      {featuredArtworks.length === 0 ? (
+
+        <p
+          class="text-center text-warm-gray py-10"
+        >
+          Las obras se están cargando o no se pudieron
+          conectar con la base de datos.
+        </p>
+
+      ) : (
+
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-20"
+        >
+
+          {featuredArtworks.map((obra) => (
+
+            <article
+              class="group"
+            >
+
+              <!-- Obra destacada -->
+              <div
+                class="cursor-pointer js-lightbox-trigger"
+                data-img={obra.imageUrl}
+                data-title={obra.title}
+                data-desc={`${obra.technique} — ${obra.year}`}
+              >
+
+                <div
+                  class="aspect-[4/5] bg-pale-rose overflow-hidden mb-6 relative shadow-sm"
+                >
+
+                  <!-- Overlay -->
+                  <div
+                    class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 z-10 flex items-center justify-center"
+                  >
+
+                    <span
+                      class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-3xl drop-shadow-md"
+                      aria-hidden="true"
+                    >
+                      +
+                    </span>
+
+                  </div>
+
+                  <!-- Imagen -->
+                  <img
+                    src={obra.imageUrl}
+                    alt={`${obra.title} — ${obra.technique}, Diana Castro`}
+                    class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                    loading="lazy"
+                  />
+
+                </div>
+
+
+                <!-- Información -->
+                <h3
+                  class="font-serif text-2xl text-deep-blue"
+                >
+                  {obra.title}
+                </h3>
+
+                <p
+                  class="font-sans text-sm mt-2 text-gray-600"
+                >
+                  {obra.technique} — {obra.year}
+                </p>
+
               </div>
-              <img src={obra.imageUrl} alt={obra.title} class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" loading="lazy" />
-            </div>
-            <h3 class="font-serif text-2xl text-deep-blue">{obra.title}</h3>
-            <p class="font-sans text-sm mt-2">{obra.technique} — {obra.year}</p>
-          </div>
-        ))}
-      </div>
-    )}
+
+
+              <!-- ================================================= -->
+              <!-- BOTÓN DE SERIE                                    -->
+              <!-- ================================================= -->
+              <!--
+                Este botón solamente aparece cuando:
+                1. showSeriesButton = SI en Google Sheets
+                2. La obra tiene una serie asignada
+              -->
+
+              {obra.showSeriesButton && obra.series && (
+
+                <button
+                  type="button"
+                  class="js-series-trigger mt-6 inline-flex items-center gap-3 border border-deep-blue px-6 py-3 text-deep-blue font-sans text-[11px] uppercase tracking-[0.18em] hover:bg-deep-blue hover:text-white transition-all duration-300"
+                  data-series={obra.series}
+                  aria-label={`Ver todas las cianotipias de la serie ${obra.series}`}
+                >
+
+                  <span>
+                    Ver todas las Cianotipias de esta serie
+                  </span>
+
+                  <span
+                    aria-hidden="true"
+                    class="text-base"
+                  >
+                    →
+                  </span>
+
+                </button>
+
+              )}
+
+            </article>
+
+          ))}
+
+        </div>
+
+      )}
+
+    </div>
+
   </section>
 
-  <!-- MANIFIESTO Y CONTACTO -->
-  <section class="max-w-4xl mx-auto px-8 py-24 text-center border-t border-pale-rose/30 relative z-20 bg-white gsap-reveal">
-    <h2 class="font-serif text-3xl text-deep-blue mb-8">El Santuario Creativo</h2>
-    
-    <div class="font-sans text-gray-700 leading-relaxed space-y-6 mb-12 text-left md:text-center">
-      <p>
-        Esta es una ventana abierta al santuario creativo de Diana Castro, donde la luz solar, el rigor del tiempo y la emulsión química convergen en un acto de pura alquimia visual. Cada pieza fotográfica nace de un diálogo íntimo con el papel de algodón. Las texturas orgánicas, las siluetas melancólicas y la profunda inmersión en el azul de Prusia garantizan la imposibilidad de la réplica. En una era de sobreproducción digital masiva, esta técnica analógica se erige como un acto de rebeldía estética: la materialización de lo efímero.
-      </p>
-      <p>
-        Adquirir una de estas obras es asegurar un fragmento tangible del tiempo. Un testimonio irrefutable de maestría técnica destinado a elevar el prestigio de cualquier colección privada, galería o bóveda museográfica.
-      </p>
-    </div>
 
-    <!-- Caja de valor -->
-    <div class="bg-gray-50 border border-gray-200 p-8 mb-12 shadow-sm text-left md:text-center">
-      <h3 class="font-serif text-xl text-deep-blue mb-3">Exclusividad y Autenticidad</h3>
-      <p class="font-sans text-sm text-gray-600 leading-relaxed">
-        Todas las piezas son <strong>obras originales y exclusivas</strong>, entregadas invariablemente con su respectivo <strong>certificado de originalidad</strong>. La artista también realiza <strong>obras por encargo</strong> y desarrolla <strong>colaboraciones</strong> para proyectos museográficos y curatoriales de alto nivel.
-      </p>
-    </div>
+  <!-- ========================================================= -->
+  <!-- GALERÍA COMPLETA DE LA SERIE                              -->
+  <!-- ========================================================= -->
+  <!--
+    Este componente permanece oculto inicialmente.
 
-    <!-- Botones de Acción -->
-    <div class="flex flex-col sm:flex-row justify-center items-center gap-6">
-      <a href="/contacto" class="w-full sm:w-auto px-10 py-4 bg-deep-blue border border-deep-blue text-deep-blue font-sans text-xs uppercase tracking-[0.2em] hover:bg-deep-blue hover:text-white transition-colors duration-300 text-center">
-        Adquirir Obra / Contacto
-      </a>
-      <a href="https://instagram.com/artdcastro" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-10 py-4 border border-deep-blue text-deep-blue font-sans text-xs uppercase tracking-[0.2em] hover:bg-deep-blue hover:text-white transition-colors duration-300 text-center">
-        Seguir en Instagram
-      </a>
-    </div>
-  </section>
+    Cuando el visitante pulsa:
+    "Ver todas las Cianotipias de esta serie"
 
-  <!-- HTML DEL LIGHTBOX -->
-  <div id="lightbox-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/95 opacity-0 pointer-events-none transition-opacity duration-300 p-4 sm:p-8">
-    <button id="lightbox-close" class="absolute top-6 right-6 text-white text-4xl font-light hover:text-pale-rose focus:outline-none z-50 transition-colors">
-      &times;
-    </button>
-    <div class="relative max-w-5xl w-full flex flex-col items-center">
-      <img id="lightbox-img" src="" alt="" class="max-h-[75vh] w-auto object-contain shadow-2xl rounded-sm" />
-      <div class="text-white mt-6 text-center max-w-2xl">
-        <h3 id="lightbox-title" class="font-serif text-3xl mb-2"></h3>
-        <p id="lightbox-desc" class="font-sans text-sm text-warm-gray opacity-80"></p>
+    SeriesGallery:
+    - identifica la serie;
+    - filtra todas sus obras;
+    - muestra 3 obras;
+    - permite avanzar/retroceder;
+    - al llegar al último grupo muestra la matriz completa;
+    - permite abrir cualquier obra en un lightbox.
+  -->
+
+  <SeriesGallery artworks={artworks} />
+
+
+  <!-- ========================================================= -->
+  <!-- DECLARACIÓN ARTÍSTICA / INTRODUCCIÓN                      -->
+  <!-- ========================================================= -->
+
+  <section
+    id="universo"
+    class="py-24 md:py-32 bg-white"
+  >
+
+    <div
+      class="max-w-4xl mx-auto px-6"
+    >
+
+      <!-- Encabezado -->
+      <div
+        class="text-center mb-12"
+      >
+
+        <p
+          class="font-sans text-xs uppercase tracking-[0.25em] text-gray-500 mb-4"
+        >
+          El proceso
+        </p>
+
+        <h2
+          class="font-serif text-4xl md:text-5xl text-deep-blue"
+        >
+          La materialización del tiempo
+        </h2>
+
       </div>
+
+
+      <!-- Texto -->
+      <div
+        class="font-sans text-gray-700 leading-relaxed space-y-6 mb-12 text-left md:text-center"
+      >
+
+        <p>
+          Esta es una ventana abierta al santuario creativo
+          de Diana Castro, donde la luz solar, el rigor del
+          tiempo y la emulsión química convergen en un acto
+          de pura alquimia visual. Cada pieza fotográfica
+          nace de un diálogo íntimo con el papel de algodón.
+          Las texturas orgánicas, las siluetas melancólicas
+          y la profunda inmersión en el azul de Prusia
+          garantizan la imposibilidad de la réplica.
+        </p>
+
+        <p>
+          En una era de sobreproducción digital masiva,
+          esta técnica analógica se erige como un acto de
+          rebeldía estética: la materialización de lo efímero.
+        </p>
+
+        <p>
+          Adquirir una de estas obras es asegurar un
+          fragmento tangible del tiempo. Un testimonio
+          irrefutable de maestría técnica destinado a
+          formar parte de colecciones privadas, galerías
+          y espacios museográficos.
+        </p>
+
+      </div>
+
+
+      <!-- ===================================================== -->
+      <!-- CAJA DE VALOR                                         -->
+      <!-- ===================================================== -->
+
+      <div
+        class="bg-gray-50 border border-gray-200 p-8 md:p-10 mb-12 shadow-sm text-left md:text-center"
+      >
+
+        <h3
+          class="font-serif text-xl text-deep-blue mb-3"
+        >
+          Exclusividad y Autenticidad
+        </h3>
+
+        <p
+          class="font-sans text-sm text-gray-600 leading-relaxed max-w-3xl mx-auto"
+        >
+          Todas las piezas son
+          <strong>
+            obras originales y exclusivas
+          </strong>,
+          entregadas invariablemente con su respectivo
+          <strong>
+            certificado de originalidad
+          </strong>.
+          La artista también realiza
+          <strong>
+            obras por encargo
+          </strong>
+          y desarrolla
+          <strong>
+            colaboraciones
+          </strong>
+          para proyectos museográficos y curatoriales
+          de alto nivel.
+        </p>
+
+      </div>
+
+
+      <!-- ===================================================== -->
+      <!-- BOTONES DE ACCIÓN                                     -->
+      <!-- ===================================================== -->
+
+      <div
+        class="flex flex-col sm:flex-row justify-center items-center gap-6"
+      >
+
+        <a
+          href="/contacto"
+          class="w-full sm:w-auto px-10 py-4 bg-deep-blue border border-deep-blue text-white font-sans text-xs uppercase tracking-[0.2em] hover:bg-white hover:text-deep-blue transition-colors duration-300 text-center"
+        >
+          Adquirir Obra / Contacto
+        </a>
+
+
+        <a
+          href="https://instagram.com/artdcastro"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="w-full sm:w-auto px-10 py-4 border border-deep-blue text-deep-blue font-sans text-xs uppercase tracking-[0.2em] hover:bg-deep-blue hover:text-white transition-colors duration-300 text-center"
+        >
+          Seguir en Instagram
+        </a>
+
+      </div>
+
     </div>
-  </div>
+
+  </section>
 
 </Layout>
-
-<!-- LÓGICA DEL LIGHTBOX Y DEL CARRUSEL -->
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    // ----------------------------
-    // LÓGICA DEL CARRUSEL
-    // ----------------------------
-    const slides = document.querySelectorAll('.carousel-slide');
-    if (slides.length > 1) {
-      let currentSlide = 0;
-      setInterval(() => {
-        slides[currentSlide].classList.remove('opacity-100');
-        slides[currentSlide].classList.add('opacity-0');
-        
-        currentSlide = (currentSlide + 1) % slides.length;
-        
-        slides[currentSlide].classList.remove('opacity-0');
-        slides[currentSlide].classList.add('opacity-100');
-      }, 6000);
-    }
-
-    // ----------------------------
-    // LÓGICA DEL LIGHTBOX
-    // ----------------------------
-    const triggers = document.querySelectorAll('.js-lightbox-trigger');
-    const modal = document.getElementById('lightbox-modal');
-    const modalImg = document.getElementById('lightbox-img');
-    const modalTitle = document.getElementById('lightbox-title');
-    const modalDesc = document.getElementById('lightbox-desc');
-    const closeBtn = document.getElementById('lightbox-close');
-
-    function openLightbox(imgSrc, title, desc) {
-      modalImg.src = imgSrc;
-      modalImg.alt = title;
-      modalTitle.textContent = title;
-      modalDesc.textContent = desc;
-      modal.classList.remove('opacity-0', 'pointer-events-none');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeLightbox() {
-      modal.classList.add('opacity-0', 'pointer-events-none');
-      document.body.style.overflow = '';
-      setTimeout(() => { modalImg.src = ''; }, 300);
-    }
-
-    triggers.forEach(trigger => {
-      trigger.addEventListener('click', () => {
-        openLightbox(
-          trigger.getAttribute('data-img'), 
-          trigger.getAttribute('data-title'), 
-          trigger.getAttribute('data-desc')
-        );
-      });
-    });
-
-    closeBtn.addEventListener('click', closeLightbox);
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) closeLightbox();
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeLightbox();
-    });
-  });
-</script>
+```
