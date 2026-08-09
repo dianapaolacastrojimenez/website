@@ -1,4 +1,3 @@
-```astro
 ---
 import type { Artwork } from "../lib/google";
 
@@ -16,9 +15,15 @@ const { artworks } = Astro.props;
 >
   <div class="max-w-7xl mx-auto px-6">
 
-    <!-- Encabezado dinámico -->
-    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+    <!-- ======================================================= -->
+    <!-- ENCABEZADO DE LA SERIE                                  -->
+    <!-- ======================================================= -->
+
+    <div
+      class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12"
+    >
       <div>
+
         <p
           id="series-gallery-label"
           class="font-sans text-xs uppercase tracking-[0.25em] text-gray-500 mb-3"
@@ -32,6 +37,7 @@ const { artworks } = Astro.props;
         >
           Obras de la serie
         </h2>
+
       </div>
 
       <button
@@ -43,7 +49,11 @@ const { artworks } = Astro.props;
       </button>
     </div>
 
-    <!-- Carrusel -->
+
+    <!-- ======================================================= -->
+    <!-- CARRUSEL                                                -->
+    <!-- ======================================================= -->
+
     <div class="relative">
 
       <div
@@ -52,11 +62,13 @@ const { artworks } = Astro.props;
       >
       </div>
 
+
       <!-- Flechas -->
       <div
         id="series-carousel-controls"
         class="flex justify-center items-center gap-6 mt-10"
       >
+
         <button
           id="series-prev"
           type="button"
@@ -81,22 +93,35 @@ const { artworks } = Astro.props;
         >
           →
         </button>
+
       </div>
+
     </div>
 
-    <!-- Matriz final -->
+
+    <!-- ======================================================= -->
+    <!-- MATRIZ COMPLETA                                         -->
+    <!-- ======================================================= -->
+
     <div
       id="series-full-grid-container"
       class="hidden mt-24 pt-16 border-t border-gray-200"
     >
+
       <div class="mb-10">
-        <p class="font-sans text-xs uppercase tracking-[0.25em] text-gray-500 mb-3">
+
+        <p
+          class="font-sans text-xs uppercase tracking-[0.25em] text-gray-500 mb-3"
+        >
           Colección completa
         </p>
 
-        <h3 class="font-serif text-3xl md:text-4xl text-deep-blue">
+        <h3
+          class="font-serif text-3xl md:text-4xl text-deep-blue"
+        >
           Todas las obras de la serie
         </h3>
+
       </div>
 
       <div
@@ -104,19 +129,36 @@ const { artworks } = Astro.props;
         class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12"
       >
       </div>
+
     </div>
 
   </div>
 </section>
 
 
-<!-- LIGHTBOX -->
+<!-- =========================================================== -->
+<!-- DATOS DE LAS OBRAS PARA JAVASCRIPT                          -->
+<!-- =========================================================== -->
+
+<script
+  type="application/json"
+  id="series-artworks-data"
+  set:html={JSON.stringify(artworks)}
+></script>
+
+
+<!-- =========================================================== -->
+<!-- LIGHTBOX                                                    -->
+<!-- =========================================================== -->
+
 <div
   id="artwork-lightbox"
   class="fixed inset-0 z-[100] hidden bg-black/90 backdrop-blur-sm"
   aria-hidden="true"
 >
-  <div class="absolute inset-0 flex items-center justify-center p-4 md:p-8">
+  <div
+    class="absolute inset-0 flex items-center justify-center p-4 md:p-8"
+  >
 
     <button
       id="lightbox-close"
@@ -127,23 +169,33 @@ const { artworks } = Astro.props;
       ×
     </button>
 
+
     <div
       class="relative max-w-6xl w-full max-h-[90vh] flex flex-col lg:flex-row bg-white overflow-hidden"
     >
 
-      <!-- Imagen -->
+      <!-- ===================================================== -->
+      <!-- IMAGEN                                                 -->
+      <!-- ===================================================== -->
+
       <div
         class="lg:w-3/5 bg-black flex items-center justify-center min-h-[45vh] lg:min-h-0"
       >
+
         <img
           id="lightbox-image"
           src=""
           alt=""
           class="max-h-[75vh] lg:max-h-[85vh] max-w-full object-contain"
         />
+
       </div>
 
-      <!-- Información -->
+
+      <!-- ===================================================== -->
+      <!-- INFORMACIÓN                                            -->
+      <!-- ===================================================== -->
+
       <div
         class="lg:w-2/5 p-8 md:p-12 overflow-y-auto flex flex-col justify-center"
       >
@@ -160,11 +212,19 @@ const { artworks } = Astro.props;
         >
         </h2>
 
-        <div class="space-y-3 mb-8 text-sm text-gray-600">
+
+        <div
+          class="space-y-3 mb-8 text-sm text-gray-600"
+        >
+
           <p id="lightbox-technique"></p>
+
           <p id="lightbox-year"></p>
+
           <p id="lightbox-dimensions"></p>
+
         </div>
+
 
         <div
           id="lightbox-description"
@@ -173,46 +233,148 @@ const { artworks } = Astro.props;
         </div>
 
       </div>
+
     </div>
+
   </div>
 </div>
 
 
-<script define:vars={{ artworks }}>
-  const allArtworks = artworks;
+<!-- =========================================================== -->
+<!-- JAVASCRIPT                                                  -->
+<!-- =========================================================== -->
 
-  const gallery = document.getElementById("series-gallery");
-  const galleryTitle = document.getElementById("series-gallery-title");
-  const galleryLabel = document.getElementById("series-gallery-label");
-
-  const carousel = document.getElementById("series-carousel");
-  const fullGrid = document.getElementById("series-full-grid");
-  const fullGridContainer = document.getElementById(
-    "series-full-grid-container"
+<script>
+  const dataElement = document.getElementById(
+    "series-artworks-data"
   );
 
-  const prevButton = document.getElementById("series-prev");
-  const nextButton = document.getElementById("series-next");
-  const closeButton = document.getElementById("series-gallery-close");
-  const counter = document.getElementById("series-counter");
+  let allArtworks = [];
 
-  const lightbox = document.getElementById("artwork-lightbox");
-  const lightboxImage = document.getElementById("lightbox-image");
-  const lightboxTitle = document.getElementById("lightbox-title");
-  const lightboxSeries = document.getElementById("lightbox-series");
-  const lightboxTechnique = document.getElementById("lightbox-technique");
-  const lightboxYear = document.getElementById("lightbox-year");
-  const lightboxDimensions = document.getElementById("lightbox-dimensions");
-  const lightboxDescription = document.getElementById(
-    "lightbox-description"
+  if (dataElement) {
+    try {
+      allArtworks = JSON.parse(
+        dataElement.textContent || "[]"
+      );
+    } catch (error) {
+      console.error(
+        "No se pudieron leer las obras de Google Sheets:",
+        error
+      );
+
+      allArtworks = [];
+    }
+  }
+
+
+  /* ========================================================= */
+  /* ELEMENTOS DEL DOM                                         */
+  /* ========================================================= */
+
+  const gallery = document.getElementById(
+    "series-gallery"
   );
-  const lightboxClose = document.getElementById("lightbox-close");
+
+  const galleryTitle = document.getElementById(
+    "series-gallery-title"
+  );
+
+  const galleryLabel = document.getElementById(
+    "series-gallery-label"
+  );
+
+  const carousel = document.getElementById(
+    "series-carousel"
+  );
+
+  const fullGrid = document.getElementById(
+    "series-full-grid"
+  );
+
+  const fullGridContainer =
+    document.getElementById(
+      "series-full-grid-container"
+    );
+
+  const prevButton = document.getElementById(
+    "series-prev"
+  );
+
+  const nextButton = document.getElementById(
+    "series-next"
+  );
+
+  const closeButton = document.getElementById(
+    "series-gallery-close"
+  );
+
+  const counter = document.getElementById(
+    "series-counter"
+  );
+
+
+  /* ========================================================= */
+  /* LIGHTBOX                                                  */
+  /* ========================================================= */
+
+  const lightbox = document.getElementById(
+    "artwork-lightbox"
+  );
+
+  const lightboxImage = document.getElementById(
+    "lightbox-image"
+  );
+
+  const lightboxTitle = document.getElementById(
+    "lightbox-title"
+  );
+
+  const lightboxSeries = document.getElementById(
+    "lightbox-series"
+  );
+
+  const lightboxTechnique =
+    document.getElementById(
+      "lightbox-technique"
+    );
+
+  const lightboxYear =
+    document.getElementById(
+      "lightbox-year"
+    );
+
+  const lightboxDimensions =
+    document.getElementById(
+      "lightbox-dimensions"
+    );
+
+  const lightboxDescription =
+    document.getElementById(
+      "lightbox-description"
+    );
+
+  const lightboxClose =
+    document.getElementById(
+      "lightbox-close"
+    );
+
+
+  /* ========================================================= */
+  /* ESTADO                                                    */
+  /* ========================================================= */
 
   let currentSeries = "";
+
   let currentPage = 0;
+
   let currentArtworks = [];
 
   const itemsPerPage = 3;
+
+
+  /* ========================================================= */
+  /* ESCAPE HTML                                               */
+  /* ========================================================= */
 
   function escapeHtml(value = "") {
     return String(value)
@@ -223,19 +385,34 @@ const { artworks } = Astro.props;
       .replace(/'/g, "&#039;");
   }
 
-  function artworkCard(obra, small = false) {
+
+  /* ========================================================= */
+  /* TARJETA DE OBRA                                           */
+  /* ========================================================= */
+
+  function artworkCard(
+    obra,
+    small = false
+  ) {
+
+    const aspectClass = small
+      ? "aspect-square"
+      : "aspect-[4/5]";
+
+    const titleClass = small
+      ? "text-lg"
+      : "text-xl";
+
     return `
       <article
         class="group cursor-pointer js-series-artwork"
         data-artwork-id="${escapeHtml(obra.id)}"
       >
+
         <div
-          class="${
-            small
-              ? "aspect-square"
-              : "aspect-[4/5]"
-          } bg-pale-rose overflow-hidden relative mb-5"
+          class="${aspectClass} bg-pale-rose overflow-hidden relative mb-5"
         >
+
           <img
             src="${escapeHtml(obra.imageUrl)}"
             alt="${escapeHtml(obra.title)} — Diana Castro"
@@ -246,287 +423,677 @@ const { artworks } = Astro.props;
           <div
             class="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-300 flex items-center justify-center"
           >
+
             <span
               class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-3xl drop-shadow-md"
             >
               +
             </span>
+
           </div>
+
         </div>
 
-        <h3 class="font-serif ${
-          small
-            ? "text-lg"
-            : "text-xl"
-        } text-deep-blue">
+
+        <h3
+          class="font-serif ${titleClass} text-deep-blue"
+        >
           ${escapeHtml(obra.title)}
         </h3>
 
-        <p class="font-sans text-xs mt-2 text-gray-600">
-          ${escapeHtml(obra.technique)} — ${escapeHtml(obra.year)}
+
+        <p
+          class="font-sans text-xs mt-2 text-gray-600"
+        >
+          ${escapeHtml(obra.technique)}
+          —
+          ${escapeHtml(obra.year)}
         </p>
+
       </article>
     `;
   }
 
+
+  /* ========================================================= */
+  /* RENDERIZAR CARRUSEL                                      */
+  /* ========================================================= */
+
   function renderCarousel() {
+
     const totalPages = Math.ceil(
-      currentArtworks.length / itemsPerPage
+      currentArtworks.length /
+      itemsPerPage
     );
 
-    if (!totalPages) {
-      carousel.innerHTML = "";
+    if (
+      !carousel ||
+      !counter ||
+      !prevButton ||
+      !nextButton
+    ) {
       return;
     }
 
-    const start = currentPage * itemsPerPage;
-    const visibleArtworks = currentArtworks.slice(
-      start,
-      start + itemsPerPage
-    );
 
-    carousel.innerHTML = visibleArtworks
-      .map((obra) => artworkCard(obra))
-      .join("");
+    if (!totalPages) {
+
+      carousel.innerHTML = "";
+
+      counter.textContent = "0 / 0";
+
+      prevButton.disabled = true;
+
+      nextButton.disabled = true;
+
+      return;
+    }
+
+
+    const start =
+      currentPage * itemsPerPage;
+
+
+    const visibleArtworks =
+      currentArtworks.slice(
+        start,
+        start + itemsPerPage
+      );
+
+
+    carousel.innerHTML =
+      visibleArtworks
+        .map((obra) =>
+          artworkCard(obra)
+        )
+        .join("");
+
 
     counter.textContent =
       `${currentPage + 1} / ${totalPages}`;
 
-    prevButton.disabled = currentPage === 0;
+
+    prevButton.disabled =
+      currentPage === 0;
+
+
     nextButton.disabled =
       currentPage >= totalPages - 1;
+
 
     /*
      * La matriz completa solamente aparece
      * cuando el visitante llega al último grupo.
      */
-    if (currentPage === totalPages - 1) {
+
+    if (
+      currentPage ===
+      totalPages - 1
+    ) {
+
       renderFullGrid();
-      fullGridContainer.classList.remove("hidden");
+
+      if (fullGridContainer) {
+        fullGridContainer.classList.remove(
+          "hidden"
+        );
+      }
+
     } else {
-      fullGridContainer.classList.add("hidden");
+
+      if (fullGridContainer) {
+        fullGridContainer.classList.add(
+          "hidden"
+        );
+      }
+
     }
 
+
     bindArtworkClicks();
   }
+
+
+  /* ========================================================= */
+  /* MATRIZ COMPLETA                                          */
+  /* ========================================================= */
 
   function renderFullGrid() {
-    fullGrid.innerHTML = currentArtworks
-      .map((obra) => artworkCard(obra, true))
-      .join("");
 
-    bindArtworkClicks();
-  }
-
-  function openSeries(series) {
-    currentSeries = series;
-
-    currentArtworks = allArtworks
-      .filter(
-        (obra) =>
-          obra.series &&
-          obra.series.trim() === series.trim()
-      )
-      .sort(
-        (a, b) => Number(a.order) - Number(b.order)
-      );
-
-    if (!currentArtworks.length) {
+    if (!fullGrid) {
       return;
     }
 
+    fullGrid.innerHTML =
+      currentArtworks
+        .map((obra) =>
+          artworkCard(
+            obra,
+            true
+          )
+        )
+        .join("");
+
+
+    bindArtworkClicks();
+  }
+
+
+  /* ========================================================= */
+  /* ABRIR UNA SERIE                                          */
+  /* ========================================================= */
+
+  function openSeries(series) {
+
+    if (!series) {
+      return;
+    }
+
+
+    currentSeries = series;
+
+
+    currentArtworks =
+      allArtworks
+        .filter((obra) => {
+
+          if (!obra.series) {
+            return false;
+          }
+
+          return (
+            obra.series
+              .trim()
+              .toLowerCase() ===
+            series
+              .trim()
+              .toLowerCase()
+          );
+        })
+        .sort((a, b) => {
+
+          const orderA =
+            Number(a.order) || 0;
+
+          const orderB =
+            Number(b.order) || 0;
+
+          return orderA - orderB;
+        });
+
+
+    if (!currentArtworks.length) {
+
+      console.warn(
+        `No se encontraron obras para la serie: ${series}`
+      );
+
+      return;
+    }
+
+
     currentPage = 0;
 
-    galleryTitle.textContent = series;
-    galleryLabel.textContent =
-      `Serie · ${currentArtworks.length} obras`;
 
-    fullGridContainer.classList.add("hidden");
+    if (galleryTitle) {
+      galleryTitle.textContent =
+        series;
+    }
+
+
+    if (galleryLabel) {
+      galleryLabel.textContent =
+        `Serie · ${currentArtworks.length} obras`;
+    }
+
+
+    if (fullGridContainer) {
+      fullGridContainer.classList.add(
+        "hidden"
+      );
+    }
+
 
     renderCarousel();
 
-    gallery.classList.remove("hidden");
 
-    requestAnimationFrame(() => {
-      gallery.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
+    if (gallery) {
+
+      gallery.classList.remove(
+        "hidden"
+      );
+
+
+      requestAnimationFrame(() => {
+
+        gallery.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+
       });
-    });
+
+    }
   }
 
-  function closeSeries() {
-    gallery.classList.add("hidden");
 
-    fullGridContainer.classList.add("hidden");
+  /* ========================================================= */
+  /* CERRAR SERIE                                             */
+  /* ========================================================= */
+
+  function closeSeries() {
+
+    if (!gallery) {
+      return;
+    }
+
+
+    gallery.classList.add(
+      "hidden"
+    );
+
+
+    if (fullGridContainer) {
+      fullGridContainer.classList.add(
+        "hidden"
+      );
+    }
+
 
     window.scrollTo({
-      top: gallery.offsetTop - 100,
+      top:
+        Math.max(
+          0,
+          gallery.offsetTop - 100
+        ),
       behavior: "smooth"
     });
   }
 
+
+  /* ========================================================= */
+  /* ABRIR LIGHTBOX                                           */
+  /* ========================================================= */
+
   function openLightbox(obra) {
-    lightboxImage.src = obra.imageUrl;
-    lightboxImage.alt = obra.title;
+
+    if (
+      !lightbox ||
+      !lightboxImage ||
+      !lightboxTitle
+    ) {
+      return;
+    }
+
+
+    lightboxImage.src =
+      obra.imageUrl || "";
+
+
+    lightboxImage.alt =
+      obra.title || "Obra de Diana Castro";
+
 
     lightboxTitle.textContent =
-      obra.title;
+      obra.title || "";
 
-    lightboxSeries.textContent =
-      obra.series
-        ? `Serie · ${obra.series}`
-        : "";
 
-    lightboxTechnique.textContent =
-      obra.technique
-        ? `Técnica: ${obra.technique}`
-        : "";
+    if (lightboxSeries) {
+      lightboxSeries.textContent =
+        obra.series
+          ? `Serie · ${obra.series}`
+          : "";
+    }
 
-    lightboxYear.textContent =
-      obra.year
-        ? `Año: ${obra.year}`
-        : "";
 
-    lightboxDimensions.textContent =
-      obra.dimensions
-        ? `Dimensiones: ${obra.dimensions}`
-        : "";
+    if (lightboxTechnique) {
+      lightboxTechnique.textContent =
+        obra.technique
+          ? `Técnica: ${obra.technique}`
+          : "";
+    }
 
-    lightboxDescription.innerHTML =
-      escapeHtml(
-        obra.description || "Sin descripción disponible."
-      ).replace(/\n/g, "<br>");
 
-    lightbox.classList.remove("hidden");
-    lightbox.setAttribute("aria-hidden", "false");
+    if (lightboxYear) {
+      lightboxYear.textContent =
+        obra.year
+          ? `Año: ${obra.year}`
+          : "";
+    }
 
-    document.body.classList.add("overflow-hidden");
+
+    if (lightboxDimensions) {
+      lightboxDimensions.textContent =
+        obra.dimensions
+          ? `Dimensiones: ${obra.dimensions}`
+          : "";
+    }
+
+
+    if (lightboxDescription) {
+
+      lightboxDescription.textContent =
+        obra.description ||
+        "Sin descripción disponible.";
+
+    }
+
+
+    lightbox.classList.remove(
+      "hidden"
+    );
+
+
+    lightbox.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+
+    document.body.classList.add(
+      "overflow-hidden"
+    );
   }
+
+
+  /* ========================================================= */
+  /* CERRAR LIGHTBOX                                          */
+  /* ========================================================= */
 
   function closeLightbox() {
-    lightbox.classList.add("hidden");
-    lightbox.setAttribute("aria-hidden", "true");
 
-    document.body.classList.remove("overflow-hidden");
+    if (!lightbox) {
+      return;
+    }
 
-    lightboxImage.src = "";
+
+    lightbox.classList.add(
+      "hidden"
+    );
+
+
+    lightbox.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+
+    document.body.classList.remove(
+      "overflow-hidden"
+    );
+
+
+    if (lightboxImage) {
+      lightboxImage.src = "";
+    }
   }
+
+
+  /* ========================================================= */
+  /* ASIGNAR CLICKS A OBRAS                                   */
+  /* ========================================================= */
 
   function bindArtworkClicks() {
+
     document
-      .querySelectorAll(".js-series-artwork")
+      .querySelectorAll(
+        ".js-series-artwork"
+      )
       .forEach((element) => {
 
-        element.addEventListener("click", () => {
-          const id =
-            element.dataset.artworkId;
+        element.addEventListener(
+          "click",
+          () => {
 
-          const obra =
-            currentArtworks.find(
-              (item) => String(item.id) === String(id)
-            );
+            const id =
+              element.dataset.artworkId;
 
-          if (obra) {
-            openLightbox(obra);
+
+            const obra =
+              currentArtworks.find(
+                (item) =>
+                  String(item.id) ===
+                  String(id)
+              );
+
+
+            if (obra) {
+              openLightbox(obra);
+            }
+
           }
-        });
+        );
+
       });
   }
 
-  /*
-   * Botones "Ver todas las Cianotipias..."
-   */
+
+  /* ========================================================= */
+  /* BOTONES DE SERIES                                        */
+  /* ========================================================= */
+
   document
-    .querySelectorAll(".js-series-trigger")
+    .querySelectorAll(
+      ".js-series-trigger"
+    )
     .forEach((button) => {
 
-      button.addEventListener("click", () => {
-        const series =
-          button.dataset.series;
+      button.addEventListener(
+        "click",
+        () => {
 
-        if (series) {
-          openSeries(series);
+          const series =
+            button.dataset.series;
+
+
+          if (series) {
+            openSeries(series);
+          }
+
         }
-      });
-    });
-
-  prevButton.addEventListener("click", () => {
-    if (currentPage > 0) {
-      currentPage--;
-      renderCarousel();
-    }
-  });
-
-  nextButton.addEventListener("click", () => {
-    const totalPages =
-      Math.ceil(
-        currentArtworks.length /
-        itemsPerPage
       );
 
-    if (currentPage < totalPages - 1) {
-      currentPage++;
-      renderCarousel();
-    }
-  });
+    });
 
-  closeButton.addEventListener(
-    "click",
-    closeSeries
-  );
 
-  lightboxClose.addEventListener(
-    "click",
-    closeLightbox
-  );
+  /* ========================================================= */
+  /* BOTÓN ANTERIOR                                           */
+  /* ========================================================= */
 
-  lightbox.addEventListener(
-    "click",
-    (event) => {
-      if (event.target === lightbox) {
-        closeLightbox();
+  if (prevButton) {
+
+    prevButton.addEventListener(
+      "click",
+      () => {
+
+        if (currentPage > 0) {
+
+          currentPage--;
+
+          renderCarousel();
+
+        }
+
       }
-    }
-  );
+    );
 
-  document.addEventListener(
-    "keydown",
-    (event) => {
+  }
 
-      if (event.key === "Escape") {
-        closeLightbox();
-      }
 
-      if (
-        lightbox.classList.contains("hidden") === false
-      ) {
-        return;
-      }
+  /* ========================================================= */
+  /* BOTÓN SIGUIENTE                                          */
+  /* ========================================================= */
 
-      if (
-        event.key === "ArrowLeft" &&
-        currentPage > 0
-      ) {
-        currentPage--;
-        renderCarousel();
-      }
+  if (nextButton) {
 
-      if (
-        event.key === "ArrowRight"
-      ) {
+    nextButton.addEventListener(
+      "click",
+      () => {
+
         const totalPages =
           Math.ceil(
             currentArtworks.length /
             itemsPerPage
           );
 
-        if (currentPage < totalPages - 1) {
+
+        if (
+          currentPage <
+          totalPages - 1
+        ) {
+
           currentPage++;
+
           renderCarousel();
+
         }
+
       }
+    );
+
+  }
+
+
+  /* ========================================================= */
+  /* CERRAR GALERÍA                                           */
+  /* ========================================================= */
+
+  if (closeButton) {
+
+    closeButton.addEventListener(
+      "click",
+      closeSeries
+    );
+
+  }
+
+
+  /* ========================================================= */
+  /* CERRAR LIGHTBOX                                          */
+  /* ========================================================= */
+
+  if (lightboxClose) {
+
+    lightboxClose.addEventListener(
+      "click",
+      closeLightbox
+    );
+
+  }
+
+
+  /* ========================================================= */
+  /* CERRAR HACIENDO CLICK FUERA DE LA OBRA                   */
+  /* ========================================================= */
+
+  if (lightbox) {
+
+    lightbox.addEventListener(
+      "click",
+      (event) => {
+
+        if (
+          event.target ===
+          lightbox
+        ) {
+          closeLightbox();
+        }
+
+      }
+    );
+
+  }
+
+
+  /* ========================================================= */
+  /* TECLADO                                                   */
+  /* ========================================================= */
+
+  document.addEventListener(
+    "keydown",
+    (event) => {
+
+      /*
+       * ESCAPE:
+       * Cierra el lightbox.
+       */
+
+      if (
+        event.key === "Escape"
+      ) {
+
+        if (
+          lightbox &&
+          !lightbox.classList.contains(
+            "hidden"
+          )
+        ) {
+          closeLightbox();
+          return;
+        }
+
+      }
+
+
+      /*
+       * Si el lightbox está abierto,
+       * no procesamos navegación del carrusel.
+       */
+
+      if (
+        lightbox &&
+        !lightbox.classList.contains(
+          "hidden"
+        )
+      ) {
+        return;
+      }
+
+
+      /*
+       * Flecha izquierda
+       */
+
+      if (
+        event.key === "ArrowLeft" &&
+        currentPage > 0
+      ) {
+
+        currentPage--;
+
+        renderCarousel();
+
+      }
+
+
+      /*
+       * Flecha derecha
+       */
+
+      if (
+        event.key === "ArrowRight"
+      ) {
+
+        const totalPages =
+          Math.ceil(
+            currentArtworks.length /
+            itemsPerPage
+          );
+
+
+        if (
+          currentPage <
+          totalPages - 1
+        ) {
+
+          currentPage++;
+
+          renderCarousel();
+
+        }
+
+      }
+
     }
   );
 </script>
-```
