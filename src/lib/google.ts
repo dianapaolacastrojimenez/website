@@ -13,9 +13,6 @@ export interface Artwork {
   descriptionEn: string;
   imageUrl: string;
   order: number;
-
-  // Controla desde Google Sheets si aparece
-  // el botón "Ver todas las Cianotipias de esta serie"
   showSeriesButton: boolean;
 }
 
@@ -26,12 +23,6 @@ export interface CarouselImage {
 }
 
 
-/**
- * Convierte diferentes formatos de imágenes
- * de Google Drive en una URL utilizable por el navegador.
- *
- * También conserva URLs normales y rutas locales.
- */
 function processImageString(rawString: string): string {
   if (!rawString) return "";
 
@@ -39,105 +30,28 @@ function processImageString(rawString: string): string {
 
   if (!value) return "";
 
-
-  // -----------------------------------------------------------
-  // Rutas locales
-  // -----------------------------------------------------------
-
+  // Rutas locales dentro de /public
   if (value.startsWith("/")) {
     return value;
   }
 
-
-  // -----------------------------------------------------------
-  // Google Drive:
-  // https://drive.google.com/open?id=XXXXXXXX
-  // -----------------------------------------------------------
-
-  const openIdMatch = value.match(
-    /drive\.google\.com\/open\?id=([^&]+)/i
-  );
-
-  if (openIdMatch?.[1]) {
-    return `https://drive.google.com/uc?export=view&id=${openIdMatch[1]}`;
-  }
-
-
-  // -----------------------------------------------------------
-  // Google Drive:
-  // https://drive.google.com/file/d/XXXXXXXX/view
-  // -----------------------------------------------------------
-
-  const fileIdMatch = value.match(
-    /drive\.google\.com\/file\/d\/([^/]+)/i
-  );
-
-  if (fileIdMatch?.[1]) {
-    return `https://drive.google.com/uc?export=view&id=${fileIdMatch[1]}`;
-  }
-
-
-  // -----------------------------------------------------------
-  // Google Drive:
-  // https://drive.google.com/uc?id=XXXXXXXX
-  // -----------------------------------------------------------
-
-  const ucIdMatch = value.match(
-    /drive\.google\.com\/uc\?(?:[^#]*&)?id=([^&]+)/i
-  );
-
-  if (ucIdMatch?.[1]) {
-    return `https://drive.google.com/uc?export=view&id=${ucIdMatch[1]}`;
-  }
-
-
-  // -----------------------------------------------------------
-  // Google Drive:
-  // URL con /d/XXXXXXXX/
-  // -----------------------------------------------------------
-
-  const genericDriveIdMatch = value.match(
-    /\/d\/([^/]+)/
-  );
-
+  // URLs externas
   if (
-    value.includes("drive.google.com") &&
-    genericDriveIdMatch?.[1]
+    value.startsWith("http://") ||
+    value.startsWith("https://")
   ) {
-    return `https://drive.google.com/uc?export=view&id=${genericDriveIdMatch[1]}`;
-  }
-
-
-  // -----------------------------------------------------------
-  // URL normal
-  // -----------------------------------------------------------
-
-  if (value.startsWith("http://") || value.startsWith("https://")) {
     return value;
   }
 
-
-  // -----------------------------------------------------------
-  // Nombre/ruta de imagen local
-  // -----------------------------------------------------------
-
+  // Cualquier otro nombre de archivo
   return `/${value}`;
 }
 
 
 /**
- * Convierte diferentes valores de Google Sheets
- * en verdadero/falso.
- *
- * Valores aceptados como TRUE:
- * SI
- * SÍ
- * YES
- * TRUE
- * 1
- * X
- *
- * Todo lo demás se considera FALSE.
+ * Convierte el valor de Google Sheets
+ * SI / NO
+ * en true / false.
  */
 function parseBoolean(value: unknown): boolean {
   if (value === undefined || value === null) {
@@ -148,28 +62,25 @@ function parseBoolean(value: unknown): boolean {
     .trim()
     .toLowerCase();
 
-  return [
-    "si",
-    "sí",
-    "yes",
-    "true",
-    "1",
-    "x",
-    "on",
-  ].includes(normalized);
+  return (
+    normalized === "si" ||
+    normalized === "sí" ||
+    normalized === "yes" ||
+    normalized === "true" ||
+    normalized === "1" ||
+    normalized === "x"
+  );
 }
 
 
-/**
- * Obtiene las obras desde Google Sheets.
- */
 export async function fetchArtworks(): Promise<Artwork[]> {
+
   const SHEET_ID = import.meta.env.GOOGLE_SHEET_ID;
   const API_KEY = import.meta.env.GOOGLE_API_KEY;
 
   if (!SHEET_ID || !API_KEY) {
     console.error(
-      "Faltan GOOGLE_SHEET_ID o GOOGLE_API_KEY."
+      "Faltan GOOGLE_SHEET_ID o GOOGLE_API_KEY"
     );
 
     return [];
@@ -179,23 +90,23 @@ export async function fetchArtworks(): Promise<Artwork[]> {
   /*
    * IMPORTANTE:
    *
-   * Ahora leemos hasta la columna O.
+   * Ahora leemos hasta O.
    *
    * A = ID
-   * B = título
+   * B = title
    * C = serie
    * D = año
-   * E = técnica
+   * E = technique
    * F = dimensiones
-   * G = disponibilidad
-   * H = precio
-   * I = descripción
+   * G = availability
+   * H = price
+   * I = descripcion
    * J = imagen
    * K = orden
-   * L = título inglés
-   * M = técnica inglés
-   * N = descripción inglés
-   * O = mostrar botón de serie
+   * L = tituloEn
+   * M = tecnicaEn
+   * N = DescripcionEn
+   * O = Mostrar botón serie
    */
 
   const url =
@@ -213,9 +124,7 @@ export async function fetchArtworks(): Promise<Artwork[]> {
       );
     }
 
-
     const data = await response.json();
-
 
     if (!data.values) {
       return [];
@@ -226,7 +135,6 @@ export async function fetchArtworks(): Promise<Artwork[]> {
       .map((row: any[]) => {
 
         return {
-
           id: row[0] || "",
 
           title: row[1] || "",
@@ -241,7 +149,7 @@ export async function fetchArtworks(): Promise<Artwork[]> {
 
           availability: row[6] || "",
 
-          price: row[7] || null,
+          price: row[7] || undefined,
 
           description: row[8] || "",
 
@@ -268,17 +176,15 @@ export async function fetchArtworks(): Promise<Artwork[]> {
             "",
 
           /*
-           * NUEVO:
+           * COLUMNA O
            *
-           * Columna O.
-           *
-           * SI = mostrar botón
-           * NO = no mostrar botón
+           * SI = true
+           * NO = false
            */
           showSeriesButton:
             parseBoolean(row[14]),
 
-        } satisfies Artwork;
+        };
 
       })
       .sort(
@@ -300,9 +206,6 @@ export async function fetchArtworks(): Promise<Artwork[]> {
 }
 
 
-/**
- * Obtiene las imágenes del carrusel principal.
- */
 export async function fetchCarousel(): Promise<CarouselImage[]> {
 
   const SHEET_ID = import.meta.env.GOOGLE_SHEET_ID;
@@ -328,9 +231,7 @@ export async function fetchCarousel(): Promise<CarouselImage[]> {
       );
     }
 
-
     const data = await response.json();
-
 
     if (!data.values) {
       return [];
