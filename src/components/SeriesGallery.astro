@@ -1,0 +1,532 @@
+```astro
+---
+import type { Artwork } from "../lib/google";
+
+interface Props {
+  artworks: Artwork[];
+}
+
+const { artworks } = Astro.props;
+---
+
+<section
+  id="series-gallery"
+  class="hidden mt-24 pt-16 border-t border-gray-200"
+  aria-label="Obras de la serie"
+>
+  <div class="max-w-7xl mx-auto px-6">
+
+    <!-- Encabezado dinámico -->
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+      <div>
+        <p
+          id="series-gallery-label"
+          class="font-sans text-xs uppercase tracking-[0.25em] text-gray-500 mb-3"
+        >
+          Serie
+        </p>
+
+        <h2
+          id="series-gallery-title"
+          class="font-serif text-4xl md:text-5xl text-deep-blue"
+        >
+          Obras de la serie
+        </h2>
+      </div>
+
+      <button
+        id="series-gallery-close"
+        type="button"
+        class="text-xs uppercase tracking-[0.2em] text-deep-blue border-b border-deep-blue pb-1 hover:opacity-60 transition-opacity"
+      >
+        Cerrar
+      </button>
+    </div>
+
+    <!-- Carrusel -->
+    <div class="relative">
+
+      <div
+        id="series-carousel"
+        class="grid grid-cols-1 md:grid-cols-3 gap-8"
+      >
+      </div>
+
+      <!-- Flechas -->
+      <div
+        id="series-carousel-controls"
+        class="flex justify-center items-center gap-6 mt-10"
+      >
+        <button
+          id="series-prev"
+          type="button"
+          aria-label="Obras anteriores"
+          class="w-12 h-12 border border-deep-blue text-deep-blue flex items-center justify-center hover:bg-deep-blue hover:text-white transition-colors disabled:opacity-30 disabled:pointer-events-none"
+        >
+          ←
+        </button>
+
+        <span
+          id="series-counter"
+          class="font-sans text-xs tracking-[0.2em] text-gray-500"
+        >
+          1 / 1
+        </span>
+
+        <button
+          id="series-next"
+          type="button"
+          aria-label="Siguientes obras"
+          class="w-12 h-12 border border-deep-blue text-deep-blue flex items-center justify-center hover:bg-deep-blue hover:text-white transition-colors disabled:opacity-30 disabled:pointer-events-none"
+        >
+          →
+        </button>
+      </div>
+    </div>
+
+    <!-- Matriz final -->
+    <div
+      id="series-full-grid-container"
+      class="hidden mt-24 pt-16 border-t border-gray-200"
+    >
+      <div class="mb-10">
+        <p class="font-sans text-xs uppercase tracking-[0.25em] text-gray-500 mb-3">
+          Colección completa
+        </p>
+
+        <h3 class="font-serif text-3xl md:text-4xl text-deep-blue">
+          Todas las obras de la serie
+        </h3>
+      </div>
+
+      <div
+        id="series-full-grid"
+        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12"
+      >
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- LIGHTBOX -->
+<div
+  id="artwork-lightbox"
+  class="fixed inset-0 z-[100] hidden bg-black/90 backdrop-blur-sm"
+  aria-hidden="true"
+>
+  <div class="absolute inset-0 flex items-center justify-center p-4 md:p-8">
+
+    <button
+      id="lightbox-close"
+      type="button"
+      aria-label="Cerrar obra"
+      class="absolute top-6 right-6 md:top-10 md:right-10 z-20 w-12 h-12 rounded-full border border-white/50 text-white text-2xl hover:bg-white hover:text-black transition-colors"
+    >
+      ×
+    </button>
+
+    <div
+      class="relative max-w-6xl w-full max-h-[90vh] flex flex-col lg:flex-row bg-white overflow-hidden"
+    >
+
+      <!-- Imagen -->
+      <div
+        class="lg:w-3/5 bg-black flex items-center justify-center min-h-[45vh] lg:min-h-0"
+      >
+        <img
+          id="lightbox-image"
+          src=""
+          alt=""
+          class="max-h-[75vh] lg:max-h-[85vh] max-w-full object-contain"
+        />
+      </div>
+
+      <!-- Información -->
+      <div
+        class="lg:w-2/5 p-8 md:p-12 overflow-y-auto flex flex-col justify-center"
+      >
+
+        <p
+          id="lightbox-series"
+          class="font-sans text-xs uppercase tracking-[0.25em] text-gray-500 mb-4"
+        >
+        </p>
+
+        <h2
+          id="lightbox-title"
+          class="font-serif text-3xl md:text-4xl text-deep-blue mb-6"
+        >
+        </h2>
+
+        <div class="space-y-3 mb-8 text-sm text-gray-600">
+          <p id="lightbox-technique"></p>
+          <p id="lightbox-year"></p>
+          <p id="lightbox-dimensions"></p>
+        </div>
+
+        <div
+          id="lightbox-description"
+          class="font-sans text-sm leading-relaxed text-gray-700"
+        >
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script define:vars={{ artworks }}>
+  const allArtworks = artworks;
+
+  const gallery = document.getElementById("series-gallery");
+  const galleryTitle = document.getElementById("series-gallery-title");
+  const galleryLabel = document.getElementById("series-gallery-label");
+
+  const carousel = document.getElementById("series-carousel");
+  const fullGrid = document.getElementById("series-full-grid");
+  const fullGridContainer = document.getElementById(
+    "series-full-grid-container"
+  );
+
+  const prevButton = document.getElementById("series-prev");
+  const nextButton = document.getElementById("series-next");
+  const closeButton = document.getElementById("series-gallery-close");
+  const counter = document.getElementById("series-counter");
+
+  const lightbox = document.getElementById("artwork-lightbox");
+  const lightboxImage = document.getElementById("lightbox-image");
+  const lightboxTitle = document.getElementById("lightbox-title");
+  const lightboxSeries = document.getElementById("lightbox-series");
+  const lightboxTechnique = document.getElementById("lightbox-technique");
+  const lightboxYear = document.getElementById("lightbox-year");
+  const lightboxDimensions = document.getElementById("lightbox-dimensions");
+  const lightboxDescription = document.getElementById(
+    "lightbox-description"
+  );
+  const lightboxClose = document.getElementById("lightbox-close");
+
+  let currentSeries = "";
+  let currentPage = 0;
+  let currentArtworks = [];
+
+  const itemsPerPage = 3;
+
+  function escapeHtml(value = "") {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function artworkCard(obra, small = false) {
+    return `
+      <article
+        class="group cursor-pointer js-series-artwork"
+        data-artwork-id="${escapeHtml(obra.id)}"
+      >
+        <div
+          class="${
+            small
+              ? "aspect-square"
+              : "aspect-[4/5]"
+          } bg-pale-rose overflow-hidden relative mb-5"
+        >
+          <img
+            src="${escapeHtml(obra.imageUrl)}"
+            alt="${escapeHtml(obra.title)} — Diana Castro"
+            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            loading="lazy"
+          />
+
+          <div
+            class="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-300 flex items-center justify-center"
+          >
+            <span
+              class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-3xl drop-shadow-md"
+            >
+              +
+            </span>
+          </div>
+        </div>
+
+        <h3 class="font-serif ${
+          small
+            ? "text-lg"
+            : "text-xl"
+        } text-deep-blue">
+          ${escapeHtml(obra.title)}
+        </h3>
+
+        <p class="font-sans text-xs mt-2 text-gray-600">
+          ${escapeHtml(obra.technique)} — ${escapeHtml(obra.year)}
+        </p>
+      </article>
+    `;
+  }
+
+  function renderCarousel() {
+    const totalPages = Math.ceil(
+      currentArtworks.length / itemsPerPage
+    );
+
+    if (!totalPages) {
+      carousel.innerHTML = "";
+      return;
+    }
+
+    const start = currentPage * itemsPerPage;
+    const visibleArtworks = currentArtworks.slice(
+      start,
+      start + itemsPerPage
+    );
+
+    carousel.innerHTML = visibleArtworks
+      .map((obra) => artworkCard(obra))
+      .join("");
+
+    counter.textContent =
+      `${currentPage + 1} / ${totalPages}`;
+
+    prevButton.disabled = currentPage === 0;
+    nextButton.disabled =
+      currentPage >= totalPages - 1;
+
+    /*
+     * La matriz completa solamente aparece
+     * cuando el visitante llega al último grupo.
+     */
+    if (currentPage === totalPages - 1) {
+      renderFullGrid();
+      fullGridContainer.classList.remove("hidden");
+    } else {
+      fullGridContainer.classList.add("hidden");
+    }
+
+    bindArtworkClicks();
+  }
+
+  function renderFullGrid() {
+    fullGrid.innerHTML = currentArtworks
+      .map((obra) => artworkCard(obra, true))
+      .join("");
+
+    bindArtworkClicks();
+  }
+
+  function openSeries(series) {
+    currentSeries = series;
+
+    currentArtworks = allArtworks
+      .filter(
+        (obra) =>
+          obra.series &&
+          obra.series.trim() === series.trim()
+      )
+      .sort(
+        (a, b) => Number(a.order) - Number(b.order)
+      );
+
+    if (!currentArtworks.length) {
+      return;
+    }
+
+    currentPage = 0;
+
+    galleryTitle.textContent = series;
+    galleryLabel.textContent =
+      `Serie · ${currentArtworks.length} obras`;
+
+    fullGridContainer.classList.add("hidden");
+
+    renderCarousel();
+
+    gallery.classList.remove("hidden");
+
+    requestAnimationFrame(() => {
+      gallery.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    });
+  }
+
+  function closeSeries() {
+    gallery.classList.add("hidden");
+
+    fullGridContainer.classList.add("hidden");
+
+    window.scrollTo({
+      top: gallery.offsetTop - 100,
+      behavior: "smooth"
+    });
+  }
+
+  function openLightbox(obra) {
+    lightboxImage.src = obra.imageUrl;
+    lightboxImage.alt = obra.title;
+
+    lightboxTitle.textContent =
+      obra.title;
+
+    lightboxSeries.textContent =
+      obra.series
+        ? `Serie · ${obra.series}`
+        : "";
+
+    lightboxTechnique.textContent =
+      obra.technique
+        ? `Técnica: ${obra.technique}`
+        : "";
+
+    lightboxYear.textContent =
+      obra.year
+        ? `Año: ${obra.year}`
+        : "";
+
+    lightboxDimensions.textContent =
+      obra.dimensions
+        ? `Dimensiones: ${obra.dimensions}`
+        : "";
+
+    lightboxDescription.innerHTML =
+      escapeHtml(
+        obra.description || "Sin descripción disponible."
+      ).replace(/\n/g, "<br>");
+
+    lightbox.classList.remove("hidden");
+    lightbox.setAttribute("aria-hidden", "false");
+
+    document.body.classList.add("overflow-hidden");
+  }
+
+  function closeLightbox() {
+    lightbox.classList.add("hidden");
+    lightbox.setAttribute("aria-hidden", "true");
+
+    document.body.classList.remove("overflow-hidden");
+
+    lightboxImage.src = "";
+  }
+
+  function bindArtworkClicks() {
+    document
+      .querySelectorAll(".js-series-artwork")
+      .forEach((element) => {
+
+        element.addEventListener("click", () => {
+          const id =
+            element.dataset.artworkId;
+
+          const obra =
+            currentArtworks.find(
+              (item) => String(item.id) === String(id)
+            );
+
+          if (obra) {
+            openLightbox(obra);
+          }
+        });
+      });
+  }
+
+  /*
+   * Botones "Ver todas las Cianotipias..."
+   */
+  document
+    .querySelectorAll(".js-series-trigger")
+    .forEach((button) => {
+
+      button.addEventListener("click", () => {
+        const series =
+          button.dataset.series;
+
+        if (series) {
+          openSeries(series);
+        }
+      });
+    });
+
+  prevButton.addEventListener("click", () => {
+    if (currentPage > 0) {
+      currentPage--;
+      renderCarousel();
+    }
+  });
+
+  nextButton.addEventListener("click", () => {
+    const totalPages =
+      Math.ceil(
+        currentArtworks.length /
+        itemsPerPage
+      );
+
+    if (currentPage < totalPages - 1) {
+      currentPage++;
+      renderCarousel();
+    }
+  });
+
+  closeButton.addEventListener(
+    "click",
+    closeSeries
+  );
+
+  lightboxClose.addEventListener(
+    "click",
+    closeLightbox
+  );
+
+  lightbox.addEventListener(
+    "click",
+    (event) => {
+      if (event.target === lightbox) {
+        closeLightbox();
+      }
+    }
+  );
+
+  document.addEventListener(
+    "keydown",
+    (event) => {
+
+      if (event.key === "Escape") {
+        closeLightbox();
+      }
+
+      if (
+        lightbox.classList.contains("hidden") === false
+      ) {
+        return;
+      }
+
+      if (
+        event.key === "ArrowLeft" &&
+        currentPage > 0
+      ) {
+        currentPage--;
+        renderCarousel();
+      }
+
+      if (
+        event.key === "ArrowRight"
+      ) {
+        const totalPages =
+          Math.ceil(
+            currentArtworks.length /
+            itemsPerPage
+          );
+
+        if (currentPage < totalPages - 1) {
+          currentPage++;
+          renderCarousel();
+        }
+      }
+    }
+  );
+</script>
+```
