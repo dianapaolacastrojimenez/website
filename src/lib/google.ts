@@ -13,6 +13,8 @@ export interface Artwork {
   descriptionEn: string;
   imageUrl: string;
   order: number;
+
+  // Control desde Google Sheets
   showSeriesButton: boolean;
 }
 
@@ -24,25 +26,14 @@ export interface CarouselImage {
 
 
 /**
- * Convierte diferentes formatos de imagen
- * en una ruta válida para Astro.
- *
- * Ejemplos:
- *
- * /obra.jpg
- * public/obra.jpg
- * /public/obra.jpg
- * obras/obra.jpg
- *
- * terminan funcionando como:
- *
- * /obra.jpg
- * /obras/obra.jpg
+ * Convierte diferentes formatos de imágenes
+ * almacenados en Google Sheets a una ruta
+ * utilizable por el navegador.
  */
 function processImageString(rawString: string): string {
   if (!rawString) return "";
 
-  let value = String(rawString).trim();
+  const value = String(rawString).trim();
 
   if (!value) return "";
 
@@ -51,79 +42,52 @@ function processImageString(rawString: string): string {
     return value.replace("open?id=", "uc?id=");
   }
 
-  // Google Drive file URL
-  if (
-    value.includes("drive.google.com") ||
-    value.includes("googleusercontent.com")
-  ) {
+  // URLs completas
+  if (value.startsWith("http://") || value.startsWith("https://")) {
     return value;
   }
 
-  // URL absoluta
-  if (
-    value.startsWith("http://") ||
-    value.startsWith("https://")
-  ) {
-    return value;
-  }
-
-  // Astro sirve directamente la carpeta /public
-  // Por eso eliminamos "public/" si el usuario lo escribió.
-  value = value.replace(/^public[\\/]/i, "");
-
-  // Normalizamos barras
-  value = value.replace(/\\/g, "/");
-
-  // Aseguramos que empiece por /
-  if (!value.startsWith("/")) {
-    value = `/${value}`;
-  }
-
-  return value;
+  // Rutas locales
+  return value.startsWith("/") ? value : `/${value}`;
 }
 
 
 /**
- * Convierte el contenido de la columna
- * "Mostrar botón serie" en verdadero/falso.
+ * Convierte los diferentes valores que pueden aparecer
+ * en Google Sheets:
  *
- * Acepta:
  * SI
- * SÍ
  * si
- * sí
- * TRUE
- * true
- * 1
+ * Si
  * YES
- * ON
+ * yes
+ * TRUE
+ * 1
+ *
+ * en true.
  */
-function parseBoolean(value: unknown): boolean {
+function isEnabled(value: unknown): boolean {
   if (value === undefined || value === null) {
     return false;
   }
 
   const normalized = String(value)
     .trim()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
+    .toLowerCase();
 
-  return [
-    "si",
-    "true",
-    "1",
-    "yes",
-    "on",
-    "mostrar",
-    "mostrar boton",
-    "mostrar boton serie",
-  ].includes(normalized);
+  return (
+    normalized === "si" ||
+    normalized === "sí" ||
+    normalized === "yes" ||
+    normalized === "true" ||
+    normalized === "1" ||
+    normalized === "x"
+  );
 }
 
 
 /**
- * Descarga las obras desde Google Sheets.
+ * Obtiene todas las obras desde Google Sheets.
  *
  * Hoja: Obras
  *
@@ -155,6 +119,10 @@ export async function fetchArtworks(): Promise<Artwork[]> {
     return [];
   }
 
+  /**
+   * IMPORTANTE:
+   * Leemos hasta la columna O.
+   */
   const url =
     `https://sheets.googleapis.com/v4/spreadsheets/` +
     `${SHEET_ID}/values/Obras!A2:O?key=${API_KEY}`;
@@ -164,9 +132,7 @@ export async function fetchArtworks(): Promise<Artwork[]> {
 
     if (!response.ok) {
       console.error(
-        "Google Sheets respondió con error:",
-        response.status,
-        response.statusText
+        `Google Sheets respondió con HTTP ${response.status}`
       );
 
       return [];
@@ -178,8 +144,14 @@ export async function fetchArtworks(): Promise<Artwork[]> {
       return [];
     }
 
-    return data.values
+    const artworks: Artwork[] = data.values
       .map((row: any[]) => {
+
+        const orderValue = Number.parseInt(
+          String(row[10] ?? "0").trim(),
+          10
+        );
+
         return {
           id: String(row[0] ?? "").trim(),
 
@@ -202,16 +174,15 @@ export async function fetchArtworks(): Promise<Artwork[]> {
               ? String(row[7]).trim()
               : undefined,
 
-          description: String(row[8] ?? "").trim(),
+          description: String(row[8] ?? ""),
 
           imageUrl: processImageString(
             String(row[9] ?? "")
           ),
 
-          order: Number.parseInt(
-            String(row[10] ?? "0"),
-            10
-          ) || 0,
+          order: Number.isNaN(orderValue)
+            ? 0
+            : orderValue,
 
           titleEn:
             String(row[11] ?? "").trim() ||
@@ -222,24 +193,23 @@ export async function fetchArtworks(): Promise<Artwork[]> {
             String(row[4] ?? "").trim(),
 
           descriptionEn:
-            String(row[13] ?? "").trim() ||
-            String(row[8] ?? "").trim(),
+            String(row[13] ?? "") ||
+            String(row[8] ?? ""),
 
-          showSeriesButton: parseBoolean(row[14]),
+          /**
+           * COLUMNA O
+           *
+           * row[14] = Mostrar botón serie
+           */
+          showSeriesButton: isEnabled(row[14]),
         };
       })
-      .filter((obra: Artwork) => {
-        // No mostramos filas completamente vacías.
-        return (
-          obra.id ||
-          obra.title ||
-          obra.imageUrl
-        );
-      })
-      .sort(
-        (a: Artwork, b: Artwork) =>
-          a.order - b.order
-      );
+      .filter((obra: Artwork) => obra.id !== "");
+
+    return artworks.sort(
+      (a: Artwork, b: Artwork) =>
+        a.order - b.order
+    );
 
   } catch (error) {
     console.error(
@@ -253,7 +223,7 @@ export async function fetchArtworks(): Promise<Artwork[]> {
 
 
 /**
- * Descarga las imágenes del carrusel principal.
+ * Obtiene las imágenes del Carrusel.
  *
  * Hoja: Carrusel
  *
@@ -266,10 +236,6 @@ export async function fetchCarousel(): Promise<CarouselImage[]> {
   const API_KEY = import.meta.env.GOOGLE_API_KEY;
 
   if (!SHEET_ID || !API_KEY) {
-    console.error(
-      "Faltan GOOGLE_SHEET_ID o GOOGLE_API_KEY."
-    );
-
     return [];
   }
 
@@ -282,9 +248,7 @@ export async function fetchCarousel(): Promise<CarouselImage[]> {
 
     if (!response.ok) {
       console.error(
-        "Google Sheets Carrusel respondió con error:",
-        response.status,
-        response.statusText
+        `Error Carrusel HTTP ${response.status}`
       );
 
       return [];
@@ -296,25 +260,20 @@ export async function fetchCarousel(): Promise<CarouselImage[]> {
       return [];
     }
 
-    return data.values
-      .map((row: any[]) => ({
-        imageUrl: processImageString(
-          String(row[0] ?? "")
-        ),
+    return data.values.map((row: any[]) => ({
+      imageUrl: processImageString(
+        String(row[0] ?? "")
+      ),
 
-        altText:
-          String(row[1] ?? "").trim() ||
-          "Diana Castro - Colección exclusiva",
+      altText:
+        String(row[1] ?? "").trim() ||
+        "Diana Castro - Colección exclusiva",
 
-        altTextEn:
-          String(row[2] ?? "").trim() ||
-          String(row[1] ?? "").trim() ||
-          "Diana Castro - Exclusive collection",
-      }))
-      .filter(
-        (image: CarouselImage) =>
-          image.imageUrl !== ""
-      );
+      altTextEn:
+        String(row[2] ?? "").trim() ||
+        String(row[1] ?? "").trim() ||
+        "Diana Castro - Exclusive collection",
+    }));
 
   } catch (error) {
     console.error(
