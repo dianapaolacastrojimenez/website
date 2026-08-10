@@ -1,199 +1,1409 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import { fetchArtworks, fetchCarousel } from '../../lib/google';
+import Layout from "../layouts/Layout.astro";
+import { fetchArtworks, fetchCarousel } from "../lib/google";
 
 let artworks = [];
 let carouselImages = [];
 
 try {
   const result = await fetchArtworks();
+
   if (Array.isArray(result)) {
     artworks = result;
   }
-  
+
   const carouselResult = await fetchCarousel();
+
   if (Array.isArray(carouselResult)) {
     carouselImages = carouselResult;
   }
 } catch (error) {
-  console.error("Error downloading data from Google Sheets:", error);
+  console.error(
+    "Error downloading data from Google Sheets:",
+    error
+  );
 }
 
+/*
+ * Carousel fallback safety net.
+ */
 if (carouselImages.length === 0) {
   carouselImages = [
     {
       imageUrl: "/cyanotype_homenaje_en_azul_2.jpg",
-      altText: "Diana Castro, contemporary international artist. Portrait and exclusive works.",
-      altTextEn: "Diana Castro, contemporary international artist. Portrait and exclusive works."
+      altText:
+        "Diana Castro, international contemporary artist. Exclusive portrait and works in cyanotype.",
+      altTextEn:
+        "Diana Castro, international contemporary artist. Exclusive cyanotype works."
     }
   ];
 }
 
+/*
+ * First two artworks according to the order defined
+ * in Google Sheets.
+ */
 const featuredArtworks = artworks.slice(0, 2);
 ---
 
-<Layout title="Diana Castro | Contemporary Artist" description="Explore the work of Diana Paola Castro Jiménez. Specialist in cyanotype, memory, and identity." lang="en">
-  
-  <!-- HERO SECTION CON CARRUSEL NATIVO -->
-  <section class="relative min-h-[90vh] flex flex-col items-center justify-center pt-24 pb-16 overflow-hidden gsap-reveal">
-    
-    <div id="hero-carousel" class="absolute inset-0 w-full h-full -z-20 bg-gray-50">
-      {carouselImages.map((img, index) => (
-        <img 
-          src={img.imageUrl} 
-          alt={img.altTextEn} 
-          class={`carousel-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-[2000ms] ease-in-out ${index === 0 ? 'opacity-100' : 'opacity-0'}`}
-          fetchpriority={index === 0 ? "high" : "auto"}
-          loading={index === 0 ? "eager" : "lazy"}
-        />
-      ))}
+<Layout
+  title="Diana Castro | Contemporary Artist | Cyanotype"
+  description="Diana Castro, contemporary artist and photographer specializing in cyanotype. Original artworks, photographic series, and exclusive pieces for private collections."
+>
+
+  <!-- ========================================================= -->
+  <!-- HERO / BACKGROUND CAROUSEL                                -->
+  <!-- ========================================================= -->
+
+  <section
+    class="relative min-h-[80vh] flex items-center overflow-hidden"
+  >
+
+    <!-- Background Carousel -->
+    <div
+      id="hero-carousel"
+      class="absolute inset-0 w-full h-full -z-20 bg-gray-50"
+    >
+      {
+        carouselImages.map((img, index) => (
+          <img
+            src={img.imageUrl}
+            alt={img.altTextEn || img.altText}
+            class={`carousel-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-[2000ms] ease-in-out ${
+              index === 0 ? "opacity-100" : "opacity-0"
+            }`}
+            fetchpriority={index === 0 ? "high" : "auto"}
+            loading={index === 0 ? "eager" : "lazy"}
+          />
+        ))
+      }
     </div>
 
-    <div class="absolute inset-0 bg-white/60 backdrop-blur-[4px] -z-10"></div>
-    
-    <div class="max-w-4xl mx-auto px-6 text-center z-10 mb-10 md:mb-16">
-      <h1 class="font-serif text-5xl md:text-7xl lg:text-[5rem] text-deep-blue mb-6 leading-[1.1] tracking-tight drop-shadow-sm">
+    <!-- Contrast Overlay -->
+    <div
+      class="absolute inset-0 bg-white/60 backdrop-blur-[4px] -z-10"
+    ></div>
+
+    <!-- Content -->
+    <div
+      class="max-w-4xl mx-auto px-6 text-center z-10 mb-10 md:mb-16"
+    >
+      <h1
+        class="font-serif text-5xl md:text-7xl lg:text-[5rem] text-deep-blue mb-6 leading-[1.1] tracking-tight drop-shadow-sm"
+      >
         Materializing time through light
       </h1>
-      <p class="font-sans text-lg md:text-xl text-gray-800 font-medium max-w-2xl mx-auto leading-relaxed drop-shadow-sm">
-        Cyanotypes and conceptual interventions that challenge the immediacy of liquid modernity. Highly exclusive works where memory is printed in Prussian blue.
+
+      <p
+        class="font-sans text-lg md:text-xl text-gray-800 font-medium max-w-2xl mx-auto leading-relaxed drop-shadow-sm"
+      >
+        Cyanotypes and conceptual interventions challenging the immediacy
+        of liquid modernity. Highly exclusive artworks where memory is
+        printed in Prussian blue.
       </p>
     </div>
+
   </section>
 
-  <!-- OBRAS DESTACADAS -->
-  <section class="max-w-7xl mx-auto px-8 py-20 relative z-20 bg-white">
-    <h2 class="font-serif text-3xl text-deep-blue mb-12 border-b border-pale-rose pb-4">Selected Artworks</h2>
-    
-    {featuredArtworks.length === 0 ? (
-      <p class="text-center text-warm-gray py-10">Artworks are loading or could not connect to the database.</p>
-    ) : (
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
-        {featuredArtworks.map((obra) => (
-          <div 
-            class="group gsap-reveal cursor-pointer js-lightbox-trigger"
-            data-img={obra.imageUrl}
-            data-title={obra.titleEn}
-            data-desc={`${obra.techniqueEn} — ${obra.descriptionEn}`}
+
+  <!-- ========================================================= -->
+  <!-- FEATURED ARTWORKS                                         -->
+  <!-- ========================================================= -->
+
+  <section
+    id="obras-destacadas"
+    class="max-w-7xl mx-auto px-6 py-24 md:py-32"
+  >
+
+    <div class="max-w-3xl mb-16">
+
+      <p
+        class="font-sans text-xs uppercase tracking-[0.25em] text-gray-500 mb-4"
+      >
+        Featured Artworks
+      </p>
+
+      <h2
+        class="font-serif text-4xl md:text-5xl text-deep-blue mb-6"
+      >
+        A Selection of Works
+      </h2>
+
+      <p
+        class="font-sans text-gray-700 leading-relaxed"
+      >
+        Each cyanotype is an original piece where light, time, and matter
+        converge to build an unrepeatable image.
+      </p>
+
+    </div>
+
+
+    <!-- ======================================================= -->
+    <!-- ARTWORKS                                                -->
+    <!-- ======================================================= -->
+
+    {
+      featuredArtworks.length === 0 ? (
+
+        <p
+          class="text-center text-warm-gray py-10"
+        >
+          Artworks are loading or could not connect to the database.
+        </p>
+
+      ) : (
+
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-16"
+        >
+
+          {
+            featuredArtworks.map((obra) => {
+
+              /*
+               * The field comes from column O:
+               * "Mostrar botón serie"
+               *
+               * We accept different variants to avoid
+               * issues with capitalization, spaces, or field names.
+               */
+              const obraData = obra as any;
+
+              const mostrarBoton =
+                String(
+                  obraData.showSeriesButton ??
+                  obraData.mostrarBotonSerie ??
+                  obraData.showSeries ??
+                  ""
+                )
+                  .trim()
+                  .toLowerCase() === "si" ||
+                String(
+                  obraData.showSeriesButton ??
+                  obraData.mostrarBotonSerie ??
+                  obraData.showSeries ??
+                  ""
+                )
+                  .trim()
+                  .toLowerCase() === "sí" ||
+                String(
+                  obraData.showSeriesButton ??
+                  obraData.mostrarBotonSerie ??
+                  obraData.showSeries ??
+                  ""
+                )
+                  .trim()
+                  .toLowerCase() === "true" ||
+                String(
+                  obraData.showSeriesButton ??
+                  obraData.mostrarBotonSerie ??
+                  obraData.showSeries ??
+                  ""
+                )
+                  .trim() === "1";
+
+              return (
+                <article
+                  class="group"
+                >
+
+                  <!-- Image -->
+                  <div
+                    class="js-lightbox-trigger cursor-pointer"
+                    data-artwork-id={obra.id}
+                  >
+
+                    <div
+                      class="aspect-[4/5] bg-pale-rose overflow-hidden mb-6 relative shadow-sm"
+                    >
+
+                      <div
+                        class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 z-10 flex items-center justify-center"
+                      >
+                        <span
+                          class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-3xl drop-shadow-md"
+                        >
+                          +
+                        </span>
+                      </div>
+
+                      <img
+                        src={obra.imageUrl}
+                        alt={`${obra.title} — Diana Castro`}
+                        class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                        loading="lazy"
+                      />
+
+                    </div>
+
+                    <h3
+                      class="font-serif text-2xl text-deep-blue"
+                    >
+                      {obra.title}
+                    </h3>
+
+                    <p
+                      class="font-sans text-sm mt-2"
+                    >
+                      {obra.technique} — {obra.year}
+                    </p>
+
+                  </div>
+
+
+                  <!-- ================================================= -->
+                  <!-- SERIES BUTTON                                     -->
+                  <!-- ================================================= -->
+
+                  {
+                    mostrarBoton &&
+                    obra.series && (
+
+                      <button
+                        type="button"
+                        class="js-series-trigger mt-6 inline-flex items-center gap-3 px-6 py-3 border border-deep-blue text-deep-blue font-sans text-xs uppercase tracking-[0.18em] hover:bg-deep-blue hover:text-white transition-all duration-300"
+                        data-series={obra.series}
+                      >
+                        <span>
+                          View all Cyanotypes in this series
+                        </span>
+
+                        <span
+                          aria-hidden="true"
+                          class="text-base leading-none"
+                        >
+                          →
+                        </span>
+                      </button>
+
+                    )
+                  }
+
+                </article>
+              );
+            })
+          }
+
+        </div>
+
+      )
+    }
+
+  </section>
+
+
+  <!-- ========================================================= -->
+  <!-- SERIES GALLERY                                            -->
+  <!-- ========================================================= -->
+
+  <section
+    id="series-gallery"
+    class="hidden mt-8 pb-24 pt-16 border-t border-gray-200"
+    aria-label="Artworks in the series"
+  >
+
+    <div
+      class="max-w-7xl mx-auto px-6"
+    >
+
+      <!-- Header -->
+      <div
+        class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12"
+      >
+
+        <div>
+
+          <p
+            id="series-gallery-label"
+            class="font-sans text-xs uppercase tracking-[0.25em] text-gray-500 mb-3"
           >
-            <div class="aspect-[4/5] bg-pale-rose overflow-hidden mb-6 relative shadow-sm">
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 z-10 flex items-center justify-center">
-                <span class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-3xl drop-shadow-md">+</span>
-              </div>
-              <img src={obra.imageUrl} alt={obra.titleEn} class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" loading="lazy" />
-            </div>
-            <h3 class="font-serif text-2xl text-deep-blue">{obra.titleEn}</h3>
-            <p class="font-sans text-sm mt-2 leading-relaxed">{obra.techniqueEn} — {obra.descriptionEn}</p>
-          </div>        ))}
+            Series
+          </p>
+
+          <h2
+            id="series-gallery-title"
+            class="font-serif text-4xl md:text-5xl text-deep-blue"
+          >
+            Artworks in the Series
+          </h2>
+
+        </div>
+
+        <button
+          id="series-gallery-close"
+          type="button"
+          class="text-xs uppercase tracking-[0.2em] text-deep-blue border-b border-deep-blue pb-1 hover:opacity-60 transition-opacity"
+        >
+          Close
+        </button>
+
       </div>
-    )}
+
+
+      <!-- ===================================================== -->
+      <!-- 3-ARTWORK CAROUSEL                                    -->
+      <!-- ===================================================== -->
+
+      <div class="relative">
+
+        <div
+          id="series-carousel"
+          class="grid grid-cols-1 md:grid-cols-3 gap-8"
+        >
+        </div>
+
+
+        <!-- Controls -->
+        <div
+          id="series-carousel-controls"
+          class="flex justify-center items-center gap-6 mt-10"
+        >
+
+          <button
+            id="series-prev"
+            type="button"
+            aria-label="Previous artworks"
+            class="w-12 h-12 border border-deep-blue text-deep-blue flex items-center justify-center hover:bg-deep-blue hover:text-white transition-colors disabled:opacity-30 disabled:pointer-events-none"
+          >
+            ←
+          </button>
+
+          <span
+            id="series-counter"
+            class="font-sans text-xs tracking-[0.2em] text-gray-500"
+          >
+            1 / 1
+          </span>
+
+          <button
+            id="series-next"
+            type="button"
+            aria-label="Next artworks"
+            class="w-12 h-12 border border-deep-blue text-deep-blue flex items-center justify-center hover:bg-deep-blue hover:text-white transition-colors disabled:opacity-30 disabled:pointer-events-none"
+          >
+            →
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- ===================================================== -->
+      <!-- FULL GRID                                             -->
+      <!-- ===================================================== -->
+
+      <div
+        id="series-full-grid-container"
+        class="hidden mt-24 pt-16 border-t border-gray-200"
+      >
+
+        <div class="mb-10">
+
+          <p
+            class="font-sans text-xs uppercase tracking-[0.25em] text-gray-500 mb-3"
+          >
+            Complete Collection
+          </p>
+
+          <h3
+            class="font-serif text-3xl md:text-4xl text-deep-blue"
+          >
+            All Artworks in the Series
+          </h3>
+
+        </div>
+
+        <div
+          id="series-full-grid"
+          class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12"
+        >
+        </div>
+
+      </div>
+
+    </div>
+
   </section>
 
-  <!-- MANIFIESTO Y CONTACTO -->
-  <section class="max-w-4xl mx-auto px-8 py-24 text-center border-t border-pale-rose/30 relative z-20 bg-white gsap-reveal">
-    <h2 class="font-serif text-3xl text-deep-blue mb-8">The Creative Sanctuary</h2>
-    
-    <div class="font-sans text-gray-700 leading-relaxed space-y-6 mb-12 text-left md:text-center">
+
+  <!-- ========================================================= -->
+  <!-- ABOUT THE ARTWORK / STATEMENT                            -->
+  <!-- ========================================================= -->
+
+  <section
+    class="max-w-4xl mx-auto px-6 pb-24 md:pb-32"
+  >
+
+    <div
+      class="font-sans text-gray-700 leading-relaxed space-y-6 mb-12 text-left md:text-center"
+    >
+
       <p>
-        This is an open window into Diana Castro's creative sanctuary, where sunlight, the rigor of time, and chemical emulsion converge in an act of pure visual alchemy. Each photographic piece is born from an intimate dialogue with cotton paper. The organic textures, melancholic silhouettes, and deep immersion in Prussian blue guarantee the impossibility of replication. In an era of massive digital overproduction, this analog technique stands as an act of aesthetic rebellion: the materialization of the ephemeral.
+        This is an open window into Diana Castro's creative sanctuary,
+        where sunlight, the rigor of time, and chemical emulsion converge in an act
+        of pure visual alchemy. Each photographic piece stems from an intimate dialogue
+        with cotton paper. Organic textures, melancholic silhouettes, and deep immersion
+        in Prussian blue guarantee the impossibility of replication.
+        In an era of massive digital overproduction, this analog technique stands
+        as an act of aesthetic rebellion: the materialization of the ephemeral.
       </p>
+
       <p>
-        Acquiring one of these works means securing a tangible fragment of time. An irrefutable testimony of technical mastery destined to elevate the prestige of any private collection, gallery, or museum vault.
+        Acquiring one of these artworks secures a tangible fragment of time.
+        An irrefutable testimony of technical mastery destined to elevate the prestige of
+        any private collection, gallery, or museum vault.
       </p>
+
     </div>
 
-    <div class="bg-gray-50 border border-gray-200 p-8 mb-12 shadow-sm text-left md:text-center">
-      <h3 class="font-serif text-xl text-deep-blue mb-3">Exclusivity and Authenticity</h3>
-      <p class="font-sans text-sm text-gray-600 leading-relaxed">
-        All pieces are <strong>original and exclusive works</strong>, invariably delivered with their respective <strong>certificate of authenticity</strong>. The artist also undertakes <strong>commissioned works</strong> and develops <strong>collaborations</strong> for high-level museum and curatorial projects.
+
+    <!-- Value Card -->
+    <div
+      class="bg-gray-50 border border-gray-200 p-8 mb-12 shadow-sm text-left md:text-center"
+    >
+
+      <h3
+        class="font-serif text-xl text-deep-blue mb-3"
+      >
+        Exclusivity and Authenticity
+      </h3>
+
+      <p
+        class="font-sans text-sm text-gray-600 leading-relaxed"
+      >
+        All pieces are
+        <strong>original and exclusive artworks</strong>,
+        invariably delivered with their corresponding
+        <strong>certificate of authenticity</strong>.
+        The artist also accepts
+        <strong>commissioned works</strong>
+        and engages in
+        <strong>collaborations</strong>
+        for high-level curatorial and museum projects.
       </p>
+
     </div>
 
-    <div class="flex flex-col sm:flex-row justify-center items-center gap-6">
-      <a href="/en/contacto" class="w-full sm:w-auto px-10 py-4 bg-deep-blue text-white font-sans text-xs uppercase tracking-[0.2em] hover:bg-gray-800 transition-colors duration-300 shadow-md text-center">
+
+    <!-- Buttons -->
+    <div
+      class="flex flex-col sm:flex-row justify-center items-center gap-6"
+    >
+
+      <a
+        href="/contact"
+        class="w-full sm:w-auto px-10 py-4 bg-deep-blue border border-deep-blue text-white font-sans text-xs uppercase tracking-[0.2em] hover:bg-white hover:text-deep-blue transition-colors duration-300 text-center"
+      >
         Acquire Artwork / Contact
       </a>
-      <a href="https://instagram.com/artdcastro/" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-10 py-4 border border-deep-blue text-deep-blue font-sans text-xs uppercase tracking-[0.2em] hover:bg-deep-blue hover:text-white transition-colors duration-300 text-center">
+
+      <a
+        href="https://instagram.com/artdcastro"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="w-full sm:w-auto px-10 py-4 border border-deep-blue text-deep-blue font-sans text-xs uppercase tracking-[0.2em] hover:bg-deep-blue hover:text-white transition-colors duration-300 text-center"
+      >
         Follow on Instagram
       </a>
+
     </div>
+
   </section>
 
-  <!-- HTML DEL LIGHTBOX -->
-  <div id="lightbox-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/95 opacity-0 pointer-events-none transition-opacity duration-300 p-4 sm:p-8">
-    <button id="lightbox-close" class="absolute top-6 right-6 text-white text-4xl font-light hover:text-pale-rose focus:outline-none z-50 transition-colors">
-      &times;
-    </button>
-    <div class="relative max-w-5xl w-full flex flex-col items-center">
-      <img id="lightbox-img" src="" alt="" class="max-h-[75vh] w-auto object-contain shadow-2xl rounded-sm" />
-      <div class="text-white mt-6 text-center max-w-2xl">
-        <h3 id="lightbox-title" class="font-serif text-3xl mb-2"></h3>
-        <p id="lightbox-desc" class="font-sans text-sm text-warm-gray opacity-80"></p>
+
+  <!-- ========================================================= -->
+  <!-- LIGHTBOX                                                  -->
+  <!-- ========================================================= -->
+
+  <div
+    id="artwork-lightbox"
+    class="fixed inset-0 z-[100] hidden bg-black/90 backdrop-blur-sm"
+    aria-hidden="true"
+  >
+
+    <div
+      class="absolute inset-0 flex items-center justify-center p-4 md:p-8"
+    >
+
+      <!-- Close -->
+      <button
+        id="lightbox-close"
+        type="button"
+        aria-label="Close artwork"
+        class="absolute top-6 right-6 md:top-10 md:right-10 z-20 w-12 h-12 rounded-full border border-white/50 text-white text-2xl hover:bg-white hover:text-black transition-colors"
+      >
+        ×
+      </button>
+
+
+      <div
+        class="relative max-w-6xl w-full max-h-[90vh] flex flex-col lg:flex-row bg-white overflow-hidden"
+      >
+
+        <!-- Image -->
+        <div
+          class="lg:w-3/5 bg-black flex items-center justify-center min-h-[45vh] lg:min-h-0"
+        >
+
+          <img
+            id="lightbox-image"
+            src=""
+            alt=""
+            class="max-h-[75vh] lg:max-h-[85vh] max-w-full object-contain"
+          />
+
+        </div>
+
+
+        <!-- Information -->
+        <div
+          class="lg:w-2/5 p-8 md:p-12 overflow-y-auto flex flex-col justify-center"
+        >
+
+          <p
+            id="lightbox-series"
+            class="font-sans text-xs uppercase tracking-[0.25em] text-gray-500 mb-4"
+          >
+          </p>
+
+          <h2
+            id="lightbox-title"
+            class="font-serif text-3xl md:text-4xl text-deep-blue mb-6"
+          >
+          </h2>
+
+          <div
+            class="space-y-3 mb-8 text-sm text-gray-600"
+          >
+
+            <p id="lightbox-technique"></p>
+
+            <p id="lightbox-year"></p>
+
+            <p id="lightbox-dimensions"></p>
+
+          </div>
+
+          <div
+            id="lightbox-description"
+            class="font-sans text-sm leading-relaxed text-gray-700"
+          >
+          </div>
+
+        </div>
+
       </div>
+
     </div>
+
   </div>
 
-</Layout>
 
-<!-- LÓGICA DEL LIGHTBOX Y DEL CARRUSEL -->
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const slides = document.querySelectorAll('.carousel-slide');
-    if (slides.length > 1) {
-      let currentSlide = 0;
-      setInterval(() => {
-        slides[currentSlide].classList.remove('opacity-100');
-        slides[currentSlide].classList.add('opacity-0');
-        
-        currentSlide = (currentSlide + 1) % slides.length;
-        
-        slides[currentSlide].classList.remove('opacity-0');
-        slides[currentSlide].classList.add('opacity-100');
-      }, 6000);
+  <!-- ========================================================= -->
+  <!-- JAVASCRIPT                                                -->
+  <!-- ========================================================= -->
+
+  <script define:vars={{ artworks }}>
+
+    /*
+     * All artworks retrieved from Google Sheets.
+     */
+    const allArtworks = artworks || [];
+
+
+    /*
+     * Main DOM elements.
+     */
+    const gallery =
+      document.getElementById("series-gallery");
+
+    const galleryTitle =
+      document.getElementById("series-gallery-title");
+
+    const galleryLabel =
+      document.getElementById("series-gallery-label");
+
+    const carousel =
+      document.getElementById("series-carousel");
+
+    const fullGrid =
+      document.getElementById("series-full-grid");
+
+    const fullGridContainer =
+      document.getElementById(
+        "series-full-grid-container"
+      );
+
+    const prevButton =
+      document.getElementById("series-prev");
+
+    const nextButton =
+      document.getElementById("series-next");
+
+    const closeButton =
+      document.getElementById(
+        "series-gallery-close"
+      );
+
+    const counter =
+      document.getElementById(
+        "series-counter"
+      );
+
+
+    /*
+     * Lightbox DOM elements.
+     */
+    const lightbox =
+      document.getElementById(
+        "artwork-lightbox"
+      );
+
+    const lightboxImage =
+      document.getElementById(
+        "lightbox-image"
+      );
+
+    const lightboxTitle =
+      document.getElementById(
+        "lightbox-title"
+      );
+
+    const lightboxSeries =
+      document.getElementById(
+        "lightbox-series"
+      );
+
+    const lightboxTechnique =
+      document.getElementById(
+        "lightbox-technique"
+      );
+
+    const lightboxYear =
+      document.getElementById(
+        "lightbox-year"
+      );
+
+    const lightboxDimensions =
+      document.getElementById(
+        "lightbox-dimensions"
+      );
+
+    const lightboxDescription =
+      document.getElementById(
+        "lightbox-description"
+      );
+
+    const lightboxClose =
+      document.getElementById(
+        "lightbox-close"
+      );
+
+
+    /*
+     * Gallery state.
+     */
+    let currentSeries = "";
+
+    let currentPage = 0;
+
+    let currentArtworks = [];
+
+    const itemsPerPage = 3;
+
+
+    /*
+     * Security:
+     * prevents text coming from Google Sheets
+     * from being interpreted as HTML.
+     */
+    function escapeHtml(value = "") {
+
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
     }
 
-    const triggers = document.querySelectorAll('.js-lightbox-trigger');
-    const modal = document.getElementById('lightbox-modal');
-    const modalImg = document.getElementById('lightbox-img') as HTMLImageElement;
-    const modalTitle = document.getElementById('lightbox-title');
-    const modalDesc = document.getElementById('lightbox-desc');
-    const closeBtn = document.getElementById('lightbox-close');
 
-    function openLightbox(imgSrc: string, title: string, desc: string) {
-      if(modalImg && modalTitle && modalDesc && modal) {
-        modalImg.src = imgSrc;
-        modalImg.alt = title;
-        modalTitle.textContent = title;
-        modalDesc.textContent = desc;
-        modal.classList.remove('opacity-0', 'pointer-events-none');
-        document.body.style.overflow = 'hidden';
-      }
+    /*
+     * Normalizes the value of the column
+     * "Mostrar botón serie".
+     *
+     * Kept here as a fallback.
+     */
+    function shouldShowSeriesButton(obra) {
+
+      const value =
+        obra?.showSeriesButton ??
+        obra?.mostrarBotonSerie ??
+        obra?.showSeries ??
+        "";
+
+      const normalized =
+        String(value)
+          .trim()
+          .toLowerCase();
+
+      return (
+        normalized === "si" ||
+        normalized === "sí" ||
+        normalized === "true" ||
+        normalized === "1"
+      );
+
     }
 
-    function closeLightbox() {
-      if(modal) {
-        modal.classList.add('opacity-0', 'pointer-events-none');
-        document.body.style.overflow = '';
-        setTimeout(() => { if(modalImg) modalImg.src = ''; }, 300);
-      }
+
+    /*
+     * Generates an artwork card.
+     */
+    function artworkCard(
+      obra,
+      small = false
+    ) {
+
+      return `
+        <article
+          class="group cursor-pointer js-series-artwork"
+          data-artwork-id="${escapeHtml(obra.id)}"
+        >
+
+          <div
+            class="${
+              small
+                ? "aspect-square"
+                : "aspect-[4/5]"
+            } bg-pale-rose overflow-hidden relative mb-5"
+          >
+
+            <img
+              src="${escapeHtml(obra.imageUrl)}"
+              alt="${escapeHtml(obra.title)} — Diana Castro"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              loading="lazy"
+            />
+
+            <div
+              class="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-300 flex items-center justify-center"
+            >
+
+              <span
+                class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-3xl drop-shadow-md"
+              >
+                +
+              </span>
+
+            </div>
+
+          </div>
+
+          <h3
+            class="font-serif ${
+              small
+                ? "text-lg"
+                : "text-xl"
+            } text-deep-blue"
+          >
+            ${escapeHtml(obra.title)}
+          </h3>
+
+          <p
+            class="font-sans text-xs mt-2 text-gray-600"
+          >
+            ${escapeHtml(obra.technique)}
+            —
+            ${escapeHtml(obra.year)}
+          </p>
+
+        </article>
+      `;
+
     }
 
-    triggers.forEach(trigger => {
-      trigger.addEventListener('click', () => {
-        openLightbox(
-          trigger.getAttribute('data-img') || '', 
-          trigger.getAttribute('data-title') || '', 
-          trigger.getAttribute('data-desc') || ''
+
+    /*
+     * Renders the current 3 artworks.
+     */
+    function renderCarousel() {
+
+      const totalPages =
+        Math.ceil(
+          currentArtworks.length /
+          itemsPerPage
         );
-      });
-    });
 
-    if(closeBtn) closeBtn.addEventListener('click', closeLightbox);
-    if(modal) modal.addEventListener('click', (e) => {
-      if (e.target === modal) closeLightbox();
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeLightbox();
-    });
-  });
-</script>
+      if (!totalPages) {
+
+        carousel.innerHTML = "";
+
+        return;
+
+      }
+
+
+      const start =
+        currentPage *
+        itemsPerPage;
+
+
+      const visibleArtworks =
+        currentArtworks.slice(
+          start,
+          start + itemsPerPage
+        );
+
+
+      carousel.innerHTML =
+        visibleArtworks
+          .map(
+            (obra) =>
+              artworkCard(obra)
+          )
+          .join("");
+
+
+      counter.textContent =
+        `${currentPage + 1} / ${totalPages}`;
+
+
+      prevButton.disabled =
+        currentPage === 0;
+
+
+      nextButton.disabled =
+        currentPage >=
+        totalPages - 1;
+
+
+      /*
+       * Full grid appears upon reaching
+       * the last page group.
+       */
+      if (
+        currentPage ===
+        totalPages - 1
+      ) {
+
+        renderFullGrid();
+
+        fullGridContainer.classList.remove(
+          "hidden"
+        );
+
+      } else {
+
+        fullGridContainer.classList.add(
+          "hidden"
+        );
+
+      }
+
+
+      bindArtworkClicks();
+
+    }
+
+
+    /*
+     * Renders all artworks in the series grid.
+     */
+    function renderFullGrid() {
+
+      fullGrid.innerHTML =
+        currentArtworks
+          .map(
+            (obra) =>
+              artworkCard(
+                obra,
+                true
+              )
+          )
+          .join("");
+
+
+      bindArtworkClicks();
+
+    }
+
+
+    /*
+     * Opens a series gallery.
+     */
+    function openSeries(series) {
+
+      currentSeries = series;
+
+
+      currentArtworks =
+        allArtworks
+          .filter(
+            (obra) =>
+              obra.series &&
+              obra.series
+                .trim()
+                .toLowerCase() ===
+              series
+                .trim()
+                .toLowerCase()
+          )
+          .sort(
+            (a, b) =>
+              Number(a.order || 0) -
+              Number(b.order || 0)
+          );
+
+
+      if (
+        !currentArtworks.length
+      ) {
+
+        console.warn(
+          "No artworks found for series:",
+          series
+        );
+
+        return;
+
+      }
+
+
+      currentPage = 0;
+
+
+      galleryTitle.textContent =
+        series;
+
+
+      galleryLabel.textContent =
+        `Series · ${currentArtworks.length} artworks`;
+
+
+      fullGridContainer.classList.add(
+        "hidden"
+      );
+
+
+      renderCarousel();
+
+
+      gallery.classList.remove(
+        "hidden"
+      );
+
+
+      requestAnimationFrame(() => {
+
+        gallery.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+
+      });
+
+    }
+
+
+    /*
+     * Closes the series gallery.
+     */
+    function closeSeries() {
+
+      gallery.classList.add(
+        "hidden"
+      );
+
+      fullGridContainer.classList.add(
+        "hidden"
+      );
+
+    }
+
+
+    /*
+     * Opens an artwork in the lightbox.
+     */
+    function openLightbox(obra) {
+
+      if (!obra) return;
+
+
+      lightboxImage.src =
+        obra.imageUrl || "";
+
+      lightboxImage.alt =
+        obra.title || "Artwork by Diana Castro";
+
+
+      lightboxTitle.textContent =
+        obra.title || "";
+
+
+      lightboxSeries.textContent =
+        obra.series
+          ? `Series · ${obra.series}`
+          : "";
+
+
+      lightboxTechnique.textContent =
+        obra.technique
+          ? `Technique: ${obra.technique}`
+          : "";
+
+
+      lightboxYear.textContent =
+        obra.year
+          ? `Year: ${obra.year}`
+          : "";
+
+
+      lightboxDimensions.textContent =
+        obra.dimensions
+          ? `Dimensions: ${obra.dimensions}`
+          : "";
+
+
+      /*
+       * The description comes from Google Sheets.
+       *
+       * Line breaks and <br> are preserved,
+       * but arbitrary HTML is not executed.
+       */
+      const description =
+        String(
+          obra.description || ""
+        );
+
+
+      lightboxDescription.innerHTML =
+        escapeHtml(
+          description
+        )
+          .replace(
+            /&lt;br\s*\/?&gt;/gi,
+            "<br>"
+          )
+          .replace(
+            /\n/g,
+            "<br>"
+          );
+
+
+      if (
+        !description.trim()
+      ) {
+
+        lightboxDescription.textContent =
+          "No description available.";
+
+      }
+
+
+      lightbox.classList.remove(
+        "hidden"
+      );
+
+      lightbox.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+
+      document.body.classList.add(
+        "overflow-hidden"
+      );
+
+    }
+
+
+    /*
+     * Closes lightbox.
+     */
+    function closeLightbox() {
+
+      lightbox.classList.add(
+        "hidden"
+      );
+
+      lightbox.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+      document.body.classList.remove(
+        "overflow-hidden"
+      );
+
+
+      lightboxImage.src = "";
+
+    }
+
+
+    /*
+     * Binds click events to artwork cards.
+     */
+    function bindArtworkClicks() {
+
+      document
+        .querySelectorAll(
+          ".js-series-artwork"
+        )
+        .forEach(
+          (element) => {
+
+            element.addEventListener(
+              "click",
+              () => {
+
+                const id =
+                  element.dataset.artworkId;
+
+
+                const obra =
+                  currentArtworks.find(
+                    (item) =>
+                      String(item.id) ===
+                      String(id)
+                  );
+
+
+                if (obra) {
+
+                  openLightbox(
+                    obra
+                  );
+
+                }
+
+              }
+            );
+
+          }
+        );
+
+    }
+
+
+    /*
+     * "View all Cyanotypes..." buttons handler.
+     */
+    document
+      .querySelectorAll(
+        ".js-series-trigger"
+      )
+      .forEach(
+        (button) => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              const series =
+                button.dataset.series;
+
+
+              if (series) {
+
+                openSeries(
+                  series
+                );
+
+              }
+
+            }
+          );
+
+        }
+      );
+
+
+    /*
+     * Previous button.
+     */
+    prevButton.addEventListener(
+      "click",
+      () => {
+
+        if (
+          currentPage > 0
+        ) {
+
+          currentPage--;
+
+          renderCarousel();
+
+        }
+
+      }
+    );
+
+
+    /*
+     * Next button.
+     */
+    nextButton.addEventListener(
+      "click",
+      () => {
+
+        const totalPages =
+          Math.ceil(
+            currentArtworks.length /
+            itemsPerPage
+          );
+
+
+        if (
+          currentPage <
+          totalPages - 1
+        ) {
+
+          currentPage++;
+
+          renderCarousel();
+
+        }
+
+      }
+    );
+
+
+    /*
+     * Close gallery event.
+     */
+    closeButton.addEventListener(
+      "click",
+      closeSeries
+    );
+
+
+    /*
+     * Close lightbox event.
+     */
+    lightboxClose.addEventListener(
+      "click",
+      closeLightbox
+    );
+
+
+    /*
+     * Close lightbox when clicking backdrop.
+     */
+    lightbox.addEventListener(
+      "click",
+      (event) => {
+
+        if (
+          event.target ===
+          lightbox
+        ) {
+
+          closeLightbox();
+
+        }
+
+      }
+    );
+
+
+    /*
+     * Keyboard navigation.
+     */
+    document.addEventListener(
+      "keydown",
+      (event) => {
+
+        /*
+         * ESC key.
+         */
+        if (
+          event.key ===
+          "Escape"
+        ) {
+
+          if (
+            !lightbox.classList.contains(
+              "hidden"
+            )
+          ) {
+
+            closeLightbox();
+
+          } else {
+
+            closeSeries();
+
+          }
+
+        }
+
+
+        /*
+         * If lightbox is open, arrow keys do not change carousel.
+         */
+        if (
+          !lightbox.classList.contains(
+            "hidden"
+          )
+        ) {
+
+          return;
+
+        }
+
+
+        /*
+         * Left arrow key.
+         */
+        if (
+          event.key ===
+          "ArrowLeft" &&
+          currentPage > 0
+        ) {
+
+          currentPage--;
+
+          renderCarousel();
+
+        }
+
+
+        /*
+         * Right arrow key.
+         */
+        if (
+          event.key ===
+          "ArrowRight"
+        ) {
+
+          const totalPages =
+            Math.ceil(
+              currentArtworks.length /
+              itemsPerPage
+            );
+
+
+          if (
+            currentPage <
+            totalPages - 1
+          ) {
+
+            currentPage++;
+
+            renderCarousel();
+
+          }
+
+        }
+
+      }
+    );
+
+  </script>
+
+</Layout>
