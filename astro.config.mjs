@@ -3,7 +3,7 @@ import tailwind from '@astrojs/tailwind';
 import react from '@astrojs/react';
 
 export default defineConfig({
-  site: 'https://dianacastroart.com',
+  site: 'https://dianacastro.art',
   output: 'static', // Vital para máximo rendimiento y seguridad en Hostinger
   integrations: [
     tailwind(),
